@@ -1,0 +1,25 @@
+parameters:
+  lottery:
+    grade_processing_order: [ 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ]
+    types:
+      desegregation:
+        label: Desegregation Lottery
+        enabled: false
+        strictly_enforce: true
+        tracking_column: Race
+      simple:
+        label: Simple Lottery
+        enabled: true
+        strictly_enforce: true
+        tracking_column: Race
+      zoned:
+        label: Current School Lottery
+        enabled: true
+        strictly_enforce: true
+        tracking_column: HomeZone
+        per_school_percent: 0.07
+      scored:
+        label: Audition Score Sorted Lottery
+        enabled: true
+        strictly_enforce: false
+        tracking_column: Race

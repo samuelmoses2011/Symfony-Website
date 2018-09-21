@@ -1,0 +1,46 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+{% endblock%}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Create a New Submission</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="box box-alert">
+                                <div class="box-body">
+                                    <h3 class="text-center">Your Magnet Program application has been successfully submitted!</h3>
+
+                                    <div class="alert-box success text-center radius">
+                                        <p>Your confirmation number is:<br /><strong>{{ confirmation }}</strong></p>
+                                    </div>
+
+                                    <p>Please print this page and/or record this confirmation number for your records. If you provided an email address, you will receive an email confirmation at the email address provided.</p>
+
+                                    {% if studentStatus == "new" %}
+                                        <p>Please note, if you accept a placement in a Magnet Program you must also register your student for Tuscaloosa Public Schools enrollment at your school.</p>
+                                    {% endif %}
+                                    {{ 'magnet.contact'|trans|raw }}
+                                    <p><a href="{{ url('admin_submission_create') }}" class="button">Create Another Submission</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

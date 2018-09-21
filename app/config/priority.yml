@@ -1,0 +1,131 @@
+parameters:
+  priority:
+    #Indexed by Grade
+    99:
+      #Indexed by Priority Level
+      ## Array of Priority Types required for the level
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [siblingAttend]
+      seventh: [majorityRace]
+      eighth:  false
+    0:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [siblingAttend]
+      seventh: [majorityRace]
+      eighth:  false
+    1:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    2:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    3:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    4:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    5:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    6:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    7:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    8:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    9:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    10:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    11:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false
+    12:
+      first: [currentSchool, majorityRace, siblingAttend]
+      second: [currentSchool, majorityRace]
+      third: [currentSchool, siblingAttend]
+      fourth: [currentSchool]
+      fifth: [majorityRace, siblingAttend]
+      sixth: [majorityRace]
+      seventh: [siblingAttend]
+      eighth: false

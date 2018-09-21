@@ -1,0 +1,76 @@
+{% extends '@IIABMagnet/Application/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ 'successful.submission.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h3 class="text-center">{{ 'successful.submission.header'|trans }}</h3>
+
+        <div class="alert-box success text-center radius">
+            <p>{{ 'confirmation.message'|trans }}:<br /><strong>{{ confirmation }}</strong></p>
+        </div>
+
+        {{ 'print.notification'|trans|raw }}
+
+        {% if studentStatus == "new" %}
+            {{ 'successful.submission.new'|trans|raw }}
+        {% endif %}
+
+        {% if writing_sample_printout_url is defined and writing_sample_printout_url != '' %}
+            <div class="alert-box radius">
+                Your student must complete a Writing Sample in order for your student's application to be processed.  The form must be completed by Friday, February 9, 2018.
+                Please use the following link to print instructions for your student.<br/><br/>
+                <div class="text-center">
+                    <a target="_blank" href="{{writing_sample_printout_url}}" class="button secondary">Click Here<br/>Writing Sample Instructions</a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if learner_screening_device_printout_url is defined and learner_screening_device_printout_url != '' %}
+            <div class="alert-box radius">
+                Your student's homeroom teacher must complete a Learner Screening Device in order for your student's application to be processed.  The form must be completed by Friday, February 16, 2018.
+                Please use the following link to print instructions for your student's homeroom teacher.<br/><br/>
+                <div class="text-center">
+                    <a target="_blank" href="{{learner_screening_device_printout_url}}" class="button secondary">Click Here<br/>Learner Screening Device Instructions</a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if recommendations_printout_url is defined and recommendations_printout_url != '' %}
+            <div class="alert-box radius">
+                Your student's teachers and counselor must complete a Recommendation Form in order for your student's application to be processed.  The form must be completed by Friday, February 16, 2018.
+                Please use the following link to print instructions for your student's teachers and counselor.<br/><br/>
+                <div class="text-center">
+                    <a target="_blank" href="{{recommendations_printout_url}}" class="button secondary">Click Here<br/>Recommendation Instructions</a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if afterSubmissionDocuments is defined and afterSubmissionDocuments is not empty %}
+            <div class="row">
+                {% for document in afterSubmissionDocuments %}
+                    <div class="small-12 text-center">
+                        <a target="_blank" class="button" href="{{ url('magnet_index')|replace({'app_dev.php/':'','app.php/':''}) }}{{ document.url|raw }}">{{document.label}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {{ 'magnet.content'|trans|raw }}
+
+        {% if app.request.attributes.get('_route') is null %}
+            <p><a href="{{ url('admin_submission_customCreate') }}" class="button">Create Another Submission</a></p>
+        {% else %}
+            <style type="text/css">
+                @media print {
+                    #non-printable {
+                        display: none;
+                    }
+                }
+            </style>
+            <p id="non-printable"><a href="{{ url('magnet_exit_application') }}" class="button">{{ 'exit.application'|trans }}</a><a href="#" onclick="window.print(); return false;" class="button right secondary">{{ 'print'|trans }}</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{#{{ include('@IIABMagnet/Report/header.html.twig') }}#}
+{{ header | raw }}
+<div class="push">
+    <p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+        {{ submission.address }}<br />
+        {{ submission.city }}, {{ submission.state|upper }} {{ submission.zip }}</p>
+
+    <p>RE: Magnet Application Final Status for Confirmation Number: {{ submission }}</p>
+
+    <p>Congratulations! Your application to the Tuscaloosa Public Schools Magnet Program for {{ submission.firstName }} {{ submission.lastName }} for {{ submission.openEnrollment }} has been approved for the following: <strong>{{ awardedSchool }}</strong></p>
+
+    <p><strong>You have two choices for accepting or declining this offer</strong>:</p>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="6" style="table-layout:fixed; margin-bottom: 10px; margin-left: 10px;">
+        <tbody>
+            <tr>
+                <td>1: &nbsp;</td>
+                <td>You may go online at <strong>{{ acceptanceURL }}</strong> to accept or decline this offer.</td>
+            </tr>
+            <tr>
+                <td>2: &nbsp;</td>
+                <td>You may call the offered school, for instructions regarding accepting or declining by phone.</td>
+            </tr>
+        </tbody>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="6" style="table-layout:fixed; margin-bottom: 10px;">
+        <tbody>
+        <tr>
+            <td width="40%" style="font-weight:bold;"><strong>Deadline to Accept or Decline:</strong></td>
+            <td width="60%" style="font-weight:bold;" align="center"><strong>{{ acceptOnlineDate }}; {{ acceptOnlineTime }} online<br />OR<br />{{ acceptOfflineDate }}; {{ acceptOfflineTime }} by phone</strong></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="6" style="table-layout:fixed; border:1px solid #000000; margin-bottom: 10px;">
+        <tbody>
+        <tr>
+            <td style="font-weight:bold;"><strong>IMPORTANT: If you do not accept or decline online or by phone by {{ acceptOnlineDate }}, your Magnet offer will automatically be DECLINED.</strong></td>
+        </tr>
+        </tbody>
+    </table>
+    <p>Please note, applicants are awarded only one offer.</p>
+</div>
+{#{{ include('@IIABMagnet/Report/footer.html.twig') }}#}
+{{ footer |raw }}

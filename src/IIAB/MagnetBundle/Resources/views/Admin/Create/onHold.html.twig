@@ -1,0 +1,54 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+{% endblock %}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Create a New Submission</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="box box-alert">
+                                <div class="box-body">
+                                    <h2 class="text-center">Your Magnet Program application is pending!</h2>
+
+                                    <div class="panel callout">
+                                        {% if highschool %}
+                                            <p>Because you are applying to a High School program, a copy of your student’s current transcript must be submitted to the Magnet Program Office in order for your application to be processed further. Transcripts must be received NO LATER THAN 4:00 p.m. on Friday, February 20, 2015. Failure to submit transcripts by the deadline will result in your student’s application being rejected.</p>
+
+                                            {{ 'magnet.contact'|trans|raw }}
+
+                                            <p>Also, remember that you must also register your student for Tuscaloosa Public Schools enrollment at your school</p>
+                                        {% else %}
+                                            <p>In order to fulfill your student’s admission requirements, please remember that you must also register your student for Tuscaloosa Public City Schools at your school.</p>
+                                        {% endif %}
+
+                                        <p class="text-center">Your confirmation number is:<br/>{{ confirmation }}</p>
+                                    </div>
+
+                                    <p>Please print this page and/or record this confirmation number for your records. If you provided an email address, you will receive an email confirmation at the email address provided.</p>
+
+                                    <p>
+                                        <a href="{{ url('admin_submission_create') }}" class="button">Create Another Submission</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

@@ -1,0 +1,55 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">Open Enrollment Details</h3></div>
+                <div class="panel-body">
+                    {% if openEnrollments is defined and openEnrollments is not empty %}
+                    <table class="table not-fixed table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Open Enrollment</th>
+                            <th>Beginning Date</th>
+                            <th>Ending Date</th>
+                            <th>Confirmation Style</th>
+                            <th>Confirmation Example</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Open Enrollment</th>
+                            <th>Beginning Date</th>
+                            <th>Ending Date</th>
+                            <th>Confirmation Style</th>
+                            <th>Confirmation Example</th>
+                            <th>Action</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for openEnrollment in openEnrollments %}
+                            <tr>
+                                <td class="vertical-middle">{{ openEnrollment }}</td>
+                                <td class="vertical-middle">{{ openEnrollment.beginningDate|date('Y-m-d H:i') }}</td>
+                                <td class="vertical-middle">{{ openEnrollment.endingDate|date('Y-m-d H:i') }}</td>
+                                <td class="vertical-middle">{{ openEnrollment.confirmationStyle }}</td>
+                                <td class="vertical-middle">SPECIAL-{{ openEnrollment.confirmationStyle }}-1234</td>
+                                <td class="vertical-middle">{% if openEnrollment.active == false %}<a class="btn btn-info" href="{{ url('iiab_magnet_program_processing_current_settings', { id: openEnrollment.id }) }}">Switch Enrollment</a>{% else %}Current Enrollment{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <p>There are not open Enrollments found. You can <a href="{{ url('iiab_magnet_program_processing_new_open') }}">create a new one here</a>.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock sonata_admin_content %}

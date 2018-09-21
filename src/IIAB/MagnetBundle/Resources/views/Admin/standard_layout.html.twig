@@ -1,0 +1,685 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+<!DOCTYPE html>
+{% if block('preview') is defined %}
+    {% set _preview = block('preview') %}
+{% else %}
+    {% set _preview = false %}
+{% endif %}{% if block('form') is defined %}
+    {% set _form = block('form') %}
+{% else %}
+    {% set _form = false %}
+{% endif %}{% if block('show') is defined %}
+    {% set _show = block('show') %}
+{% else %}
+    {% set _show = false %}
+{% endif %}{% if block('list_table') is defined %}
+    {% set _list_table = block('list_table') %}
+{% else %}
+    {% set _list_table = false %}
+{% endif %}{% if block('list_filters') is defined %}
+    {% set _list_filters = block('list_filters') %}
+{% else %}
+    {% set _list_filters = false %}
+{% endif %}{% if block('tab_menu') is defined %}
+    {% set _tab_menu = block('tab_menu') %}
+{% else %}
+    {% set _tab_menu = false %}
+{% endif %}{% if block('content') is defined %}
+    {% set _content = block('content') %}
+{% else %}
+    {% set _content = false %}
+{% endif %}{% if block('title') is defined %}
+    {% set _title = block('title') %}
+{% else %}
+    {% set _title = false %}
+{% endif %}{% if block('breadcrumb') is defined %}
+    {% set _breadcrumb = block('breadcrumb') %}
+{% else %}
+    {% set _breadcrumb = false %}
+{% endif %}{% if block('actions') is defined %}
+    {% set _actions = block('actions') %}
+{% else %}
+    {% set _actions = false %}
+{% endif %}{% if block('navbar_title') is defined %}
+    {% set _navbar_title = block('navbar_title') %}
+{% else %}
+    {% set _navbar_title = false %}
+{% endif %}{% if block('list_filters_actions') is defined %}
+    {% set _list_filters_actions = block('list_filters_actions') %}
+{% else %}
+    {% set _list_filters_actions = false %}
+{% endif %}
+
+<html {% block html_attributes %}class="no-js"{% endblock %}>
+    <head>
+        {% block meta_tags %}
+            <meta charset="UTF-8">
+            <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        {% endblock %}
+        {% block stylesheets %}
+            {% if admin_pool is defined %}
+                {% for stylesheet in admin_pool.getOption('stylesheets', []) %}
+                        <link rel="stylesheet" href="{{ asset(stylesheet , null , true) }}?version=1.6.2&amp;force=true">
+                {% endfor %}
+            {% endif %}
+        {% endblock %}
+
+        {{ include('@IIABMagnet/Admin/standard.css.twig') }}
+
+        {% if app.request.server.get('REMOTE_ADDR') == '127.0.0.1' or app.request.server.get('REMOTE_ADDR') == '::1' %}
+            <style>
+                body {border: 30px solid red;}
+            </style>
+        {% endif %}
+
+        {% block javascripts %}
+            <script>
+                window.SONATA_CONFIG = {
+                    CONFIRM_EXIT: {% if admin_pool is defined and admin_pool.getOption('confirm_exit') %}true{% else %}false{% endif %},
+                    USE_SELECT2: {% if admin_pool is defined and admin_pool.getOption('use_select2') %}true{% else %}false{% endif %},
+                    USE_ICHECK: {% if admin_pool is defined and admin_pool.getOption('use_icheck') %}true{% else %}false{% endif %}
+                };
+                window.SONATA_TRANSLATIONS = {
+                    CONFIRM_EXIT:  '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
+               };
+
+            </script>
+
+            {% if admin_pool is defined %}
+                {% for javascript in admin_pool.getOption('javascripts', []) %}
+                    <script src="{{ asset(javascript) }}"></script>
+                {% endfor %}
+            {% endif %}
+
+            {# localize select2 #}
+            {% if admin_pool is defined and admin_pool.getOption('use_select2') %}
+                {% set locale = app.request.locale %}
+                {% if locale == 'pt' %}{% set locale = 'pt_PT' %}{% endif %}
+
+                {# omit default EN locale #}
+                {% if locale[:2] != 'en' %}
+                    <script src="{{ asset('bundles/sonatacore/vendor/select2/select2_locale_' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+                {% endif %}
+            {% endif %}
+
+            {{ include('@IIABMagnet/Admin/standard.js.twig') }}
+
+        {% endblock %}
+
+        <title>
+        {% block sonata_head_title %}
+            {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
+
+            {% if _title is not empty %}
+                {{ _title|raw }}
+            {% else %}
+                {% if action is defined %}
+                    -
+                    {% for menu in admin.breadcrumbs(action) %}
+                        {% if not loop.first %}
+                            {%  if loop.index != 2 %}
+                                &gt;
+                            {% endif %}
+
+                            {{ menu.label }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif%}
+        {% endblock %}
+        </title>
+    </head>
+    <body {% block body_attributes %}class="sonata-bc skin-black fixed"{% endblock %}>
+
+        {% block sonata_header %}
+            <header class="header">
+                {% block sonata_header_noscript_warning %}
+                    <noscript>
+                        <div class="noscript-warning">
+                            {{ 'noscript_warning'|trans({}, 'SonataAdminBundle') }}
+                        </div>
+                    </noscript>
+                {% endblock %}
+                {% block logo %}
+                    {% if admin_pool is defined %}
+                        {% spaceless %}
+                        <a class="logo" href="{{ path('sonata_admin_dashboard') }}" style="background: #FFFFFF;">
+                            <img src="{{ asset('img/MyPickLogo.png') }}" height="40" style="margin: 5px;"/>
+                        </a>
+                        {% endspaceless %}
+                    {% endif %}
+                {% endblock %}
+                {% block sonata_nav %}
+                    {% if admin_pool is defined %}
+                        <nav class="navbar navbar-static-top" role="navigation">
+                            <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </a>
+
+                            <div class="navbar-left">
+                                {% block sonata_breadcrumb %}
+                                    <div class="hidden-xs">
+                                    {% if _breadcrumb is not empty or action is defined %}
+                                        <ol class="nav navbar-top-links breadcrumb">
+                                            {% if _breadcrumb is empty %}
+                                                {% if action is defined %}
+                                                    {% for menu in admin.breadcrumbs(action) %}
+                                                        {% if loop.first %}
+                                                            <li>
+                                                                {% if menu.uri is not empty %}
+                                                                    <a href="{{ menu.uri }}">Admin Home</a>
+                                                                {% else %}
+                                                                    {{ menu.label }}
+                                                                {% endif %}
+                                                            </li>
+                                                        {% else %}
+                                                            {% if not loop.last  %}
+                                                                <li>
+                                                                    {% if menu.uri is not empty %}
+                                                                        <a href="{{ menu.uri }}">{{ menu.label|raw }}</a>
+                                                                    {% else %}
+                                                                        {{ menu.label }}
+                                                                    {% endif %}
+                                                                </li>
+                                                            {% else %}
+                                                                <li class="active"><span>{{ menu.label }}</span></li>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ _breadcrumb|raw }}
+                                            {% endif %}
+                                        </ol>
+                                    {% endif %}
+                                    </div>
+                                {% endblock sonata_breadcrumb %}
+                            </div>
+
+                            {% block sonata_top_nav_menu %}
+                                <div class="navbar-right">
+                                    <ul class="nav navbar-nav">
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                <i class="fa fa-plus-square fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                            </a>
+                                            {% include admin_pool.getTemplate('add_block') %}
+                                        </li>
+                                        <li class="dropdown user-menu">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user">
+                                                {% include admin_pool.getTemplate('user_block') %}
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endblock %}
+                        </nav>
+                    {% endif %}
+                {% endblock sonata_nav %}
+            </header>
+        {% endblock sonata_header %}
+
+        {% block sonata_wrapper %}
+            <div class="wrapper row-offcanvas row-offcanvas-left">
+                {% block sonata_left_side %}
+                    <aside class="left-side sidebar-offcanvas">
+                        <section class="sidebar">
+                            {% block sonata_side_nav %}
+                                {#
+                                {% block sonata_sidebar_search %}
+                                    {% if app.security.token and is_granted('ROLE_ADMIN') %}
+                                        <form action="{{ url('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
+                                            <div class="input-group custom-search-form">
+                                                <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-flat" type="submit">
+                                                            <i class="fa fa-search"></i>
+                                                        </button>
+                                                    </span>
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                {% endblock sonata_sidebar_search %}
+                                #}
+                                <p>&nbsp;</p>
+
+                                {% block side_bar_before_nav %} {% endblock %}
+                                {% block side_bar_nav %}
+                                    {% if is_granted('ROLE_ADMIN') %}
+
+                                        <ul class="sidebar-menu">
+
+                                            <li> <a href="{{ url('admin_submission_list') }}"><i class="fa fa-angle-double-right"></i> Submissions</a></li>
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                <li{% if app.request.requestUri == path('iiab_magnet_program_processing_dashboard') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_dashboard') }}"><i class="fa fa-angle-double-right"></i> Current Status/Dashboard</a></li>
+                                            {% endif %}
+
+                                            {% for group in admin_pool.dashboardgroups %}
+                                                {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                                                {% for role in group.roles if not display %}
+                                                    {% set display = is_granted(role) %}
+                                                {% endfor %}
+
+                                            {% if group.label == 'Magnet System Settings' and not is_granted('ROLE_SUPER_ADMIN') %}
+                                                {% set display = false %}
+                                            {% endif %}
+
+                                                {# Do not display the group label if no item in group is available #}
+                                                {% set item_count = 0 %}
+                                                {% if display %}
+                                                    {% for admin in group.items if item_count == 0 %}
+                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                            {% set item_count = item_count+1 %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                                {% if display and (item_count > 0) %}
+                                                    {% set active = false %}
+                                                    {% for admin in group.items %}
+                                                        {% if admin.hasroute('list') and admin.isGranted('LIST') and app.request.get('_sonata_admin') == admin.code %}
+                                                            {% set active = true %}
+                                                        {% endif %}
+
+                                                        {% set adminLinks = [
+                                                            path('iiab_magnet_program_processing_new') ,
+                                                            path('iiab_magnet_program_processing_application_settings') ,
+                                                        ] %}
+                                                        {% if group.label == 'Magnet System Settings' and app.request.requestUri in adminLinks %}
+                                                            {% set active = true %}
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                    <li class="treeview{% if active %} active{% endif %}">
+                                                        <a href="#">
+                                                            {% if group.icon|default() %}{{ group.icon|raw }}{% endif %}
+                                                            <span>{{ group.label|trans({}, group.label_catalogue) }}</span>
+                                                            <i class="fa pull-right fa-angle-left"></i>
+                                                        </a>
+                                                        <ul class="treeview-menu{% if active %} active{% endif %}">
+                                                            {% for admin in group.items %}
+
+                                                                    {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                                                        <li{% if app.request.get('_sonata_admin') == admin.code %} class="active"{% endif %}><a href="{{ admin.generateUrl('list')}}"><i class="fa fa-angle-double-right"></i> {{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                                                    {% endif %}
+
+                                                            {% endfor %}
+                                                            {% if group.label == 'Magnet System Settings' %}
+                                                                <li><a href="{{ url('audit_index') }}"><i class="fa fa-angle-double-right"></i> Audit Tracking</a></li>
+
+                                                                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                                    <li{% if app.request.requestUri == path('iiab_magnet_program_processing_application_settings') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_application_settings') }}"><i class="fa fa-angle-double-right"></i> Application Settings</a></li>
+
+                                                                    <li{% if app.request.requestUri == path('iiab_magnet_program_processing_new') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_new') }}"><i class="fa fa-angle-double-right"></i> Create New Application Period</a></li>
+                                                                {% endif %}
+                                                            {% endif %}
+
+                                                        </ul>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                                {# Only allow Super ADMINs to see these Links. #}
+                                                {% set active = false %}
+                                                {% set processingLinks = [
+                                                    path('iiab_magnet_program_processing_dashboard') ,
+                                                    path('iiab_magnet_program_processing_next_step') ,
+                                                    path('iiab_magnet_program_processing_process') ,
+                                                    path('iiab_magnet_program_processing_view_reports') ,
+                                                    path('iiab_magnet_program_processing_awarded') ,
+                                                    path('iiab_magnet_program_processing_awarded_waitlist') ,
+                                                    path('iiab_magnet_program_processing_wait_list') ,
+                                                    path('iiab_magnet_program_processing_process_wait_list') ,
+                                                    path('iiab_magnet_program_processing_current_settings') ,
+                                                    path('iiab_magnet_program_processing_view_all') ,
+                                                    path('iiab_magnet_program_processing_denied') ,
+                                                    path('admin_after_processing_report') ,
+                                                    path('iiab_magnet_program_processing_eligibility') ,
+                                                    path('iiab_magnet_program_processing_dates') ,
+                                                    path('iiab_magnet_program_processing_header_footer') ,
+                                                    path('iiab_magnet_program_processing_denied_no_transcripts') ,
+                                                    path('iiab_magnet_program_processing_commit_lottery') ,
+                                                    path('iiab_magnet_program_processing_new_open') ] %}
+                                                {% if app.request.requestUri in processingLinks %}
+                                                    {% set active = true %}
+                                                {% endif %}
+
+                                            {#todo remove the admin check#}
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+                                                <li class="treeview{% if active %} active{% endif %}">
+                                                    <a href="#">
+                                                        <i class="fa fa-folder"></i>
+                                                        <span>Program Processing</span>
+                                                        <i class="fa pull-right fa-angle-left"></i>
+                                                    </a>
+                                                    <ul class="treeview-menu{% if active %} active{% endif %}">
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_dashboard') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_dashboard') }}"><i class="fa fa-angle-double-right"></i> Current Status/Dashboard</a></li>
+
+                                                        {#<li{% if app.request.requestUri == path('iiab_magnet_program_processing_edit') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_edit') }}"><i class="fa fa-angle-double-right"></i> Placement Settings</a></li>#}
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_dates') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_dates') }}"><i class="fa fa-angle-double-right"></i> Date Settings</a></li>
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_eligibility') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_eligibility') }}"><i class="fa fa-angle-double-right"></i> Eligibility Settings</a></li>
+                                                        {#<li{% if app.request.requestUri == path('iiab_magnet_program_processing_next_step_settings') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_next_step_settings') }}"><i class="fa fa-angle-double-right"></i> Next Step Settings</a></li>#}
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_header_footer') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_header_footer') }}"><i class="fa fa-angle-double-right"></i> Header/Footer Letters/Emails</a></li>
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_correspondence_confirmation_screen') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_correspondence_confirmation_screen') }}"><i class="fa fa-angle-double-right"></i> Confirmation Screens/Emails</a></li>
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_next_step') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_next_step') }}"><i class="fa fa-angle-double-right"></i> Next Step Letters/Emails</a></li>
+                                                        {#<li{% if app.request.requestUri == path('iiab_magnet_program_processing_capacity') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_capacity') }}"><i class="fa fa-angle-double-right"></i> Current Capacity</a></li>#}
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_enrollment') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_enrollment') }}"><i class="fa fa-angle-double-right"></i> Zoned Schools Enrollment</a></li>
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_process') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_process') }}"><i class="fa fa-angle-double-right"></i> Submission Processing</a></li>
+
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_view_reports') or app.request.requestUri == path('admin_after_processing_report') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_view_reports') }}"><i class="fa fa-angle-double-right"></i> View Reports</a></li>
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_awarded') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_awarded') }}"><i class="fa fa-angle-double-right"></i> Awarded Letters/Emails</a></li>
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_awarded_waitlist') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_awarded_waitlist') }}"><i class="fa fa-angle-double-right"></i> Awarded with Wait List Letters/Emails</a></li>
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_wait_list') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_wait_list') }}"><i class="fa fa-angle-double-right"></i> Wait List Letters/Emails</a></li>
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_denied') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_denied') }}"><i class="fa fa-angle-double-right"></i> Denied Due to Ineligibility Letters/Emails</a></li>
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_denied_no_transcripts') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_denied_no_transcripts') }}"><i class="fa fa-angle-double-right"></i> Denied Due to Incomplete Record Letters/Emails</a></li>
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_process_wait_list') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_process_wait_list') }}"><i class="fa fa-angle-double-right"></i> Wait List Processing</a></li>
+
+                                                        {#<li{% if app.request.requestUri == path('iiab_magnet_program_processing_process_late_placement') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_process_late_placement') }}"><i class="fa fa-angle-double-right"></i> Late Submission Processing</a></li>#}
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_view_all') %} class="active"{% endif %}><a href="{{ url('iiab_magnet_program_processing_view_all') }}"><i class="fa fa-angle-double-right"></i> View All</a></li>
+
+                                                        <li{% if app.request.requestUri == path('iiab_magnet_program_processing_commit_lottery') %} class="active"{% endif %} style="background: #b30000;"><a href="{{ url('iiab_magnet_program_processing_commit_lottery') }}"><i class="fa fa-angle-double-right"></i>Review Processing Results</a></li>
+
+                                                        {#
+                                                            <li{% if app.request.requestUri == path('admin_execute_placement') %} class="active"{% endif %}><a href="{{ url('admin_execute_placement') }}"><i class="fa fa-angle-double-right"></i> Run Placement</a></li>
+                                                            <li{% if app.request.requestUri == path('admin_letter_awarded') %} class="active"{% endif %}><a href="{{ url('admin_letter_awarded') }}"><i class="fa fa-angle-double-right"></i> Awarded Letters</a></li>
+                                                            <li{% if app.request.requestUri == path('admin_letter_next_step') %} class="active"{% endif %}><a href="{{ url('admin_letter_next_step') }}"><i class="fa fa-angle-double-right"></i> Next Step Letters</a></li>
+                                                            <li{% if app.request.requestUri == path('admin_emails_next_step') %} class="active"{% endif %}><a href="{{ url('admin_emails_next_step') }}"><i class="fa fa-angle-double-right"></i> Next Step Emails</a></li>
+                                                        #}
+                                                    </ul>
+                                                </li>
+                                            {% endif %}
+                                            {#todo remove the admin check#}
+
+                                            {% endif %}
+                                            {% set active = false %}
+
+                                            {% if app.request.requestUri == path('import_address') or app.request.requestUri == path('import_address_update') %}
+                                                {% set active = true %}
+                                            {% endif %}
+
+                                            {#todo remove the admin check#}
+                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+                                            {#<li class="treeview{% if active %} active{% endif %}">#}
+                                                {#<a href="#">#}
+                                                    {#<i class="fa fa-folder"></i>#}
+                                                    {#<span>Address Bounds</span>#}
+                                                    {#<i class="fa pull-right fa-angle-left"></i>#}
+                                                {#</a>#}
+                                                {#<ul class="treeview-menu{% if active %} active{% endif %}">#}
+                                                    {#<li{% if app.request.requestUri == path('import_address') %} class="active"{% endif %}><a href="{{ url('import_address') }}"><i class="fa fa-angle-double-right"></i> Import Address Bounds</a></li>#}
+                                                    {#<li{% if app.request.requestUri == path('import_address_update') %} class="active"{% endif %}><a href="{{ url('import_address_update') }}"><i class="fa fa-angle-double-right"></i> Update Schools Mapping</a></li>#}
+                                                {#</ul>#}
+                                            {#</li>#}
+
+                                            {% endif %}
+                                            {#todo remove the admin check#}
+
+                                            {% set active = false %}
+                                            {% if app.request.requestUri == path('admin_report_court_order') or app.request.requestUri == path('admin_report_racial_composition') or app.request.requestUri == path('admin_report_submission_group') or app.request.requestUri == path('admin_report_validate_sibling') or app.request.requestUri == path('admin_report_invalid_bounds_current_students') or app.request.requestUri == path('admin_report_grade_average_by_program') or app.request.requestUri == path('admin_report_grades_report') or app.request.requestUri == path('admin_report_all_grades_report') or app.request.requestUri == path('admin_report_committee_review_score_by_program') %}
+                                                {% set active = true %}
+                                            {% endif %}
+                                            {#todo remove the admin check#}
+
+                                            <li class="treeview{% if active %} active{% endif %}">
+                                                <a href="#">
+                                                    <i class="fa fa-folder"></i>
+                                                    <span>Reports</span>
+                                                    <i class="fa pull-right fa-angle-left"></i>
+                                                </a>
+                                                <ul class="treeview-menu{% if active %} active{% endif %}">
+                                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+
+                                                    <li{% if app.request.requestUri == path('admin_report_submission_group') %} class="active"{% endif %}><a href="{{ url('admin_report_submission_group') }}"><i class="fa fa-angle-double-right"></i> Applicant Data by Program</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_lottery_list_report') %} class="active"{% endif %}><a href="{{ url('admin_report_lottery_list_report') }}"><i class="fa fa-angle-double-right"></i> Lottery List Report</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_lottery_requirements_report') %} class="active"{% endif %}><a href="{{ url('admin_lottery_requirements_report') }}"><i class="fa fa-angle-double-right"></i> Lottery Requirements Report</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_applicant_outcome_by_program_report') %} class="active"{% endif %}><a href="{{ url('admin_applicant_outcome_by_program_report') }}"><i class="fa fa-angle-double-right"></i> Applicant Outcome by Program Report</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_applicant_outcome_report') %} class="active"{% endif %}><a href="{{ url('admin_applicant_outcome_report') }}"><i class="fa fa-angle-double-right"></i> Applicant Outcome Summary Report</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_current_school_status_report') %} class="active"{% endif %}><a href="{{ url('admin_current_school_status_report') }}"><i class="fa fa-angle-double-right"></i> Submission Status by Current School Report</a></li>
+
+
+
+
+                                                    {% endif %}
+                                                    {#todo remove the admin check#}
+
+                                                    <li{% if app.request.requestUri == path('admin_report_missing_grades_report') %} class="active"{% endif %}><a href="{{ url('admin_report_missing_grades_report') }}"><i class="fa fa-angle-double-right"></i> Missing Grades</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_missing_recommendation_report') %} class="active"{% endif %}><a href="{{ url('admin_report_missing_recommendation_report') }}"><i class="fa fa-angle-double-right"></i> Missing Recommendations</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_missing_writing_report') %} class="active"{% endif %}><a href="{{ url('admin_report_missing_writing_report') }}"><i class="fa fa-angle-double-right"></i> Missing Writing Samples</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_missing_learner_screening_device_report') %} class="active"{% endif %}><a href="{{ url('admin_report_missing_learner_screening_device_report') }}"><i class="fa fa-angle-double-right"></i> Missing Learner Screening Device</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_missing_audition_report') %} class="active"{% endif %}><a href="{{ url('admin_report_missing_audition_report') }}"><i class="fa fa-angle-double-right"></i> Missing Auditions</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_duplicate_courses_report') %} class="active"{% endif %}><a href="{{ url('admin_report_duplicate_courses_report') }}"><i class="fa fa-angle-double-right"></i> Duplicate Courses</a></li>
+                                                    {# <li{% if app.request.requestUri == path('admin_report_audition_scores_report') %} class="active"{% endif %}><a href="{{ url('admin_report_audition_scores_report') }}"><i class="fa fa-angle-double-right"></i> Audition Scores</a></li> #}
+                                                    <li{% if app.request.requestUri == path('admin_report_gpa_calculations_report') %} class="active"{% endif %}><a href="{{ url('admin_report_gpa_calculations_report') }}"><i class="fa fa-angle-double-right"></i> GPA Calculations</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_missing_testing_report') %} class="active"{% endif %}><a href="{{ url('admin_report_missing_testing_report') }}"><i class="fa fa-angle-double-right"></i> Missing Standardized Tests</a></li>
+                                                    <li{% if app.request.requestUri == path('admin_report_missing_eligibility_report') %} class="active"{% endif %}><a href="{{ url('admin_report_missing_eligibility_report') }}"><i class="fa fa-angle-double-right"></i> Missing Eligibility</a></li>
+                                                </ul>
+                                            </li>
+
+
+                                        </ul>
+                                    {% endif %}
+                                {% endblock side_bar_nav %}
+                                {% block side_bar_after_nav %}
+                                    <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px"><a href="{{ url( 'magnet_index' ) }}" rel="noreferrer" target="_blank">My Pick Magnet Website</a></p>
+                                    <p class="text-center small"><button type="button" class="btn-xs btn-warning" data-toggle="modal" data-target="#UserFeedbackModal">Feedback</button> </p>
+                                    <p class="text-center small"><button type="button" class="btn-xs btn-danger" data-toggle="modal" data-target="#UserFeedbackModal">Report Bug</button> </p>
+                                {% endblock %}
+                            {% endblock sonata_side_nav %}
+                        </section>
+                    </aside>
+                {% endblock sonata_left_side %}
+
+                <aside class="right-side">
+                    {% block sonata_page_content %}
+                        <section class="content-header">
+                            {% block sonata_page_content_header %}
+                                {% block sonata_page_content_nav %}
+                                    {% if _tab_menu is not empty or _actions is not empty or _list_filters_actions is not empty %}
+                                        <nav class="navbar navbar-default" role="navigation">
+                                            {% block tab_menu_navbar_header %}
+                                                {% if _navbar_title is not empty %}
+                                                    <div class="navbar-header">
+                                                        <span class="navbar-brand">{{ _navbar_title|raw }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            {% endblock %}
+                                            <div class="container-fluid">
+                                                <div class="navbar-left">
+                                                    {% if _tab_menu is not empty %}
+                                                        {{ _tab_menu|raw }}
+                                                    {% endif %}
+                                                </div>
+
+                                                {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                                                    <div class="nav navbar-right btn-group">
+                                                        {% for mode, settings in admin.listModes %}
+                                                            <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}"><i class="{{ settings.class }}"></i></a>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
+                                                    <ul class="nav navbar-nav navbar-right">
+                                                        <li class="dropdown sonata-actions">
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
+                                                            <ul class="dropdown-menu" role="menu">
+                                                                {{ _actions|raw }}
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                {% endif %}
+
+                                                {% if _list_filters_actions is not empty %}
+                                                    {{ _list_filters_actions|raw }}
+                                                {% endif %}
+                                            </div>
+                                        </nav>
+                                    {% endif %}
+                                {% endblock sonata_page_content_nav %}
+
+                            {% endblock sonata_page_content_header %}
+                        </section>
+
+                        <section class="content">
+                            {% block sonata_admin_content %}
+
+                                {% block notice %}
+                                    {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+                                {% endblock notice %}
+
+                                {% if _preview is not empty %}
+                                    <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+                                {% endif %}
+
+                                {% if _content is not empty %}
+
+
+                                <div class="sonata-ba-content">{{ _content|raw }}</div>
+
+
+
+                                {% endif %}
+
+                                {% if _show is not empty %}
+                                    <div class="sonata-ba-show">{{ _show|raw }}</div>
+                                {% endif %}
+
+                                {% if _form is not empty %}
+                                    <div class="sonata-ba-form">{{ _form|raw }}</div>
+                                {% endif %}
+
+                                {% if _list_table is not empty or _list_filters is not empty %}
+                                    {% if _list_filters|trim %}
+                                        <div class="row">
+                                            {{ _list_filters|raw }}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="row">
+                                        {{ _list_table|raw }}
+                                    </div>
+
+                                {% endif %}
+                            {% endblock sonata_admin_content %}
+                        </section>
+                    {% endblock sonata_page_content %}
+                </aside>
+
+            </div>
+
+        {% endblock sonata_wrapper %}
+
+        <!-- Special Message -->
+        <div id="SystemSpecialMessageModal" class="modal fade" role="dialog" data-backdrop="static" >
+            <div class="modal-dialog" >
+
+                <!-- Modal content-->
+                <div class="modal-content" >
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="SpecialMessageModalTitle"></h4>
+                    </div>
+                    <div class="modal-body" id="SpecialMessageModalBody">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" id="SpecialMessageModalCancel">Cancel</button>
+                        <button type="button" class="btn btn-success" id="SpecialMessageModalContinue">Continue</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!-- Report Issue/Bug Modal -->
+        <div id="UserFeedbackModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Provide Feedback</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="UserFeedback">
+
+                            <div class="row priority" style="margin-bottom: 20px;">
+                                <div class="col-xs-12 text-left" >
+                                    <label>Feedback Type</label>
+                                </div>
+                                <div class="col-xs-12 col-md-4 feedback">
+                                    <label style="padding: 6px;">
+                                        <input type="radio" name="feedback_priority" value="4"> Feedback
+                                    </label>
+                                </div>
+                                <div class="col-xs-12 col-md-4 feature">
+                                    <label style="padding: 6px;">
+                                        <input type="radio" name="feedback_priority" value="5"> Feature Request
+                                    </label>
+                                </div>
+                                <div class="col-xs-12 col-md-4 bug">
+                                    <label style="padding: 6px;">
+                                        <input type="radio" name="feedback_priority" value="3"> Bug/Error
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row submission" style="margin-bottom: 20px;">
+                                <div class="col-xs-12 text-left">
+                                    <label for="feedback_submission">Submission ID Affected </label><br>
+                                    <input type="text" name="feedback_submission" style="width: 100%;"></inputtextarea>
+                                </div>
+                            </div>
+
+                            <div class="row task" style="margin-bottom: 20px;">
+                                <div class="col-xs-12 text-left">
+                                    <label for="feedback_task">Task you were performing when error occurred </label><br>
+                                    <textarea name="feedback_task" style="width: 100%;"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row description">
+                                <div class="col-xs-12 text-left">
+                                    <label for="feedback_description">Detailed Description </label><br>
+                                    <textarea name="feedback_description" style="width: 100%;"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" id="SubmitFeedback">Submit Feedback</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>

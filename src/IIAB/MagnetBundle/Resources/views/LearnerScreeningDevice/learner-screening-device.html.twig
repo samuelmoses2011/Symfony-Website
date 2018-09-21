@@ -1,0 +1,83 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    {{ 'offer.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+ <div class="small-12 columns">
+    {{ form_start(form) }}
+        <h2 class="text-center">{{ 'learner_screening_device.header'|trans }}</h2>
+
+        <h4>{{ submission }}</h4>
+        <h4>Student: {{ submission.firstName }} {{submission.lastName }}</h4>
+        <h4>School: {{ submission.currentSchool }}</h4>
+        <h4 style="display: inline-block;">Homeroom Teacher: </h4>{{ form_widget(form.name) }}
+
+        <p>{{ 'learner_screening_device.preRatingDescription.message'|trans|raw }}</p>
+
+        <table>
+            <th>
+                <td colspan=2>
+                    <h3>Numerical Rating Description</h3>
+                </td>
+            </th>
+            {% for rating_description in rating_descriptions %}
+            <tr>
+                <td> {{loop.length - loop.index + 1 }} </td>
+                <td> {{rating_description}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+
+        <div class="panel">
+            <h3>Definitions</h3>
+            <dl>
+                <dt>Frequency:</dt>
+                <dd>Refers to the number of times the behavior is demonstrated in proportion to opportunities.</dd>
+
+                <dt>Intensity:</dt>
+                <dd>Refers to the amount of intellectual, emotional, or physical energy that the child invests in the behavior or activity.</dd>
+
+                <dt>Quality:</dt>
+                <dd>Implies a unique caliber of performance, implies some standard of excellence, and relates more to the academically/socially desirable categories of behavior.</dd>
+            </ul>
+        </div>
+
+        <p>{{ 'learner_screening_device.message'|trans|raw }}</p>
+
+        {% form_theme form '@IIABMagnet/Form/fields.html.twig' %}
+
+        {{ form_row(form.visual_arts) }}
+        <hr>
+        {{ form_row(form.performing_arts) }}
+        <hr>
+        {{ form_row(form.leadership) }}
+        <hr>
+        {{ form_row(form.psychomotor) }}
+        <hr>
+        {{ form_row(form.citizenship) }}
+        <hr>
+        {{ form_row(form.creative_thinking) }}
+        <hr>
+        {{ form_row(form.abstract_thinking) }}
+        <hr>
+        {{ form_row(form.general_intellect) }}
+        <hr>
+        {{ form_row(form.cultural) }}
+        <hr>
+        <br/>
+
+        <h4 class="text-center" style="text-transform: uppercase;">This Learner Profile is Confidential</h4>
+            <div class="text-center">{{form_row(form.submit)}}</div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+
+        <div class="panel">
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,283 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="sonata-ba-form">
+
+        <div class="panel panel-default">
+            {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+        </div>
+
+        {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+        {{ form_start(form) }}
+        <div class="panel panel-default" style="padding: 20px;">
+
+            <div class="row">
+                <div class="col-md-8" >
+                    {{ form_label(form.program_filter) }}
+                    {{ form_widget(form.program_filter) }}
+                </div>
+                <div class="col-md-4" >
+                    {{ form_widget(form.submit_filter) }}
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="padding: 20px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>
+                        <b>Total Submissions </b>
+                        <span class="badge" style="font-size: 24px;">{{ submissions|length }}</span>
+                    </h2>
+                </div>
+                <div class="col-md-6">
+                    <h2>
+                        <b>Total Population </b>
+                        <span class="badge" style="font-size: 24px;">{{ populationTotal }}</span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="row">
+                <div class="col-md-6" id="chart_status" ></div>
+                <div class="col-md-6" id="chart_race" ></div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+        <div class="panel panel-default">
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table widefat table-striped submissions">
+                <thead>
+                    <tr>
+                        <th scope="col" style="vertical-align: top;">Submission ID</th>
+                        <th scope="col" style="vertical-align: top;">Name</th>
+                        <th scope="col" style="vertical-align: top;">Home Zone</th>
+                        {% if schoolKeys|length and not allSchools %}
+                        <th scope="col" style="vertical-align: top;">Chosen<br/>
+                            <select class="filter" data-filter="choice">
+                                <option>All</option>
+                                <option value="1">1st</a>
+                                <option value="2">2nd</a>
+                                {# <option value="3">3rd</a> #}
+                            </select>
+                        </th>
+                        {% endif %}
+                        <th scope="col" style="vertical-align: top;">Next Grade
+                            <select class="filter" data-filter="grade">
+                                <option>All</option>
+
+                                {% for grade,gradeString in gradeLevels %}
+                                    <option value="{{grade}}">{{gradeString}}</option>
+                                {% endfor %}
+                            </select>
+                        </th>
+                        <th scope="col" style="vertical-align: top;">Awarded School
+                            <select class="filter" data-filter="awarded">
+                                <option>All</option>
+                                <option value="none">None Awarded</option>
+                                <optgroup label="Awarded Choice">
+                                    {% if not allSchools %} <option value="managed">Mangaged Programs</a> {% endif %}
+                                    <option value="1st">First Choice</a>
+                                    <option value="2nd">Second Choice</a>
+                                    {# <option value="3rd">Third Choice</a> #}
+                                    {% if not allSchools %}<option value="other">Other</a> {% endif %}
+                                <optgroup>
+                                <optgroup label="Awarded School">
+                                    {% for school in magnetSchools %}
+                                        <option value="{{school.id}}">{{school}}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            </select>
+                        </th>
+                        <th scope="col" style="vertical-align: top;">Status<br/>
+                            <select class="filter" data-filter="status">
+                                <option>All</option>
+                                {% for id,status in submissionStatusAvailable %}
+                                    <option value="{{id}}">{{status}}</a>
+                                {% endfor %}
+                            </select>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for submission in submissions %}
+
+                    {% if submission.offered.id is defined %}
+                        {% if submission.offered.awardedSchool.id not in schoolKeys %}
+                            {% set awardedChoice = 'awarded-other' %}
+                        {% elseif submission.offered.awardedSchool.id == submission.firstChoice.id %}
+                            {% set awardedChoice = 'awarded-1st awarded-managed' %}
+                        {% elseif submission.offered.awardedSchool.id == submission.secondChoice.id %}
+                            {% set awardedChoice = 'awarded-2nd awarded-managed' %}
+                        {% elseif submission.offered.awardedSchool.id == submission.thirdChoice.id %}
+                            {% set awardedChoice = 'awarded-3rd awarded-managed' %}
+                        {% endif %}
+                        {% set awardedSchool = 'awarded-' ~ submission.offered.awardedSchool.id %}
+                    {% else %}
+                        {% set awardedChoice = '' %}
+                        {% set awardedSchool = 'awarded-none' %}
+                    {% endif %}
+
+                    {% set choices = '' %}
+
+                    <tr class="status-{{submission.submissionStatus.id}} race-{{submission.raceFormatted|lower}} {{choices}} grade-{{submission.nextGrade}} {{awardedChoice}} {{awardedSchool}}">
+                        <td><a href="../../submission/{{submission.id}}/edit">{{submission.id}}</a></td>
+                        <td>{{submission.firstName}} {{submission.lastName}}</td>
+                        <td>{{submission.homeZone}}</td>
+
+                        {% if schoolKeys|length and not allSchools %}
+                        <td>
+                            {% if submission.firstChoice is not null and submission.firstChoice.id in schoolKeys %}
+                                <span class="label label-success">1st</span><br/>
+                            {% endif %}
+                            {% if submission.secondChoice is not null and submission.secondChoice.id in schoolKeys %}
+                                <span class="label label-primary">2nd</span><br/>
+                            {% endif %}
+                            {% if submission.thirdChoice is not null and submission.thirdChoice.id in schoolKeys %}
+                                <span class="label label-info">3rd</span><br/>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                        <td>Grade {{submission.nextGradeString}}</td>
+                        <td>
+                            {% if awardedChoice %}
+
+                                {% if awardedChoice == 'awarded-other' %}
+                                    <span class="label label-danger">Other School</span>
+                                {% elseif awardedChoice == 'awarded-1st awarded-managed' %}
+                                    <span class="label label-success">1st Choice</span>
+                                {% elseif awardedChoice == 'awarded-2nd awarded-managed' %}
+                                    <span class="label label-primary">2nd Choice</span>
+                                {% elseif awardedChoice == 'awarded-3rd awarded-managed' %}
+                                    <span class="label label-info">3rd Choice</span>
+                                {% endif %}
+
+                                {{submission.offered.awardedSchool}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ submission.submissionStatus }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+    {% if drawCharts is defined %}
+        <!--Load the AJAX API-->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages':['corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawCharts);
+
+            function drawCharts(){
+
+                {% for chart in drawCharts %}
+
+                drawPieChart(
+                    '{{ chart.div_id }}', // string: ID of div to contain chart
+                    '{{ chart.title }}', // string: Title to display on chart
+                    {{ chart.columns|json_encode()|raw }}, // array of arrays: [ ['variable type', 'column title'] ]
+                    {{ chart.rows|json_encode()|raw }} // array of arrays: [ ['data title', 'data value'] ]
+                );
+                {% endfor %}
+            }
+
+
+            function drawPieChart( div_id, title, columns, rows ){
+
+                if( !Array.isArray( columns )
+                    || !Array.isArray( rows )
+                ){
+                    return;
+                }
+
+
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+
+                for( var column_index = 0; column_index < columns.length; column_index++ ){
+                    data.addColumn( columns[ column_index ][0], columns[ column_index ][1] );
+                }
+
+                data.addRows( rows );
+
+                var width = Math.floor( Math.max( $(window).width() / 2, 400 ) );
+                var height = Math.floor( Math.max( $(window).height() / 3, 300 ) );
+
+                var options = {
+                    'legend':'left',
+                    'title':title,
+                    'height':height,
+                    'width':width,
+                    chartArea:{
+                        left:20,
+                        top:40
+                    },
+                    titleTextStyle:{
+                        fontSize: 24
+                    },
+                    sliceVisibilityThreshold: 0.0001
+                    //'is3D':true,
+                };
+
+                var chart = new google.visualization.PieChart( document.getElementById( div_id ) );
+                chart.draw(data, options);
+
+            }
+
+            jQuery( 'select.filter' ).change( function(){
+                var $filters = jQuery('select.filter');
+                var $rows = jQuery('table.submissions tbody tr');
+                var showClasses = [];
+
+                $rows.each( function(){
+                    jQuery( this ).show();
+                });
+
+                $filters.each( function() {
+
+                    var $this = jQuery( this );
+                    var filterType = $this.data('filter');
+                    var filterValue = $this.val();
+
+                    if( $this.val().toLowerCase() != 'all' ){
+                        showClasses.push( $this.data('filter')+'-'+$this.val() );
+                    }
+
+                });
+
+
+
+
+                if( showClasses.length ){
+
+                    $rows.each( function(){
+
+                        var $this = jQuery( this );
+                        for( var i=0; i<showClasses.length; i++ ){
+                            if( !$this.hasClass( showClasses[i] ) ){
+                                $this.hide();
+                            }
+                        }
+                    } )
+                }
+
+            });
+
+        </script>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

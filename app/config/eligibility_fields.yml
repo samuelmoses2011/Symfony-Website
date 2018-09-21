@@ -1,0 +1,95 @@
+parameters:
+  eligibility_fields:
+    grades:
+      label: 'Grades'
+      display_only: false
+      by_choice: false
+      info_field:
+        student_profile_score:
+          label: 'Grades'
+          key: 'student_profile_percentage'
+      choices: ['GPA', 'point value']
+    calculated_gpa:
+      label: 'GPA'
+      display_only: false
+      info_field: false
+      by_choice: false
+      choices: 'number'
+    student_profile:
+      label: 'Student Profile'
+      display_only: false
+      info_field:
+        student_profile_percentage:
+          label: 'Student Profile'
+          key: 'student_profile_percentage'
+      by_choice: false
+      choices: 'number'
+    holistic_committee:
+      label: 'Holistic Committee Recommendation'
+      display_only: false
+      info_field: false
+      by_choice: false
+      choices: ['Do Not Recommend', 'Recommend']
+    recommendations:
+      label: 'Recommendation Form'
+      display_only: false
+      by_choice: false
+      choices: ['Do Not Recommend', 'Recommend']
+      info_field:
+        recommendation_english:
+          label: 'English Teacher Recommendation Form'
+          key: 'recommendation_english'
+        recommendation_math:
+          label: 'Math Teacher Recommendation Form'
+          key: 'recommendation_math'
+        recommendation_counselor:
+          label: 'School Counselor/IB Coordinator Form'
+          key: 'recommendation_counselor'
+    learner_screening_device:
+      label: 'Learner Screening Device'
+      display_only: true
+      info_field: false
+      by_choice: false
+      choices: 'number'
+    writing_prompt:
+      label: 'Writing Prompt'
+      display_only: true
+      info_field:
+        writing_sample:
+          label: 'Writing Sample'
+          key: 'writing_sample'
+      by_choice: false
+      choices: [ 'Not Acceptable', 'Acceptable' ]
+    standardized_testing:
+      label: 'Standardized Testing'
+      display_only: true
+      by_choice: false
+      choices: 'number'
+      info_field:
+        reading_test:
+          label: 'Reading Standardized Testing'
+          key: 'reading_test'
+        math_test:
+          label: 'Math Standardized Testing'
+          key: 'math_test'
+    conduct_eligible:
+      label: 'Conduct'
+      display_only: true
+      by_choice: false
+      info_field: false
+      choices: [ 'Ineligible', 'Eligible' ]
+    audition_total:
+      label: 'Audition Point Total'
+      display_only: false
+      info_field: false
+      by_choice: false
+      choices: 'number'
+    audition:
+      label: 'Single Audition'
+      display_only: false
+      by_choice: false
+      choices: [ 'Not Ready', 'Ready' ]
+      info_field:
+        audition_total:
+          label: 'Audition'
+          key: 'audition_total'

@@ -1,0 +1,40 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+{% endblock%}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Create a New Submission</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="box box-alert">
+                                <div class="box-body">
+                                    <h2>Exit Application</h2>
+
+                                    <p>You have exited the application successfully.</p>
+
+                                    {{ 'magnet.contact'|trans|raw }}
+
+                                    <p><a href="{{ url('admin_submission_create') }}" class="button">Start Over</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

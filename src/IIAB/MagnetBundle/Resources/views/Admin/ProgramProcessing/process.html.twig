@@ -1,0 +1,212 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    {% if updated is defined and updated == 1 %}
+        <div class="alert alert-success" role="alert">
+            Settings have been saved.
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-12">
+
+            {{ form_start(form) }}
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#enrollment" aria-controls="enrollment" role="tab" data-toggle="tab">Returning Enrollment & Capacity</a>
+                    </li>
+                    {#<li role="presentation">#}
+                        {#<a href="#admdata" aria-controls="enrollment" role="tab" data-toggle="tab">ADM Data</a>#}
+                    {#</li>#}
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" role="tabpanel" id="settings">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Awarded Details</h3></div>
+                            <div class="panel-body">
+
+                                <h4>Acceptance Window</h4>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ form_label(form.onlineEndTime) }}
+                                            {{ form_widget(form.onlineEndTime) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ form_label(form.offlineEndTime) }}
+                                            {{ form_widget(form.offlineEndTime) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr/>
+
+                                <h4 class="hide">Registration Start Information</h4>
+
+                                <div class="row hide">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ form_label(form.registrationNewStartDate) }}
+                                            {{ form_widget(form.registrationNewStartDate) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ form_label(form.registrationCurrentStartDate) }}
+                                            {{ form_widget(form.registrationCurrentStartDate) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Denied Details</h3></div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ form_label(form.nextSchoolYear) }}
+                                            {{ form_widget(form.nextSchoolYear , {'attr': {'class':'form-control'} } ) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ form_label(form.nextYear) }}
+                                            {{ form_widget(form.nextYear , {'attr': {'class':'form-control'} } ) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pull-left">{{ form_widget(form.saveSettings) }}</div>
+                        {% if form.processNow is defined %}
+                        <div class="pull-right">{{ form_widget(form.processNow) }}</div>
+                        {% endif %}
+                        <div class="clear clearfix"></div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="enrollment" style="min-height:375px;">
+
+                        {% if programs is defined and programs is not empty %}
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            Choose a Program <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            {% for program in programs %}
+                                                <li>
+                                                    <a class="changeMe" href="#program{{ program.id }}" data-program="{{ program.id }}">{{ program.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear clearfix"></div>
+
+                            {% for program in programs %}
+                                <table class="table not-fixed table-bordered table-condensed programs hide" data-program="{{ program.id }}">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="{{max_columns+1}}" class="warning">{{ program.name }} Returning Enrollment and Capacity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {% for magnetSchool in program.magnetSchools %}
+                                        {% set row_name = '' %}
+                                        <tr>
+                                            <th class="info" colspan="{{max_columns+1}}"> Rising Grade &nbsp; {{magnetSchool.grade}} </th>
+
+                                            {% set column_count = 0 %}
+                                            {% for key,column in form['p'~program.id~'m'~magnetSchool.id] %}
+                                                {% if key != 'maxCapacity' %}
+                                                    {% set old_row_name = row_name %}
+                                                    {% set split_name = key|split('_') %}
+                                                    {% set row_name = split_name[0] %}
+                                                    {% set column_name = split_name[1] %}
+
+                                                    {% if row_name != old_row_name %}
+                                                        {% set column_count = 0 %}
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="firstColumn">{{row_name}}<br/>&nbsp;</th>
+                                                    {% endif %}
+                                                            {% set column_count = column_count + 1 %}
+
+                                                            {% if column_count > 6 %}
+                                                                {% set column_count = 1 %}
+                                                                </tr>
+                                                                <tr>
+                                                                    <th></th>
+                                                            {% endif %}
+
+                                                            <th style="vertical-align: bottom;">
+                                                                {{ column_labels[row_name][column_name] }}
+                                                                {{ form_widget( form['p'~program.id~'m'~magnetSchool.id][key], {'attr': {'class':'form-control', 'style':'position:relative; bottom:0;'} } ) }}
+                                                            </th>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            <tr>
+                                                <td style="background-color: #99ff99;"></td>
+                                                <td style="background-color: #99ff99;" colspan="{{max_columns-1}}">
+                                                    <div style="display: inline-block">
+                                                        <strong>Grade {{ magnetSchool.gradeString }} Capacity</strong>
+                                                    </div>
+                                                    <div style="display: inline-block">
+                                                        {{ form_widget( form['p'~program.id~'m'~magnetSchool.id]['maxCapacity'] , {'attr': {'class':'form-control'} } ) }}
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                            <tr><td colspan="9">&nbsp;</td></tr>
+
+                                            {% for date_updated, history in population_list.magnetSchool[magnetSchool.id].history %}
+                                            <tr class="hide history_{{magnetSchool.id}}">
+                                                <th></th>
+                                                {% for trackingColumn, trackingValues in history %}
+
+                                                    {% for trackingValue, population in trackingValues %}
+                                                        <th style="vertical-align: bottom;">
+                                                            {% if column_labels[trackingColumn][trackingValue] is defined %}{{ column_labels[trackingColumn][trackingValue] }}{% endif %}
+                                                            {{ population.0.count }}
+                                                        </th>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                        {% endif %}
+
+                        <p>Select a Program above to update and edit that specific program.</p>
+
+                        <div class="pull-left">{{ form_widget(form.savePopulation) }}</div>
+                        <div class="clear clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

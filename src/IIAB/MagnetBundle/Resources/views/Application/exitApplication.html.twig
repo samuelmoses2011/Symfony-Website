@@ -1,0 +1,19 @@
+{% extends '@IIABMagnet/Application/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ 'exit.application'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h2 class="text-center">{{ 'exit.application'|trans }}</h2>
+
+        <div class="panel">
+            {{ 'exit.body'|trans|raw }}
+
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+
+        <p><a href="{{ url('magnet_index') }}" class="button">{{ 'application.home'|trans }}</a></p>
+    </div>
+{% endblock %}

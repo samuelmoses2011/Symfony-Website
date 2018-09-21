@@ -1,0 +1,42 @@
+{#{{ include('@IIABMagnet/Report/header.html.twig') }}#}
+{{ header | raw }}
+<div class="push">
+    <p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+        {{ submission.address }}<br />
+        {{ submission.city }}, {{ submission.state|upper }} {{ submission.zip }}</p>
+
+    <p>Congratulations! Your application to the Tuscaloosa Public Schools Magnet Program for {{ submission.firstName }} {{ submission.lastName }} for the {{ submission.openEnrollment }} school year has been processed and awarded a conditional* offer for the following two choices:</p>
+
+    <p>1. Your student can be Wait Listed for his/her first choice: {{ waitListedSchools }}. Should additional spaces become available, those spaces will be filled by students on the Wait List based on each student’s lottery number. If spaces become available and your student is selected for a space based on his/her lottery number, our office will contact you and award your student a space at this school. Please note that the Wait List expires on {{ waitlistExpiresDate|date("Y") }}.</p>
+
+    <p>2. Your student has been accepted for placement at his/her second choice: {{ awardedSchool }}</p>
+
+    <p><strong>You have two choices for accepting or declining one of the options above</strong>:</p>
+    <ul>
+        <li>You may go online at <strong>{{ acceptanceURL }}</strong> to accept or decline this offer.</li>
+        <li>You may mail this letter to the offered school with your choice indicated OR bring this letter to the offered school in person.</li>
+    </ul>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="6" style="table-layout:fixed; margin-bottom: 10px;">
+        <tbody>
+        <tr>
+            <td width="40%" style="font-weight:bold;"><strong>Deadline to Accept or Decline:</strong></td>
+            <td width="60%" style="font-weight:bold;" align="center"><strong>{{ acceptOnlineDate }}; {{ acceptOnlineTime }} online<br />OR<br />{{ acceptOfflineDate }}; {{ acceptOfflineTime }} by phone</strong></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="6" style="table-layout:fixed; border:1px solid #000000; margin-bottom: 10px;">
+        <tbody>
+        <tr>
+            <td style="font-weight:bold;"><strong>IMPORTANT: If you do not accept or decline online or by phone by {{ acceptOnlineDate }}, your Magnet offer will automatically be DECLINED.</strong></td>
+        </tr>
+        </tbody>
+    </table>
+    <p>Please note, applicants are awarded only one offer, but may choose to not accept the offer and be waitlisted for another school choice.</p>
+
+    <p><strong>*All offers for 2-12 grade students are conditional upon your student meeting the grade point average and conduct requirements for the offered magnet school.</strong></p>
+</div>
+{#{{ include('@IIABMagnet/Report/footer.html.twig') }}#}
+{{ footer |raw }}

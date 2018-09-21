@@ -1,0 +1,24 @@
+{{ header | raw }}<br/>
+<div style="text-align: center;">
+    <h2>Writing Sample</h2>
+</div>
+Student Name: {{ submission.firstName }} {{ submission.lastName }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Student ID #: {{ submission.stateID }}<br/><br/>
+
+School: {{ submission.currentSchool }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Grade: {{ submission.currentGrade }}
+<br/><br/>
+
+<p>
+<strong>Writing Prompt</strong>
+{{writing_prompt}}
+</p>
+
+<p>
+<strong>Writing Sample</strong>
+<pre>
+{{writing_sample}}
+</pre>
+</p>

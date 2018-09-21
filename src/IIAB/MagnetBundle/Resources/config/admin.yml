@@ -1,0 +1,101 @@
+services:
+    magnet.admin.user:
+        class: IIAB\MagnetBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.users", label: "Users" }
+        arguments:
+            - ~
+            - IIAB\MagnetBundle\Entity\User
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.submission:
+        class: IIAB\MagnetBundle\Admin\SubmissionAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Submissions" }
+        arguments:
+            - ~
+            - IIAB\MagnetBundle\Entity\Submission
+            - 'IIABMagnetBundle:SubmissionCRUD'
+        calls:
+            - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.program:
+        class: IIAB\MagnetBundle\Admin\ProgramAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Programs" }
+        arguments:
+            - ~
+            - IIAB\MagnetBundle\Entity\Program
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.programschooldata:
+                class: IIAB\MagnetBundle\Admin\ProgramSchoolDataAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Program School Data", show_in_dashboard: false }
+                arguments:
+                    - ~
+                    - IIAB\MagnetBundle\Entity\ProgramSchoolData
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.programinowname:
+            class: IIAB\MagnetBundle\Admin\ProgramInowNameAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Inow Name", show_in_dashboard: false }
+            arguments:
+                - ~
+                - IIAB\MagnetBundle\Entity\ProgramInowName
+                - ~
+            calls:
+                - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.submissiongrades:
+        class: IIAB\MagnetBundle\Admin\SubmissionGradeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Grades", show_in_dashboard: false }
+        arguments:
+            - ~
+            - IIAB\MagnetBundle\Entity\SubmissionGrade
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.submissiondata:
+        class: IIAB\MagnetBundle\Admin\SubmissionDataAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Data", show_in_dashboard: false }
+        arguments:
+            - ~
+            - IIAB\MagnetBundle\Entity\SubmissionData
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.submissioncomment:
+            class: IIAB\MagnetBundle\Admin\SubmissionCommentAdmin
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Comment", show_in_dashboard: false }
+            arguments:
+                - ~
+                - IIAB\MagnetBundle\Entity\SubmissionComment
+                - ~
+            calls:
+                - [ setTranslationDomain, [IIABMagnetBundle]]
+    magnet.admin.magnet_schools:
+        class: IIAB\MagnetBundle\Admin\MagnetSchoolAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.schools", label: "Magnet Schools (Strands/Grades)" }
+        arguments:
+            - ~
+            - IIAB\MagnetBundle\Entity\MagnetSchool
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABMagnetBundle]]
+#    magnet.admin.specialenrollment:
+#         class: IIAB\MagnetBundle\Admin\SpecialEnrollmentAdmin
+#         tags:
+#             - { name: sonata.admin , manager_type: orm, group: "iiab.admin.schools", label: "Late Enrollment Windows" }
+#         arguments:
+#             - ~
+#             - IIAB\MagnetBundle\Entity\SpecialEnrollment
+#             - ~
+#         calls:
+#             - [ setTranslationDomain, [IIABMagnetBundle]]

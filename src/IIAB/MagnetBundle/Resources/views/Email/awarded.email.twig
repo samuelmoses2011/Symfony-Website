@@ -1,0 +1,114 @@
+{% block subject %}
+    {% spaceless %}
+        Specialty School Application Status for Confirmation Number: {{ submission }}
+    {% endspaceless %}
+{% endblock subject %}
+
+{% block body_text %}
+Hi {{ submission.parentEmail }},
+
+Guardian of {{ submission.firstName }} {{ submission.lastName }}
+
+RE: Specialty School Application Final Status for Confirmation Number: {{ submission }}
+
+Congratulations! Your application to the Specialty School Program for {{ submission.firstName }} {{ submission.lastName }} for {{ enrollment }} has been approved for the following: {{ awardedSchool }}
+
+
+You have two choices for accepting or declining this offer:
+
+1. You may go online at the url below to accept or decline this offer.
+{{ acceptanceURL }}
+
+2. You may call the your awarded school, for instructions regarding accepting or declining by phone.
+
+
+Deadline to Accept or Decline:
+
+{{ acceptOnlineDate }}; {{ acceptOnlineTime }} online
+
+OR
+
+{{ acceptOfflineDate }}; {{ acceptOfflineTime }} by phone
+
+
+IMPORTANT: If you do not accept or decline online or by phone by {{ acceptOnlineDate }}, your Specialty School offer will automatically be DECLINED.
+
+Please note, applicants are awarded only one offer.
+
+Please save this email and/or record this confirmation number for your records.
+
+Please add specialty@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.
+
+This is an automated email message from a mailbox that does not accept replies.  {{ 'magnet.contact'|trans|raw }}
+
+Thanks,
+Specialty School Program
+{% endblock body_text %}
+
+{% block body_html %}
+
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!-- If you delete this meta tag, Half Life 3 will never be released. -->
+        <meta name="viewport" content="width=device-width"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Awarded Email</title>
+    </head>
+    <body bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none;width: 100% !important;height: 100%">
+    <!-- HEADER -->
+    {{ header | raw }}
+    <!-- /HEADER -->
+    <!-- BODY -->
+    <table class="body-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+            <td class="container" bgcolor="#FFFFFF" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important"><div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"><h3 style="margin: 0;padding: 0;font-family: HelveticaNeue-Light, Helvetica, Arial, Lucida Grande, sans-serif;line-height: 1.1;margin-bottom: 15px;color: #000;font-weight: 500;font-size: 27px">Hi {{ submission.parentEmail }},</h3>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Guardian of {{ submission.firstName }} {{ submission.lastName }}</p>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">RE: Specialty School Application Final Status for Confirmation Number: {{ submission }}</p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Congratulations! Your application to the Specialty School Program for {{ submission.firstName }} {{ submission.lastName }} for {{ enrollment }} has been approved for the following: <strong style="font-weight:bold;">{{ awardedSchool }}</strong></p>
+                                <!-- Callout Panel -->
+                                <div class="callout" style="margin: 0;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;background-color: #ECF8FF;margin-bottom: 15px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 0;font-weight: 400;font-size: 14px;line-height: 1.0"><strong>You have two choices for accepting or declining this offer</strong>:</p>
+                                    <ol>
+                                        <li style="margin: 0;padding: 5px;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 0;font-weight: 400;font-size: 14px;line-height: 1.0">You may go online at <a target="_blank" title="Click here to Accept or Decline" href="{{ acceptanceURL }}">{{ acceptanceURL }}</a> to accept or decline this offer.</li>
+                                        <li style="margin: 0;padding: 5px 5px 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 0;font-weight: 400;font-size: 14px;line-height: 1.6">You may call the offered school, for instructions regarding accepting or declining by phone.</li>
+                                    </ol>
+                                </div>
+
+                                <!-- /Callout Panel -->
+
+                                <table border="0" cellpadding="0" cellspacing="5" style=" table-layout:fixed; width: 100%; font-family: Helvetica, Helvetica, Arial, sans-serif;margin: 0 0 15px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    <tr>
+                                        <td width="40%" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 700;font-size: 14px;line-height: 1.6"><strong>Deadline to Accept or Decline:</strong></td>
+                                        <td width="60%" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 700;font-size: 14px;line-height: 1.6" align="center"><strong>{{ acceptOnlineDate }}; {{ acceptOnlineTime }} online<br />OR<br />{{ acceptOfflineDate }}; {{ acceptOfflineTime }} by phone</strong>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <p style="margin: 0;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;border:1px solid #E8E8E8;margin-bottom: 15px;font-weight: 700;font-size: 14px;line-height: 1.6"><strong>IMPORTANT: If you do not accept or decline online or by phone by {{ acceptOnlineDate }}, your Specialty School offer will automatically be DECLINED.</strong></p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Please note, applicants are awarded only one offer.</p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Please save this email and/or record this confirmation number for your records.</p>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Please add specialty@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.</p>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">This is an automated email message from a mailbox that does not accept replies. {{ 'magnet.contact'|trans|raw }}</p></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content --></td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+        </tr>
+    </table>
+    <!-- /BODY -->
+    <!-- FOOTER -->
+    {{ footer | raw}}
+    <!-- /FOOTER -->
+    </body>
+    </html>
+
+
+{% endblock body_html %}

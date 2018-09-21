@@ -1,0 +1,36 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block title %}
+    Placement Running
+{% endblock%}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Placement Running</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="box box-alert">
+                                <div class="box-body">
+                                    <h3 class="text-center">The placement is now running.</h3>
+
+                                    <p class="text-center">You will be emailed once the placement is completed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

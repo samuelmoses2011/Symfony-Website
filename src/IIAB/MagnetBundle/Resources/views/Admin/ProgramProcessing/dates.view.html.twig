@@ -1,0 +1,262 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+
+                        <div class="row">
+                            <div class="col-md-12 form-group hide">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title">Open Enrollment</h3></div>
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.year) }}
+                                                    {{ form_widget(form.openEnrollment.year , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.confirmationStyle) }}
+                                                    {{ form_widget(form.openEnrollment.confirmationStyle , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.beginningDate) }}
+                                                    {{ form_widget(form.openEnrollment.beginningDate ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.endingDate) }}
+                                                    {{ form_widget(form.openEnrollment.endingDate ) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row hide">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.latePlacementBeginningDate) }}
+                                                    {{ form_widget(form.openEnrollment.latePlacementBeginningDate ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.latePlacementEndingDate) }}
+                                                    {{ form_widget(form.openEnrollment.latePlacementEndingDate ) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group hide">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title">Racial Composition for each school after processing</h3></div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.HRCWhite) }}
+                                                    {{ form_widget(form.openEnrollment.HRCWhite , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.HRCBlack) }}
+                                                    {{ form_widget(form.openEnrollment.HRCBlack , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.HRCOther) }}
+                                                    {{ form_widget(form.openEnrollment.HRCOther , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    {{ form_label(form.openEnrollment.maxPercentSwing) }}
+                                                    {{ form_widget(form.openEnrollment.maxPercentSwing , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <p>White, Black, and Other Racial Composition should add up to 100. Current Racial Totals:
+                                                    <strong class="rctotal">%</strong></p>
+
+                                                <p>Note: Current racial composition for all Schools is entered on the ADM Data tab of Process Submissions.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 form-group hide">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title">Application Cut Offs</h3><small>Applicants must be born on or before:</small></div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.preKDateCutOff) }}
+                                                    {{ form_widget(form.preKDateCutOff) }}
+                                                    {% if form.preKDateCutOff.vars.help is defined and form.preKDateCutOff.vars.help is not empty %}
+                                                        <small>{{ form.preKDateCutOff.vars.help }}</small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.kindergartenDateCutOff) }}
+                                                    {{ form_widget(form.kindergartenDateCutOff) }}
+                                                    {% if form.kindergartenDateCutOff.vars.help is defined and form.kindergartenDateCutOff.vars.help is not empty %}
+                                                        <small>{{ form.kindergartenDateCutOff.vars.help }}</small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr/>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.firstGradeDateCutOff) }}
+                                                    {{ form_widget(form.firstGradeDateCutOff) }}
+                                                    {% if form.firstGradeDateCutOff.vars.help is defined and form.firstGradeDateCutOff.vars.help is not empty %}
+                                                        <small>{{ form.firstGradeDateCutOff.vars.help }}</small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.transcriptDueDate) }}
+                                                    {{ form_widget(form.transcriptDueDate) }}
+                                                    {% if form.transcriptDueDate.vars.help is defined and form.transcriptDueDate.vars.help is not empty %}
+                                                        <small>{{ form.transcriptDueDate.vars.help }}</small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title">Awarded Details</h3><small>Letters / Emails will contain the following deadlines &amp; details</small></div>
+                                    <div class="panel-body">
+
+                                        <h4>Enter the deadline to Accept offer</h4>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.onlineEndTime) }}
+                                                    {{ form_widget(form.onlineEndTime) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.offlineEndTime) }}
+                                                    {{ form_widget(form.offlineEndTime) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {#<hr/>#}
+
+                                        <h4 class="hide">Registration Start Information</h4>
+
+                                        <div class="row hide">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.registrationNewStartDate) }}
+                                                    {{ form_widget(form.registrationNewStartDate) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.registrationCurrentStartDate) }}
+                                                    {{ form_widget(form.registrationCurrentStartDate) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title">Denied Details</h3><small>Letters / Emails will use these settings to identify when applications will be accepted again.</small></div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.nextSchoolYear) }}
+                                                    {{ form_widget(form.nextSchoolYear , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.nextYear) }}
+                                                    {{ form_widget(form.nextYear , {'attr': {'class':'form-control'} } ) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h3 class="panel-title">Wait List Details</h3></div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    {{ form_label(form.waitListExpireTime) }}
+                                                    {{ form_widget(form.waitListExpireTime ) }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+                                        <div class="row hide">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.waitListOnlineEndTime) }}
+                                                    {{ form_widget(form.waitListOnlineEndTime ) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    {{ form_label(form.waitListOfflineEndTime) }}
+                                                    {{ form_widget(form.waitListOfflineEndTime ) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

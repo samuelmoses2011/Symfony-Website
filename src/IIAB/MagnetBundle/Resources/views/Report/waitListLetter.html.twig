@@ -1,0 +1,17 @@
+{#{{ include('@IIABMagnet/Report/header.html.twig') }}#}
+{{ header | raw}}
+
+<div class="push">
+    <p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+        {{ submission.address }}<br />
+        {{ submission.city }}, {{ submission.state|upper }} {{ submission.zip }}</p>
+
+    <p>RE: Magnet Application Status for Confirmation Number: {{ submission }}</p>
+
+    <p>Your application to the Tuscaloosa Public Schools Magnet Program for {{ submission.firstName }} {{ submission.lastName }} for {{ submission.openEnrollment }} has not been awarded a placement; however, your student has been added to the wait list for the following program(s):</p>
+    {{ awardedSchools|raw }}
+
+    <p>This wait list will be kept active for six weeks beyond the first day of school for {{ submission.openEnrollment }}. Should a slot become available for your student while the wait list is active you will receive a call from the Office of Magnet Programs.</p>
+</div>
+{#{{ include('@IIABMagnet/Report/footer.html.twig') }}#}
+{{ footer | raw}}

@@ -1,0 +1,42 @@
+{#{{ include('@IIABMagnet/Report/header.html.twig') }}#}
+{{ header | raw}}
+
+<div class="push">
+<p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+    {{ submission.address }}<br />
+    {{ submission.city }}, {{ submission.state|upper }} {{ submission.zip }}</p>
+
+<p>RE: Magnet Application Status for Confirmation Number: {{ submission }}</p>
+
+<p>Congratulations! Your student is moving forward in consideration for a Tuscaloosa Public Schools Magnet Program(s).</p>
+
+{% if firstChoice is defined and firstChoice is not empty %}
+    <p>For your first choice: <strong>{{ firstChoice }}</strong> <br />
+        {% if firstChoiceMessage %}
+            {{ firstChoiceMessage.specialRequirement }}</p>
+        {% else %}
+            No further action is required of you at this time.  It is our goal to provide final notification regarding a student’s acceptance or non-acceptance into this program by March 17, 2015.</p>
+        {% endif %}
+{% endif %}
+
+{% if secondChoice is defined and secondChoice is not empty %}
+    <p>For your second choice: <strong>{{ secondChoice }}</strong> <br />
+        {% if secondChoiceMessage %}
+            {{ secondChoiceMessage.specialRequirement }}</p>
+        {% else %}
+            No further action is required of you at this time.  It is our goal to provide final notification regarding a student’s acceptance or non-acceptance into this program by March 17, 2015.</p>
+        {% endif %}
+{% endif %}
+
+{% if thirdChoice is defined and thirdChoice is not empty %}
+    <p>For your third choice: <strong>{{ thirdChoice }}</strong> <br />
+        {% if thirdChoiceMessage %}
+            {{ thirdChoiceMessage.specialRequirement }}</p>
+        {% else %}
+            No further action is required of you at this time.  It is our goal to provide final notification regarding a student’s acceptance or non-acceptance into this program by March 17, 2015.</p>
+        {% endif %}
+{% endif %}
+</div>
+
+{#{{ include('@IIABMagnet/Report/footer.html.twig') }}#}
+{{ footer | raw}}

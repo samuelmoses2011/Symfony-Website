@@ -1,0 +1,77 @@
+{% block subject %}
+    {% spaceless %}
+        Specialty School Application Counselor Recommendation Form
+    {% endspaceless %}
+{% endblock subject %}
+
+{% block body_text %}
+
+{{ submission.firstName }} {{ submission.lastName }} has applied to the {{school_name}}.  This application requires a Recommendation be completed by their counselor.
+
+Please visit the link below and complete the Counselor Recommendation for this student.
+{{ recommendation_url }}
+
+We have been notified of technical difficulties and therefore, have extended the completion deadline to Friday, February 16, 2018.  Please contact the Attendance Office should you have any questions or concerns.
+
+This is an automated email message from a mailbox that does not accept replies.  {{ 'magnet.contact'|trans|raw }}
+
+Thanks,
+Specialty School Program
+{% endblock body_text %}
+
+{% block body_html %}
+
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!-- If you delete this meta tag, Half Life 3 will never be released. -->
+        <meta name="viewport" content="width=device-width"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Counselor Recommendation Form Email</title>
+    </head>
+    <body bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none;width: 100% !important;height: 100%">
+
+    <!-- HEADER -->
+    {{ header | raw}}
+    <!-- /HEADER --><!-- BODY -->
+    <table class="body-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+            <td class="container" bgcolor="#FFFFFF" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important">
+
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    {{ submission.firstName }} {{ submission.lastName }} has applied to the {{school_name}}.  This application requires a Recommendation be completed by their counselor.
+                                </p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    Please visit the link below and complete the Counselor Recommendation for this student.
+                                    <a target="_blank" title="Click here to Complete the Counselor Recommendation Form" href="{{ recommendation_url }}">{{ recommendation_url }}</a>.
+                                </p>
+
+                                <p>
+                                    We have been notified of technical difficulties and therefore, have extended the completion deadline to Friday, February 16, 2018.  Please contact the Attendance Office should you have any questions or concerns.
+                                </p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    This is an automated email message from a mailbox that does not accept replies. {{ 'magnet.contact'|trans|raw }}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content -->
+            </td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+        </tr>
+    </table>
+    <!-- /BODY --><!-- FOOTER -->
+    {{ footer | raw }}
+    <!-- /FOOTER --></body>
+    </html>
+
+
+{% endblock body_html %}

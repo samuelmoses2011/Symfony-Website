@@ -1,0 +1,55 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    {{ 'offer.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h2 class="text-center">{{ 'offer.header'|trans }}</h2>
+
+        <p class="text-center">{{ 'offer.regarding.submission'|trans }} {{ offered.submission }}</p>
+
+        {% form_theme form '@IIABMagnet/Form/fields.html.twig' %}
+
+        {% if status.accepted == 0 and status.declined == 0 and status.waitlisted == 0 and status.outoftime == 0 %}
+            {{ include(template_from_string('offer.congratulations'|trans|raw)) }}
+
+            <p><strong>Please review your options below and click on the button of your choice.</strong></p>
+
+            {{ form(form) }}
+
+            {{ include(template_from_string('offer.congratulation.important'|trans|raw)) }}
+
+        {% else %}
+            <div class="panel callout">
+
+                {% if status.outoftime == 1 and status.accepted == 0 and status.declined == 0 and status.waitlisted == 0 %}
+                    {{ 'offer.auto.declined'|trans|raw }}
+                {% else %}
+                    <p class="text-center">{{ 'offer.confirm.message'|trans }}&nbsp;<strong>
+                            {% if status.accepted == 1 %}Accepted
+                            {% elseif status.waitlisted == 1 %}Waitlisted
+                            {% else %} Declined
+                            {% endif %}</strong>.</p>
+                    {% if status.accepted == 1 %}
+                        {{ include(template_from_string('offer.confirm.accepted'|trans|raw)) }}
+                    {% endif %}
+
+                    {% if status.declined == 1 %}
+                        {% if status.waitlisted == 1 %}
+                            {{ 'offer.waitlisted'|trans|raw }}
+                        {% else %}
+                            {{ 'offer.declined'|trans|raw }}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="panel">
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+
+    </div>
+{% endblock %}

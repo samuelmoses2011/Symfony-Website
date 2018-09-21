@@ -1,0 +1,102 @@
+{% if session is defined and session is not empty %}
+    {% if step is defined and step > 1 %}
+        <div class="row">
+            <div class="small-12 medium-9 medium-centered columns">
+                <table width="100%">
+                    {% if step == 2 %}
+                        <thead>
+                        <tr>
+                            <th colspan="2">{{ 'confirm.information'|trans }}</th>
+                        </tr>
+                        </thead>
+                    {% endif %}
+                    <tbody>
+                    {% set display_homeroom_message = false %}
+                    {% set display_recommendation_message = false %}
+                    {% for key , value in session %}
+
+                        {% if key == 'homeroom_teacher_name' %}
+                            {% set display_homeroom_message = true %}
+                        {% elseif key == 'math_teacher_name' or key == 'english_teacher_name' or key == 'counselor_name' %}
+                            {% set display_recommendation_message = true %}
+                        {% endif %}
+
+                        {% if key != 'step' and
+                        key != 'student_status' and
+                        key != 'schools' and
+                        key != 'isAdmin' and
+                        key != 'openEnrollment' and
+                        key != 'open_enrollment_selector' and
+                        key != 'foci' and
+                        key != 'focus_experiences' and
+                        key != 'focus_extras' and
+                        key != 'focus_labels' and
+                        key != 'exclusions' and
+                        value is not empty
+                        %}
+                            {% if value is iterable %}
+                                <tr>
+                                    <th width="50%" scope="row">{{ ('form.field.'~key)|trans }}</th>
+                                    <td>
+                                        {% for index , value2 in value %}
+                                            {{ index }}: {{ value2 }}<br/>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                {% if key == 'dob' %}
+                                    <tr>
+                                        <th width="50%" scope="row">{{ ('form.field.birthday')|trans }}</th>
+                                        <td>{{ value|date('F j, Y' , 'UTC') }}</td>
+                                    </tr>
+                                {% elseif key == 'zip' %}
+                                    <tr>
+                                        <th width="50%" scope="row">{{ ('form.field.'~key)|trans }}</th>
+                                        <td>{{ "%05d"|format(value) }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <th width="50%" scope="row">{{ ('form.field.'~key)|trans }}</th>
+                                        <td>
+                                            {% if key == 'current_grade' or key == 'next_grade' %}
+                                                {% if value == 98 and key == 'current_grade' %}
+                                                    None
+                                                {% elseif value >= 96 and value <= 99 %}
+                                                    PreK
+                                                {% elseif value == 0 %}
+                                                    K
+                                                {% else %}
+                                                    {{ value }}
+                                                {% endif %}
+                                            {% elseif  key == 'confirm_parent'
+                                                    or key == 'special_accommodations'
+                                                    or key == 'confirm_status'
+                                                    or key == 'parentEmployment' %}
+                                                {% if value == 1 %}
+                                                    {{ 'form.field.sibling.choice.yes'|trans }}
+                                                {% else %}
+                                                    {{ 'form.field.sibling.choice.no'|trans }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ value }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% if step == 2 %}
+                    {% if display_homeroom_message %}
+                        {{ 'form.has.homeroom_message'|trans }}
+                    {% elseif display_recommendation_message %}
+                        {{ 'form.has.teacher_message'|trans }}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

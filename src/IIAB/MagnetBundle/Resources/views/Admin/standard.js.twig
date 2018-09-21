@@ -1,0 +1,711 @@
+<script type="text/javascript">
+
+    {% if app.request.requestUri == path('iiab_magnet_program_processing_process_wait_list') %}
+        jQuery( 'document' ).ready( function(){
+
+            jQuery('.watch-for-change').bind('keyup mouseup', function (){
+
+                var $this = jQuery(this);
+                var name = $this.attr('name');
+                if( name.includes('individualPopulation')
+                    && !name.includes('slotsToAward')
+                    && (
+                        name.includes( 'CPBlack' )
+                        || name.includes( 'CPWhite' )
+                        || name.includes( 'CPOther' )
+                    )
+                ) {
+
+                    var target_name = name.replace('CPBlack', 'xxxx');
+                    var target_name = target_name.replace('CPWhite', 'xxxx');
+                    var target_name = target_name.replace('CPOther', 'xxxx');
+
+                    var $black = jQuery( '[name="'+target_name.replace( 'xxxx', 'CPBlack')+'"]' );
+                    var $white = jQuery( '[name="'+target_name.replace( 'xxxx', 'CPWhite')+'"]' );
+                    var $other = jQuery( '[name="'+target_name.replace( 'xxxx', 'CPOther')+'"]' );
+                    var $starting_slots = jQuery( '[name="'+target_name.replace( 'xxxx', 'availableSlots')+'"]' );
+                    var $slots_to_award = jQuery( '[name="'+target_name.replace( 'xxxx', 'slotsToAward')+'"]' );
+
+                    var withdrawals = ( $black.val() * 1 ) + ( $white.val() * 1 ) + ( $other.val() * 1 );
+                    var award = ( $starting_slots.val() * 1 ) + withdrawals;
+                    award = ( award > 0 ) ? award : 0;
+                    $slots_to_award.val( award );
+                }
+
+            });
+        });
+    {% endif %}
+
+    var checkSidebar = setInterval(function(){
+        if(  jQuery(".sidebar").parent().hasClass('slimScrollDiv') ) {
+
+            var $sidebar =  $(".sidebar");
+
+            $sidebar.unwrap();
+            $sidebar.parent().find('.slimScrollBar, .slimScrollRail').remove();
+            $sidebar.slimscroll({
+                height: ($(window).height() - $(".header").height()) + "px",
+                color: "#AAAAAA",
+                size: '12px'
+            });
+            clearInterval(checkSidebar);
+        }
+    }, 100);
+
+    jQuery(document).ready( function(e){
+
+        //***********************
+        //*** Start Only ONE AJAX
+
+        jQuery( document ).ajaxStart(function() {
+            jQuery.ajaxSetup({
+                beforeSend: function(){
+                    return false;
+                }
+            });
+        });
+
+        $( document ).ajaxComplete(function() {
+            jQuery('a[title="Add new"]').click( function(){
+                jQuery(this).hide();
+            });
+
+            jQuery.ajaxSetup({
+                beforeSend: function(){
+                    return true;
+                }
+            });
+        });
+
+        jQuery('a[title="Add new"]').click( function(){
+            jQuery(this).hide();
+        });
+
+        //*** End Only ONE AJAX
+        //***********************
+
+        jQuery('button.resend-email').click( function(){
+
+            var $this = jQuery(this);
+            var email_type = $this.data('email-type');
+            var submission_id = $this.data('submission-id');
+            var email_address = jQuery('input', $this.closest('div') ).val();
+
+            jQuery('span', $this).html( ' <i class="fa fa-spinner fa-spin"></i>' );
+
+            email_address = ( typeof email_type != "undefined") ? email_address : '';
+
+            if( typeof email_type != "undefined"){
+
+                jQuery.ajax({
+                    'url': '{{ url( 'ajax_resend_email' )|e('js') }}',
+                    'dataType': 'json',
+                    'data': {
+                        'email_type': email_type,
+                        'submission_id': submission_id,
+                        'email_address': email_address
+                    }
+                }).success(function( msg ) {
+
+                    if( msg.error ){
+                        jQuery('span', $this).html( '' );
+                        alert( msg.error );
+                    } else {
+                        jQuery('span', $this).html( msg.success );
+                    }
+                }).error( function(){
+                    jQuery('span', $this).html( '' );
+                    alert( 'Failed to send Email' );
+                });
+            }
+        });
+
+        jQuery('.sonata-inline').closest('.form-group').css('display', 'inline-block');
+
+        jQuery('.audition_input').change( function(){
+
+            var $inputs = jQuery('select.audition_input');
+            var $total = jQuery('input.audition_total');
+
+            var all_inputs_entered = true;
+            var maybe_total = 0;
+            for( var input_index =0; input_index < $inputs.length; input_index++ ){
+                if( jQuery($inputs[input_index]).val() == '' ){
+                    all_inputs_entered = false;
+                }
+                maybe_total += jQuery($inputs[input_index]).val() * 1;
+            }
+
+            if( all_inputs_entered ){
+                $total.val( maybe_total );
+            }
+        });
+
+        var url = window.location.href.toString();
+        if( url.indexOf( 'admin/processing/create-new/' ) !== -1 ){
+
+            jQuery('#SpecialMessageModalTitle').parent().hide();
+
+            jQuery('#SpecialMessageModalBody').html(
+                '<div class="jumbotron">' +
+                    '<h2>You are about to create a new Enrollment Period.</h2>' +
+                    '<p>This page should not be used to edit an Enrollment Period.</p>' +
+                '</div>'
+            );
+
+
+            jQuery('#SpecialMessageModalCancel').click( function(){
+                window.location.replace( url.replace('create-new', 'dashboard') );
+            });
+
+            jQuery('#SystemSpecialMessageModal').modal('show');
+        };
+
+        // KEEP ALIVE
+        var user_is_active = false;
+
+        function confirm_user_role(){
+            if( user_is_active ){
+                $.get( '{{ url('ajax_keep_alive' ) }}',
+                    function( data ) {
+                        if( data.role != 'admin'){
+                            window.location.href = "{{ url( 'sonata_admin_dashboard' ) }}";
+                        }
+                    }
+                );
+            }
+            user_is_active = false;
+        }
+
+        setInterval( function(){
+
+            if( user_is_active ) {
+                confirm_user_role();
+            } else {
+                jQuery('#SpecialMessageModalTitle').html('Are you still there?');
+                jQuery('#SpecialMessageModalBody').html("It seems you haven't been active in a few minutes.  Please click continue to keep working.");
+
+                jQuery('#SpecialMessageModalCancel').click(function(){
+                    user_is_active = false;
+                });
+                jQuery('#SpecialMessageModalContinue').click(function(){
+                    confirm_user_role();
+                });
+                jQuery('#SystemSpecialMessageModal').modal('show');
+            }
+            user_is_active = false;
+        }, 300000);  //Keep Alive every 5 minutes
+
+        $('body,html').bind('touchstart touchmove scroll mousedown DOMMouseScroll mousewheel keyup',
+            function(){
+                user_is_active = true;
+            }
+        );
+        // END KEEP ALIVE
+    });
+
+
+    jQuery(window).ready( function() {
+
+        if( jQuery('[data-programs]').length ){
+
+            function hide_programs( openEnrollment ){
+                var $program = jQuery('#form_program');
+
+                var $enrollment_programs = jQuery('[data-programs]').data('programs');
+
+                $disable_all = ( !openEnrollment );
+
+                jQuery( 'option', $program).each( function( index ){
+                    var $option = jQuery(this);
+
+                    if( $disable_all ){
+                        if( $option.hasClass( 'concealable' ) ) {
+                            $option.attr( 'disabled', 'disabled' );
+                            $option.removeAttr("selected");
+                        }
+                    } else if( jQuery.inArray( $option.val()*1, $enrollment_programs[ openEnrollment ] ) > -1 ){
+                        $option.removeAttr( 'disabled' );
+                    } else if( $option.hasClass( 'concealable' ) ) {
+                        $option.attr( 'disabled', 'disabled' );
+                        $option.removeAttr("selected");
+                    }
+                } )
+            }
+
+            hide_programs(  jQuery('[data-programs] option:last').val() );
+
+            jQuery('[data-programs]').change( function(){
+                hide_programs( jQuery( this).val() );
+            });
+        }
+
+        jQuery('#form_kickoffajax').each( function() {
+            var $this = jQuery(this);
+            var value = $this.attr('value');
+            if( value != '' ) {
+                jQuery.ajax({
+                    'url': '{{ url( 'ajax_process' )|e('js') }}',
+                    'data': {
+                        'action': value
+                    }
+                }).done(function( msg ) {
+                    if( jQuery('li.updated').length > 0 ) {
+                        jQuery('li.updated').html( '<a target="_blank" href="'+msg+'">PDF has completed, Download Report Now</a>' );
+                    }
+                });
+            }
+        });
+        jQuery('.update-magnetschool').on('change' , function() {
+            var $this = jQuery(this);
+            var value = $this.val();
+            var $magnetSchool = jQuery('#form_magnetschool');
+            var url = '{{ url( 'ajax_magnet_schools' ) }}';
+            if( value != '' ) {
+                url += '/' + value;
+                $magnetSchool.find('option').remove().append('<option value="">Loading Schools...</option>');
+                jQuery.post(
+                    url,
+                    {} ,
+                    function (dataResponse) {
+                        $magnetSchool.find('option').remove();
+                        jQuery.map(dataResponse, function(obj) {
+                            $magnetSchool.append( '<option value="' + obj.id + '">' + obj.text + '</option>' );
+                        });
+                        $magnetSchool.select2({"width":"100%"});
+                        /*$magnetSchool.select2({
+                            processResults: jQuery.map(dataResponse, function(obj) {
+                                return { id: obj.id, text: obj.text };
+                            })
+                        });*/
+                    },
+                    "json"
+                );
+            }
+        });
+        jQuery(".rctotal").each( function() {
+            var $this = jQuery(this), $white = jQuery('#form_hrcWhite,#placement_openEnrollment_HRCWhite'), $black = jQuery('#form_hrcBlack,#placement_openEnrollment_HRCBlack'), $other = jQuery('#form_hrcOther,#placement_openEnrollment_HRCOther');
+            var white = parseFloat( $white.val() );
+            var black = parseFloat( $black.val() );
+            var other = parseFloat( $other.val() );
+            var total = white + black + other;
+            $this.text( total.toFixed(2) + '%');
+            if( total == 100 ) {
+                $this.addClass('text-success').removeClass('text-danger');
+            } else {
+                $this.removeClass('text-success').addClass('text-danger');
+            }
+            jQuery("#form_hrcWhite,#placement_openEnrollment_HRCWhite,#form_hrcBlack,#placement_openEnrollment_HRCBlack,#form_hrcOther,#placement_openEnrollment_HRCOther").on('change',function() {
+                var white = parseFloat( $white.val() );
+                var black = parseFloat( $black.val() );
+                var other = parseFloat( $other.val() );
+                var total = white + black + other;
+                $this.text( total.toFixed(2) + '%');
+                if( total == 100 ) {
+                    $this.addClass('text-success').removeClass('text-danger');
+                } else {
+                    $this.removeClass('text-success').addClass('text-danger');
+                }
+            });
+        });
+        jQuery(".changeMe").on('click', function() {
+            var $required = jQuery('table.programs.active [required]');
+            var needRequired = false;
+            if( $required.length ){
+                $required.each( function(){
+                    var $this = jQuery(this);
+                    if( !$this.val() || $this.val() == 0 ){
+                        $this.addClass( 'error' );
+                        needRequired = true;
+                    }
+                } )
+            }
+            if(needRequired){
+                setInterval(function () { jQuery('.error').removeClass('error');}, 5000);
+                alert('Please complete the highlighted fields before changing programs.');
+            } else {
+                jQuery('table.programs').removeClass('active').addClass('hide');
+                var programID = jQuery(this).attr('data-program');
+                jQuery("table.programs[data-program='" + programID + "']").removeClass('hide').addClass('active');
+                var $button = jQuery("button.dropdown-toggle");
+                $button.html('Viewing: ' + jQuery(this).text() + ' <span class="caret"></span>');
+            }
+        });
+        jQuery("span[data-total]").each( function() {
+            var $this = jQuery(this);
+            var key = $this.attr('data-total');
+            var $black = jQuery('#form_admdata_' + key + '_black');
+            var $white = jQuery('#form_admdata_' + key + '_white');
+            var $other = jQuery('#form_admdata_' + key + '_other');
+            var sum = parseFloat( parseFloat( $black.val() ) + parseFloat( $white.val() ) + parseFloat( $other.val() ) );
+            $this.text( sum.toFixed(2) );
+            jQuery('#form_admdata_' + key + '_black,#form_admdata_' + key + '_white,#form_admdata_' + key + '_other').on('change', function() {
+                sum = parseFloat( parseFloat( $black.val() ) + parseFloat( $white.val() ) + parseFloat( $other.val() ) );
+                $this.text( sum.toFixed(2) );
+            });
+        });
+        jQuery(".watch-for-change").each(function () {
+            var $this = jQuery(this);
+            var originalValue = $this.attr('data-original-value');
+            $this.on('change', function () {
+                var value = $this.val();
+                var $parent = $this.parents('tr');
+                if( originalValue == value ) {
+                    $parent.removeClass('warning');
+                } else {
+                    $parent.addClass('warning');
+                }
+            });
+        });
+        jQuery('.fillingSlot').each( function() {
+            var $this = jQuery(this);
+            var $parent = $this.parents('tr');
+            $this.on('change', function () {
+                var value = $this.val();
+
+                $uncles = jQuery( '[data-individual-id="'+$parent.data( 'individual-id' )+'"]');
+
+                if( value == 1 ) {
+                    $parent.find('td.yesChange, td.noChange').removeClass('hide');
+                    $parent.find('td.hideMe-for-either').addClass('hide');
+                    $parent.find('td.hideMe-for-yes').addClass('hide');
+
+                    $uncles.find('td.yesChange, td.noChange').removeClass('hide');
+                    $uncles.find('td.hideMe-for-either').addClass('hide');
+                    $uncles.find('td.hideMe-for-yes').addClass('hide');
+                } else if( value == '' ) {
+                    $parent.find('td.yesChange, td.noChange').addClass('hide');
+                    $parent.find('td.hideMe-for-either').removeClass('hide');
+                    $parent.find('td.hideMe-for-yes').addClass('hide');
+
+                    $uncles.find('td.yesChange, td.noChange').addClass('hide');
+                    $uncles.find('td.hideMe-for-either').removeClass('hide');
+                    $uncles.find('td.hideMe-for-yes').addClass('hide');
+
+                } else {
+                    $parent.find('td.yesChange').addClass('hide');
+                    $parent.find('td.noChange').removeClass('hide');
+                    $parent.find('td.hideMe-for-yes').removeClass('hide');
+                    $parent.find('td.hideMe-for-either').addClass('hide');
+
+                    $uncles.find('td.yesChange').addClass('hide');
+                    $uncles.find('td.noChange').removeClass('hide');
+                    $uncles.find('td.hideMe-for-yes').removeClass('hide');
+                    $uncles.find('td.hideMe-for-either').addClass('hide');
+                }
+            });
+        });
+        jQuery('#addSchool').on('change', function() {
+            var $this = jQuery(this);
+            var value = $this.val();
+            if (value != '') {
+                var $selectedIndex = $this.find('option:selected');
+                var $table = jQuery('.individual-table');
+                var $row = $table.find("tbody tr[data-individual-id='" + value + "']");
+                var $hiddenFieldToTellWhichToProcess = $row.find("td input[type='hidden']");
+                $selectedIndex.attr('disabled','disabled');
+                $table.removeClass('hide');
+                $row.removeClass('hide');
+                $hiddenFieldToTellWhichToProcess.val('1');
+                $this.val('');
+                $this.select2("val", "");
+            }
+        });
+        /* Removed because there is no data-choices attribute
+
+        jQuery('#form_openenrollment').on('change', function() {
+            var $this = jQuery(this);
+            var value = $this.val();
+            console.log( value );
+            if( jQuery('#form_program').length > 0 ) {
+                var $program = jQuery('#form_program');
+                $program.find('option').remove();
+                $options = $program.attr( 'data-choices' );
+                $options = JSON.parse( $options );
+                console.log( $options[value] );
+                if (value != '') {
+                    $program.append("<option id=''>Choose a Magnet Program</option>");
+                    jQuery.each( $options[value] , function(item ,data ) {
+                        $program.append("<option id='"+data.id+"'>"+data.text+"</option>");
+                    });
+                    $program.select2({width:"100%"});
+                } else {
+                    $program.append("<option id=''>Choose a Magnet Program</option>");
+                    $program.select2({width:"100%"});
+                }
+            }
+        });
+        */
+        jQuery('[data-dependable]').on('change', function() {
+            var $this = jQuery(this);
+            var $row = $this.parents('tr').first();
+            var $inputs = [];
+            var dependency = $this.data('dependable');
+
+            $inputs = $row.find("[data-depends-on='" + dependency + "']");
+
+            if( $this.val() && $this.val() != 0 ){
+                $inputs.prop('required', true);
+            } else {
+                $inputs.prop('required', false);
+            }
+        });
+        jQuery('.set-address').click( function() {
+            $this = jQuery(this);
+            $this.closest('div.form-group').find('input').val($(this).html());
+            $this.closest('div').hide();
+        });
+        jQuery('.texter textarea').each(function() {
+
+            var $this = jQuery(this);
+            var $table = $this.parents('table').first();
+            var programID = $table.attr('data-program');
+            var group = $this.attr('data-group');
+            var $inputs = [];
+
+            $inputs = $table.find("tbody tr td textarea[name$='" + group + "']");
+
+            $this.on("keyup", function(e) {
+                var value = $this.val();
+                $inputs.each( function() {
+                    jQuery(this).val(value);
+                });
+            });
+            $this.on("focusout", function(e) {
+                $this.val("");
+            });
+        });
+        jQuery('.inputer input').each(function() {
+
+            var $this = jQuery(this)
+            var $table = $this.parents('table').first();
+            var programID = $table.attr('data-program');
+            var group = $this.attr('data-group');
+            var $inputs = [];
+
+            $inputs = $table.find("tbody tr td input[name$='" + group + "']");
+
+            $this.on("keyup", function(e) {
+                var value = $this.val();
+                $inputs.each( function() {
+                    jQuery(this).val(value);
+                });
+            });
+            $this.on("focusout", function(e) {
+                $this.val("");
+            });
+        });
+        jQuery('.selector select').each(function() {
+
+            var $this = jQuery(this)
+            var $table = $this.parents('table').first();
+            var programID = $table.attr('data-program');
+            var group = $this.attr('data-group');
+            var $selects = [];
+
+            $selects = $table.find("tbody tr td select[name$='" + group + "']");
+
+            $this.on("change", function(e) {
+                var value = e.val;
+                $selects.each( function() {
+                    jQuery(this).select2("val", value );
+                });
+                $this.select2("val", $this.find('option:eq(0)').val());
+            });
+        });
+        jQuery('.checker input').each(function () {
+            var $this = jQuery(this)
+            var $table = $this.parents('table').first();
+            var programID = $table.attr('data-program');
+            var group = $this.attr('data-group');
+            var $span = $this.parent().prev();
+            var $inputs = [];
+            var checkedState = true;
+
+            $inputs = $table.find("tbody tr td input[name$='" + group + "']");
+            $inputs.each(function() {
+                if(!jQuery(this).is(':checked')) {
+                    checkedState = false;
+                    return false;
+                }
+            });
+
+            if( checkedState ) {
+                updaterCheckers(true,$table,group);
+            } else {
+                updaterCheckers(false,$table,group);
+            }
+
+            $this.on('ifChecked', function () {
+                $inputs.each( function() {
+                    jQuery(this).iCheck('check');
+                });
+                updaterCheckers(true,$table,group);
+            });
+            $this.on('ifUnchecked', function () {
+                $inputs.each( function() {
+                    jQuery(this).iCheck('uncheck');
+                });
+                updaterCheckers(false,$table,group);
+            });
+        });
+        function updaterCheckers(checked, $table,group) {
+            var $headerCheck = $table.find("thead tr th.checker label input[data-group='" + group + "']");
+            var $headerSpan = $headerCheck.parent().prev();
+            var $footerCheck = $table.find("tfoot tr th.checker label input[data-group='" + group + "']");
+            var $footerSpan = $footerCheck.parent().prev();
+
+            if (checked) {
+                $headerSpan.text($headerSpan.attr('data-checked'));
+                $footerSpan.text($headerSpan.attr('data-checked'));
+                $headerCheck.iCheck('check');
+                $footerCheck.iCheck('check');
+            } else {
+                $headerSpan.text($headerSpan.attr('data-unchecked'));
+                $footerSpan.text($headerSpan.attr('data-unchecked'));
+                $headerCheck.iCheck('uncheck');
+                $footerCheck.iCheck('uncheck');
+            }
+        }
+        jQuery('tbody tr td button.close').on('click',function(e) {
+            e.preventDefault();
+            var $this = jQuery(this);
+            var $row = $this.parents('tr');
+            var id = $row.attr('data-individual-id');
+            var $hiddenFieldToTellWhichToProcess = $row.find("td input[type='hidden']");
+            var $option = jQuery("#addSchool option[value='" + id + "']")
+
+            $row.addClass('hide');
+            $row.find('td.yesChange, td.noChange').addClass('hide');
+            $row.find('td.hideMe-for-either').removeClass('hide');
+            $row.find('td.hideMe-for-yes').addClass('hide');
+
+            var $tableBodyRows = jQuery('.individual-table tbody tr:not(.hide)');
+            if( $tableBodyRows.length == 0 ) {
+                jQuery('.individual-table').addClass('hide');
+            }
+
+            $hiddenFieldToTellWhichToProcess.val('0');
+            $option.removeAttr('disabled');
+            $this.val('');
+            $this.select2("val", "");
+            return false;
+        });
+        {% if admin is defined %}
+        var $hiddenDivToShowForNewlyOffered = jQuery('.{{ admin.uniqId }}_changing-to-offered');
+        if( $hiddenDivToShowForNewlyOffered.length ) {
+            jQuery('#{{ admin.uniqId }}_submissionStatus').on('change', function () {
+                var $this = jQuery(this);
+                //If the new Status is Offered (6). Lets show the new field.
+                if ($this.val() == 6) {
+                    $hiddenDivToShowForNewlyOffered.removeClass('hide');
+                } else {
+                    $hiddenDivToShowForNewlyOffered.addClass('hide');
+                }
+            });
+        }
+        {% endif %}
+        var processIntervals = [];
+        var $processList = jQuery('div#process-status ul li.need-updating');
+        if ($processList.length > 0) {
+            var timer = 3000;
+            $processList.each(function () {
+                var $this = jQuery(this);
+                processIntervals[$this.attr('data-id')] = setInterval(function () {
+                    ajaxProcessUpdater($this.attr('data-id'), $this);
+                }, timer);
+                timer += 500;
+            });
+        }
+        /**
+         * Runs the updater for the proccess-status alert box.
+         * @param id
+         * @param listItem
+         *
+         * @return bool
+         */
+        function ajaxProcessUpdater(id, listItem) {
+            var url = '{{ url('iiab_magnet_program_process_updater' ) }}?id=' + id;
+            jQuery.getJSON(url, function (response) {
+                if (response.completed == true) {
+                    listItem.html(response.message).addClass('text-success completed').removeClass('need-updating');
+                    clearInterval(processIntervals[listItem.attr('data-id')]);
+                }
+            });
+        }
+
+        jQuery('#SpecialMessageModalContinue').on('click', function(e) {
+            jQuery('#SystemSpecialMessageModal').modal('hide');
+        });
+
+
+        jQuery('#UserFeedbackModal').on('show.bs.modal', function (e) {
+            var $trigger = jQuery(e.relatedTarget);
+
+            var $form = jQuery('form#UserFeedback');
+            $form.find("input[type=text], textarea").val('');
+            $form.find('input[type=radio]').attr('checked', false);
+            $form.find('div.iradio_minimal').removeClass('checked', false);
+
+            if( $trigger.hasClass( 'btn-danger') ) {
+                jQuery('[name=feedback_priority][value="3"]').prop("checked", true);
+                jQuery('[name=feedback_priority][value="3"]').closest('div').addClass('checked');
+
+                jQuery('div.row.priority').hide();
+                jQuery('div.row.submission').show();
+                jQuery('div.row.task').show();
+
+                jQuery('#UserFeedbackModal .modal-title').html( 'Report a Bug');
+                jQuery('#SubmitFeedback').html( 'Submit Bug');
+            } else {
+                jQuery('[name=feedback_priority][value="3"]').closest('.bug').hide();
+
+                jQuery('div.row.priority').show();
+                jQuery('div.row.submission').hide();
+                jQuery('div.row.task').hide();
+
+                jQuery('#UserFeedbackModal .modal-title').html( 'Feedback');
+                jQuery('#SubmitFeedback').html( 'Submit Feedback');
+            }
+        });
+
+        jQuery('#SubmitFeedback').click( function(){
+
+            var $form = jQuery('form#UserFeedback');
+
+            var events = [];
+            if( jQuery('[name=feedback_description]', $form).val() ) {
+                events.push( jQuery('[name=feedback_description]', $form).val() );
+            }
+            if( jQuery('[name=feedback_task]', $form).val() ) {
+                events.push( 'Task: ' + jQuery('[name=feedback_task]', $form).val() );
+            }
+            if( jQuery('[name=feedback_submission]', $form).val() ) {
+                events.push( 'Submission: ' + jQuery('[name=feedback_submission]', $form).val() );
+            }
+
+            var event = events.join(' -- ');
+            if( event ) {
+
+                var priority = ( jQuery('[name=feedback_priority]:checked', $form).length ) ? jQuery('[name=feedback_priority]:checked', $form).val() : 4;
+
+                $.ajax({
+                    url: "https://leanfrogdigital.fogbugz.com//api.asp?cmd=new"+
+                    "&token=9srqe8g5el4as4th7dsnfes8fvvdft"+
+                    "&sTitle=User Feedback"+
+                    "&sEvent=" + event +
+                    "&ixProject=5"+
+                    "&ixPersonAssignedTo=8"+
+                    "&sCustomerEmail={{ app.user.email|lower }}"+
+                    "&ixPriority="+priority
+                    })
+                .done(function (data) {
+                    alert('Thank you for your feedback.  Your input is important to us.');
+                    jQuery('#UserFeedbackModal').modal('hide');
+                });
+            } else {
+                alert( 'Please provide a detailed description in order to submit your feedback.')
+            }
+        });
+    });
+</script>

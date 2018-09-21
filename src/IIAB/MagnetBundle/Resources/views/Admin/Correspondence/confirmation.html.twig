@@ -1,0 +1,106 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            <div class="nav-tabs-custom">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#success" aria-controls="success" role="tab" data-toggle="tab">Active Screen</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#success-email" aria-controls="success-email" role="tab" data-toggle="tab">Active Email</a>
+                    </li>
+
+                    <li role="presentation">
+                        <a href="#on-hold" aria-controls="on-hold" role="tab" data-toggle="tab">Pending Screen</a>
+                    </li>
+
+                    <li role="presentation">
+                        <a href="#on-hold-email" aria-controls="on-hold-email" role="tab" data-toggle="tab">Pending Email</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="success">
+                        <div class="row">
+
+                            <div class="col-md-12 form-group">
+                                <p>Edits can be made to any text below that is not highlighted in purple or yellow.</p>
+                                <strong>Active Confirmation Screen</strong>
+                                {{ form_widget(form.activeTemplate) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.saveActiveChanges) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="success-email">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <p>Edits can be made to any text below that is not highlighted in purple or yellow.</p>
+                                <strong>Active Email Subject Line</strong>
+                                {{ form_widget(form.emailActiveSubject) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <strong>Active Email Body HTML</strong>
+                                {{ form_widget(form.emailActiveBodyHtml) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.saveEmailActiveChanges) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="on-hold">
+                        <div class="row">
+
+                            <div class="col-md-12 form-group">
+                                <p>Edits can be made to any text below that is not highlighted in purple or yellow.</p>
+                                <strong>Pending Confirmation Screen</strong>
+                                {{ form_widget(form.pendingTemplate) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.savePendingChanges) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="on-hold-email">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <p>Edits can be made to any text below that is not highlighted in purple or yellow.</p>
+                                <strong>Pending Email Subject Line</strong>
+                                {{ form_widget(form.emailPendingSubject) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <strong>Pending Email Body HTML</strong>
+                                {{ form_widget(form.emailPendingBodyHtml) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.saveEmailPendingChanges) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

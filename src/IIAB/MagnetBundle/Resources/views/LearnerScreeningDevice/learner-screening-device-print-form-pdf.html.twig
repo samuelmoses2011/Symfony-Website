@@ -1,0 +1,191 @@
+{{ header | raw }}<br/>
+Student Name: {{ submission.firstName }} {{ submission.lastName }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Student ID #: {{ submission.stateID }}<br/><br/>
+
+School: {{ submission.currentSchool }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Teacher: {{ data.homeroom_teacher_name }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Grade: {{ submission.currentGrade }}
+<br/><br/>
+
+<table>
+    <tr>
+        <th colspan=2 style="text-align: center; border: 1px solid black;">
+            <strong>Numerical Rating Description</strong>
+        </th>
+    </tr>
+
+    <tr>
+        <td>7</td>
+        <td>In this category, the child is among the very highest in frequency, intensity, and/or quality of the behavior in comparison to the reference group</td>
+    <tr>
+
+    <tr>
+        <td>6</td>
+        <td>Behavior is significantly more frequent, etc.</td>
+    </tr>
+
+    <tr>
+        <td>5</td>
+        <td>Behavior is somewhat more frequent, etc.</td>
+    </tr>
+
+    <tr>
+        <td>4</td>
+        <td>Behavior is typical or commonly observed in the reference group</td>
+    </tr>
+
+    <tr>
+        <td>3</td>
+        <td>Behavior is somewhat less frequent, etc.</td>
+    </tr>
+
+    <tr>
+        <td>2</td>
+        <td>Behavior is significantly less frequent, etc.</td>
+    </tr>
+
+    <tr>
+        <td>1</td>
+        <td>In this category the child is among the very lowest in frequency, intensity and/or quality of the behavior in comparison to the reference group</td>
+    </tr>
+</table>
+<p>
+    <strong>DEFINITIONS</strong><br/>
+    <strong>Frequency:</strong> Refers to the number of times the behavior is demonstrated in proportion to opportunities.<br/>
+    <strong>Intensity:</strong> Refers to the amount of intellectual, emotional, or physical energy that the child invests in the behavior or activity.<br/>
+    <strong>Quality:</strong> Implies a unique caliber of performance, implies some standard of excellence, and relates more to the academically/socially desirable categories of behavior.
+</p>
+<table>
+    <tr>
+        <th>&nbsp;</th>
+        <th>7</th>
+        <th>6</th>
+        <th>5</th>
+        <th>4</th>
+        <th>3</th>
+        <th>2</th>
+        <th>1</th>
+    </tr>
+
+    <tr>
+        <td>
+            <strong>A – Ability in the Visual Arts</strong><br/>
+            The ability to draw, paint, script, photograph, or arrange media in a way that suggests unusual talent.
+        </td>
+        <td>{% if data.learner_screening_device_visual_arts == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_visual_arts == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_visual_arts == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_visual_arts == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_visual_arts == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_visual_arts == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_visual_arts == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>B – Ability in the Performance Arts</strong><br/>
+            General Definition: The ability to create or perform in the areas of music or drama which suggests unusual talent.
+        </td>
+        <td>{% if data.learner_screening_device_performing_arts == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_performing_arts == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_performing_arts == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_performing_arts == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_performing_arts == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_performing_arts == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_performing_arts == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>C – Leadership Qualities-Organizing-Decision Making</strong><br/>
+            An unusual ability to relate and to motivate other people.
+        </td>
+        <td>{% if data.learner_screening_device_leadership == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_leadership == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_leadership == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_leadership == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_leadership == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_leadership == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_leadership == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>D – Psychomotor Skills and Abilities</strong></br>
+            A student who is exceptionally advanced in his/her physical motor abilities.
+        </td>
+        <td>{% if data.learner_screening_device_psychomotor == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_psychomotor == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_psychomotor == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_psychomotor == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_psychomotor == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_psychomotor == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_psychomotor == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>E – Citizenship and/or Behavior</strong><br/>
+            A student who is exceptionally advanced in his/her physical ability to connect with others socially, who exemplifies good citizenship and promotes social justice.
+        </td>
+        <td>{% if data.learner_screening_device_citizenship == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_citizenship == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_citizenship == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_citizenship == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_citizenship == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_citizenship == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_citizenship == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>F – Creative or Productive Thinking</strong><br/>
+            An unusual ability to use divergent/evaluative thinking often evidenced by frequent and exploratory questioning.
+        </td>
+        <td>{% if data.learner_screening_device_creative_thinking == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_creative_thinking == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_creative_thinking == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_creative_thinking == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_creative_thinking == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_creative_thinking == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_creative_thinking == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>G – Use of Spatial and Abstract Thinking</strong><br/>
+            Unusual talent for visualizing spatial and abstract ideas without reference to a concrete thought process.
+        </td>
+        <td>{% if data.learner_screening_device_abstract_thinking == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_abstract_thinking == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_abstract_thinking == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_abstract_thinking == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_abstract_thinking == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_abstract_thinking == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_abstract_thinking == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>H – General Intellectual Ability</strong><br/>
+            A demonstrated excellence in most academic areas or in one or more areas.
+        </td>
+        <td>{% if data.learner_screening_device_general_intellect == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_general_intellect == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_general_intellect == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_general_intellect == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_general_intellect == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_general_intellect == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_general_intellect == 1 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>
+            <strong>I – Talent Associated with Cultural Heritage</strong><br/>
+            Given his/her cultural background the student demonstrates unusual ability to cope with his/her present environment (ethnic, economic, social).
+        </td>
+        <td>{% if data.learner_screening_device_cultural == 7 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_cultural == 6 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_cultural == 5 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_cultural == 4 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_cultural == 3 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_cultural == 2 %}X{% endif %}</td>
+        <td>{% if data.learner_screening_device_cultural == 1 %}X{% endif %}</td>
+    </tr>
+</table>
+{{ footer|raw }}

@@ -1,0 +1,24 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+
+        <div class="panel panel-default">
+            {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+        </div>
+
+        {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Select a Report Below.</div>
+            <div class="panel-body">
+
+                <ul class="list-inline">
+                    <li><a href="{{ url('admin_after_processing_report') }}" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-download" aria-hidden="true"></span> After Processing Report</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

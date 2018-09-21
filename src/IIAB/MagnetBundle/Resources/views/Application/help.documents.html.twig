@@ -1,0 +1,32 @@
+
+{% if links is defined and links is not empty %}
+
+{%if links|length > 6 %}
+    {% set classsize = ( 12 / ( links|length / 2 ) )|number_format(0,'','') %}
+{% else %}
+    {% set classsize = ( 12 / links|length )|number_format(0,'','') %}
+{% endif %}
+
+
+<div class="small-12 columns marginBottom">
+    <div class="row">
+        {% set divcount = 0 %}
+        {% for link in links %}
+            <div class="small-12 medium-{{ classsize }} columns text-center">{{ link|raw }}</div>
+
+            {% set divcount = divcount + 1 %}
+            {% if classsize * divcount >= 12 %}
+                </div>
+                </div>
+                <div class="small-12 columns marginBottom">
+                <div class="row">
+                {% set divcount = 0 %}
+            {% endif %}
+
+        {% endfor %}
+        {% if classsize * divcount <= 12 and classsize * divcount > 0 %}
+            <div class="small-12 medium-{{ 12 - ( classsize * divcount) }} columns text-center"> </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,271 @@
+{{ header | raw }}<br/>
+<div style="text-align: center;">
+    <h3>
+        Student Profile Page<br/>
+        {{ submission.currentGradeString }} to {{ submission.nextGradeString }}
+    </h3>
+</div>
+
+Student Name: {{ submission.firstName }} {{ submission.lastName }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Student ID #: {{ submission.stateID }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Submission ID #: {{ submission.id }}<br/><br/>
+
+{% set total_score_required = true %}
+{% set max_total_score = 0 %}
+
+{% if profile_settings.learner_screening_device != false %}
+
+    <table>
+        <tr>
+            <th style="text-align: left;"><strong>Learner Profile Screening Device (LPSD) Criteria</strong></th>
+            <th style="text-align: right;">{% if data.scores.learner_screening_device is defined %}{{ data.scores.learner_screening_device }}{% endif %}/25</th>
+            {% set max_total_score = max_total_score + 25 %}
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>Visual</td>
+            <td>Performance</td>
+            <td>Leadership</td>
+            <td>Psychomotor</td>
+            <td>Citizen</td>
+            <td>Creativity</td>
+            <td>Spatial</td>
+            <td>Intellect</td>
+            <td>Cultural Heritage</td>
+        </tr>
+
+        <tr>
+            <td>{% if data.learner_screening_device_visual_arts is defined %}{{ data.learner_screening_device_visual_arts }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_performing_arts is defined %}{{ data.learner_screening_device_performing_arts }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_leadership is defined %}{{ data.learner_screening_device_leadership }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_psychomotor is defined %}{{ data.learner_screening_device_psychomotor }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_citizenship is defined %}{{ data.learner_screening_device_citizenship }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_creative_thinking is defined %}{{ data.learner_screening_device_creative_thinking }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_abstract_thinking is defined %}{{ data.learner_screening_device_abstract_thinking }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_general_intellect is defined %}{{ data.learner_screening_device_general_intellect }}{%endif%}</td>
+            <td>{% if data.learner_screening_device_cultural is defined %}{{ data.learner_screening_device_cultural }}{%endif%}</td>
+        </tr>
+    </table><br/><br/>
+
+    <table>
+        <tr>
+            <td>Add Top {{ profile_settings.learner_screening_device.top_scores_used }} Scores</td>
+            {% for i in 28..16 %}
+                <td>{{ i }}</td>
+            {% endfor %}
+            <td>15 or less</td>
+        </tr>
+        <tr>
+            <td>LPSD Points</td>
+            {% for i in 25..13 %}
+                <td>{{ i }}</td>
+            {% endfor %}
+            <td>0</td>
+        </tr>
+    </table><br/><br/>
+{% endif %}
+
+{% if profile_settings.standardized_testing != false %}
+
+    {% if profile_settings.standardized_testing.reading is defined %}
+
+    <table>
+        <tr>
+            <th style="text-align: left;"><strong>Universal Screener Criteria</strong></th>
+            <th style="text-align: right;">{% if data.scores.testing.total is defined %}{{ data.scores.testing.total }}{% endif %}/25</th>
+            {% set max_total_score = max_total_score + 25 %}
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+                Reading ({% if data.reading_test is defined %}{{ data.reading_test }}{%endif%}%):
+                {% if data.scores.testing.reading is defined %}{{ data.scores.testing.reading }}{% endif %}/12.5
+            </td>
+            <td>
+                Math ({% if data.math_test is defined %}{{ data.math_test }}{%endif%}%):
+                {% if data.scores.testing.math is defined %}{{ data.scores.testing.math }}{% endif %}/12.5
+            </td>
+        </tr>
+        <tr>
+            {% set max = 0 %}
+            <td>
+            {% for test, score in profile_settings.standardized_testing.reading %}
+                {% if max > 0 %}
+                    {{test}} - {{ max -1 }} = {{ score }} points<br/>
+                {% else %}
+                    {{test}}%+ = {{ score }} points<br/>
+                    {% set max = test %}
+                {% endif %}
+            {% endfor %}
+            </td>
+
+            {% set max = 0 %}
+            <td>
+            {% for test, score in profile_settings.standardized_testing.math %}
+                {% if max > 0 %}
+                    {{test}} - {{ max -1 }} = {{ score }} points<br/>
+                {% else %}
+                    {{test}}%+ = {{ score }} points<br/>
+                    {% set max = test %}
+                {% endif %}
+            {% endfor %}
+            </td>
+        </tr>
+    </table><br/><br/>
+
+
+    {% else %}
+        <p>
+        <strong>Student Performance Criteria</strong><br/>
+            Reading: {% if data.reading_test is defined %}{{ data.reading_test }}%{%endif%}<br/>
+            Math: {% if data.math_test is defined %}{{ data.math_test }}%{%endif%}<br/>
+        </p>
+    {% endif %}
+{% endif %}
+
+{% if profile_settings.grades != false %}
+
+    {% if profile_settings.grades.0.scores == false %}
+        {% set total_score_required = false %}
+        <strong>Grade Point Average Criteria</strong>
+    {% else %}
+        <table>
+            <tr>
+                <th style="text-align: left;"><strong>Student Performance Criteria</strong></th>
+                <th style="text-align: right;">{% if data.scores.grades.total is defined %}{{ data.scores.grades.total }}{% endif %}/25</th>
+                {% set max_total_score = max_total_score + 25 %}
+            </tr>
+        </table>
+    {% endif %}
+
+        <table>
+            {% if profile_settings.grades.0.scores != false %}
+
+                {% set math_count = 0 %}
+                {% set other_count = 0 %}
+
+                {% for year in profile_settings.grades %}
+                    {% for term in year.terms %}
+                        {% for subject in year.subjects %}
+                            {% if subject == 'math' %}
+                                {% set math_count = math_count + 1 %}
+                            {% else %}
+                                {% set other_count = other_count +1 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+
+                <tr>
+                    <td colspan={{other_count}}>
+                        {{profile_settings.grades.0.label}}:
+                        {% if profile_settings.grades.0.subjects|length == 2 %}
+                            {% if data.scores.grades.english.total is defined and data.scores.grades.reading.total is defined %}{{data.scores.grades.english.total + data.scores.grades.reading.total}}{% endif %}/12.5
+                        {% elseif profile_settings.grades.0.subjects.0 == 'english' %}
+                            {% if data.scores.grades.english.total is defined %}{{data.scores.grades.english.total}}{% endif %}/12.5
+                        {% else %}
+                            {% if data.scores.grades.reading.total is defined %}{{data.scores.grades.reading.total}}{% endif %}/12.5
+                        {% endif %}
+                    </td>
+                    <td colspan={{math_count}}>
+                        Math:{% if data.scores.grades.math.total is defined %}{{data.scores.grades.math.total}}{% endif %}/12.5
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+            {% for year in profile_settings.grades %}
+                    {% for term in year.terms %}
+                        {% for subject in year.subjects %}
+                            <td>
+                                {{ term| capitalize }}<br/>
+                                {% if year.label == false or year.score_by_lowest_grade == false %}
+                                    {{ subject| capitalize }}
+                                {% else %}
+                                    {{ year.label }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    {% endfor %}
+            {% endfor %}
+            </tr>
+            <tr>
+            {% for year in profile_settings.grades %}
+                    {% for term in year.terms %}
+                        {% for subject in year.subjects %}
+                            <td>
+                                {% if data.scores['grades'][subject]['sections'] is defined %}
+                                    {% if data.scores['grades'][subject]['sections'][term] is defined %}
+                                        {% for section,grade in data.scores['grades'][subject]['sections'][term] %}
+                                            {{ section }}: {{ grade }}<br/>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% elseif data.grades[year.year_offset][term][subject] is defined %}
+                                    ({{ data.grades[year.year_offset][term][subject]['grade'] }}) {{data.grades[year.year_offset][term][subject]['score']}}
+                                {%endif%}
+                            </td>
+                        {% endfor %}
+                    {% endfor %}
+            {% endfor %}
+            </tr>
+        </table><br/><br/>
+
+    {% if profile_settings.grades.0.scores == false %}
+        <strong>Grade Point Average:</strong> {% if data.calculated_gpa is defined %}{{ data.calculated_gpa }}{%endif%}<br/><br/>
+    {% else %}
+
+        <table>
+            <tr>
+                {% for year in profile_settings.grades %}
+                    <td>
+                    {{ year.label }}<br/>
+
+                    {% for grade,score in year.scores %}
+                        {% if year.score_by_lowest_grade == true %}
+                            {% if grade == 3 %}
+                                All 3s = {{ score }} points<br/>
+                            {% elseif grade == 2 %}
+                                3s &amp; 2s or 2s &amp; 2s = {{ score }} points<br/>
+                            {% else %}
+                                3s &amp; 1s or 2s &amp; 1s = {{ score }} points<br/>
+                            {% endif %}
+                        {% else %}
+                            {{grade}} = {{ score }} points<br/>
+                        {% endif%}
+                    {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </table><br/><br/>
+    {% endif %}
+
+{% endif %}
+
+{% if profile_settings.conduct != false %}
+    <strong>Conduct Criteria</strong><br/>
+    Note: Three (3) Most Recent Office Discipline Referrals (ODRs) (Fields will be blank if not applicable):<br/>
+    <table>
+        <tr>
+            <td style="text-align: left;">1:</td>
+            <td style="text-align: left;">{% if data.odr_1 is defined %}{{ data.odr_1|replace({ "\n\r": '<br/>' })|raw }}{%endif%}</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">2:</td>
+            <td style="text-align: left;">{% if data.odr_2 is defined %}{{ data.odr_2|replace({ "\n\r": '<br/>' })|raw }}{%endif%}</td>
+        </tr>
+        <tr>
+            <td style="text-align: left;">3:</td>
+            <td style="text-align: left;">{% if data.odr_3 is defined %}{{ data.odr_3|replace({ "\n\r": '<br/>' })|raw }}{%endif%}</td>
+        </tr>
+    </table>
+{% endif %}
+
+{% if total_score_required == true %}
+    <h3>Total Student Profile Score {% if data.scores.total is defined %}{{data.scores.total|round}}{% endif %} / {{max_total_score}}</h3>
+    <h3>Student Profile Percentage Score {% if data.scores.percentage is defined %}{{data.scores.percentage|round}}%{% endif %}
+{% endif %}
+
+{{ footer|raw }}

@@ -1,0 +1,166 @@
+{{ header | raw }}<br/>
+<div style="text-align: center;">
+    <h2>{{ 'recommendation.header'|trans }}</h2>
+</div>
+Student Name: {{ submission.firstName }} {{ submission.lastName }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Student ID #: {{ submission.stateID }}<br/><br/>
+
+School: {{ submission.currentSchool }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{% if recommendation_type == 'math' %}
+    Teacher: {{ data.math_teacher_name }}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Course Taught: Math
+{% else %}
+    Teacher: {{ data.english_teacher_name }}
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Course Taught: English
+{% endif %}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Grade: {{ submission.currentGrade }}
+<br/><br/>
+
+<p>{{ 'recommendation.counselor.message'|trans }}</p>
+
+<p>
+<strong>Overall Recommendation:</strong><br/>
+{% if data.overall_recommendation == 1 %}<strong>&nbsp;X&nbsp;Recommend</strong>
+{% else %}
+Recommend
+{% endif %}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{% if data.overall_recommendation == 0 %}<strong>&nbsp;X&nbsp;Do Not Recommend</strong>
+{% else %}
+Do Not Recommend
+{% endif %}
+</p>
+
+<p>
+Check the column which best describes the student.
+</p>
+
+<table>
+    <tr>
+        <td><strong>Academic Abilities</strong></td>
+        <td><strong>Never</strong></td>
+        <td><strong>Seldom</strong></td>
+        <td><strong>Sometimes</strong></td>
+        <td><strong>Usually</strong></td>
+        <td><strong>Always</strong></td>
+    </tr>
+    <tr>
+        <td>1. Does the student demonstrate excellence on class assignments and projects?</td>
+        <td>{% if data.class_assignments == 0 %}X{% endif %}</td>
+        <td>{% if data.class_assignments == 1 %}X{% endif %}</td>
+        <td>{% if data.class_assignments == 2 %}X{% endif %}</td>
+        <td>{% if data.class_assignments == 3 %}X{% endif %}</td>
+        <td>{% if data.class_assignments == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>2. Does the student complete homework and outside-of-class work in a timely and thorough manner?</td>
+        <td>{% if data.homework == 0 %}X{% endif %}</td>
+        <td>{% if data.homework == 1 %}X{% endif %}</td>
+        <td>{% if data.homework == 2 %}X{% endif %}</td>
+        <td>{% if data.homework == 3 %}X{% endif %}</td>
+        <td>{% if data.homework == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>3. Does the student grasp new or different concepts readily?</td>
+        <td>{% if data.new_concepts == 0 %}X{% endif %}</td>
+        <td>{% if data.new_concepts == 1 %}X{% endif %}</td>
+        <td>{% if data.new_concepts == 2 %}X{% endif %}</td>
+        <td>{% if data.new_concepts == 3 %}X{% endif %}</td>
+        <td>{% if data.new_concepts == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>4. Does the student challenge, speculate, make unusual associations, or draw unique conclusions?</td>
+        <td>{% if data.unique_conclusions == 0 %}X{% endif %}</td>
+        <td>{% if data.unique_conclusions == 1 %}X{% endif %}</td>
+        <td>{% if data.unique_conclusions == 2 %}X{% endif %}</td>
+        <td>{% if data.unique_conclusions == 3 %}X{% endif %}</td>
+        <td>{% if data.unique_conclusions == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>5. Does the student take the initiative for his/her own learning?</td>
+        <td>{% if data.initiative == 0 %}X{% endif %}</td>
+        <td>{% if data.initiative == 1 %}X{% endif %}</td>
+        <td>{% if data.initiative == 2 %}X{% endif %}</td>
+        <td>{% if data.initiative == 3 %}X{% endif %}</td>
+        <td>{% if data.initiative == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>6. Is the student’s oral and written communication clear, mature, and correct?</td>
+        <td>{% if data.communication == 0 %}X{% endif %}</td>
+        <td>{% if data.communication == 1 %}X{% endif %}</td>
+        <td>{% if data.communication == 2 %}X{% endif %}</td>
+        <td>{% if data.communication == 3 %}X{% endif %}</td>
+        <td>{% if data.communication == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>7. Does the student demonstrate quick recall and mastery of factual information?</td>
+        <td>{% if data.recall == 0 %}X{% endif %}</td>
+        <td>{% if data.recall == 1 %}X{% endif %}</td>
+        <td>{% if data.recall == 2 %}X{% endif %}</td>
+        <td>{% if data.recall == 3 %}X{% endif %}</td>
+        <td>{% if data.recall == 4 %}X{% endif %}</td>
+    </tr>
+</table><br/><br/>
+
+<table>
+    <tr>
+        <td><strong>Motivational Characteristics</strong></td>
+        <td><strong>Never</strong></td>
+        <td><strong>Seldom</strong></td>
+        <td><strong>Sometimes</strong></td>
+        <td><strong>Usually</strong></td>
+        <td><strong>Always</strong></td>
+    </tr>
+    <tr>
+        <td>1. Does the student show genuine excitement and enthusiasm for learning?</td>
+        <td>{% if data.loves_learning == 0 %}X{% endif %}</td>
+        <td>{% if data.loves_learning == 1 %}X{% endif %}</td>
+        <td>{% if data.loves_learning == 2 %}X{% endif %}</td>
+        <td>{% if data.loves_learning == 3 %}X{% endif %}</td>
+        <td>{% if data.loves_learning == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>2. Is the student able to be self-critical and self-correcting?</td>
+        <td>{% if data.self_correcting == 0 %}X{% endif %}</td>
+        <td>{% if data.self_correcting == 1 %}X{% endif %}</td>
+        <td>{% if data.self_correcting == 2 %}X{% endif %}</td>
+        <td>{% if data.self_correcting == 3 %}X{% endif %}</td>
+        <td>{% if data.self_correcting == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>3. Does the student handle outside responsibilities as well as school demands?</td>
+        <td>{% if data.responsibility == 0 %}X{% endif %}</td>
+        <td>{% if data.responsibility == 1 %}X{% endif %}</td>
+        <td>{% if data.responsibility == 2 %}X{% endif %}</td>
+        <td>{% if data.responsibility == 3 %}X{% endif %}</td>
+        <td>{% if data.responsibility == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>4. Is the student intellectually playful, curious, and imaginative?</td>
+        <td>{% if data.curiosity == 0 %}X{% endif %}</td>
+        <td>{% if data.curiosity == 1 %}X{% endif %}</td>
+        <td>{% if data.curiosity == 2 %}X{% endif %}</td>
+        <td>{% if data.curiosity == 3 %}X{% endif %}</td>
+        <td>{% if data.curiosity == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>5. Is the student self-confident and emotionally secure?</td>
+        <td>{% if data.confidence == 0 %}X{% endif %}</td>
+        <td>{% if data.confidence == 1 %}X{% endif %}</td>
+        <td>{% if data.confidence == 2 %}X{% endif %}</td>
+        <td>{% if data.confidence == 3 %}X{% endif %}</td>
+        <td>{% if data.confidence == 4 %}X{% endif %}</td>
+    </tr>
+</table></br><br/>
+
+<p>
+<strong>Comments</strong> (optional)<br/>
+{{ data.comments }}
+</p>
+
+<div style="text-align: center;"><strong>THIS RECOMMENDATION IS CONFIDENTIAL</strong></div>

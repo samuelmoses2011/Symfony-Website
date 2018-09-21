@@ -1,0 +1,42 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    {{ 'offer.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+
+<div class="small-12 columns">
+    {{ form_start(form) }}
+        <h2 class="text-center">{{ 'recommendation.header'|trans }}</h2>
+
+        <h4>{{ submission }}</h4>
+        <h4>Student: {{ submission.firstName }} {{submission.lastName }}</h4>
+        <h4>School: {{ submission.currentSchool }}</h4>
+        {% if recommendation_type != 'counselor' %}
+            <h4 style="display: inline-block;">Teacher:</h4> {{ form_widget(form.name) }}
+            <h4>Course Taught: {{ recommendation_type|capitalize }}</h4>
+        {% else %}
+            <h4 style="display: inline-block;">Counselor:</h4> {{ form_widget(form.name) }}</h4>
+        {% endif %}
+
+        <p>{{ 'recommendation.counselor.message'|trans }}</p>
+
+        {% form_theme form '@IIABMagnet/Form/fields.html.twig' %}
+
+
+        {% if recommendation_type == 'counselor' %}
+            {% embed '@IIABMagnet/Recommendation/recommendationCounselor.html.twig' %}
+            {% endembed %}
+        {% else %}
+            {% embed '@IIABMagnet/Recommendation/recommendationTeacher.html.twig' %}
+            {% endembed %}
+        {% endif %}
+
+
+        <div class="panel">
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+
+    </div>
+{% endblock %}

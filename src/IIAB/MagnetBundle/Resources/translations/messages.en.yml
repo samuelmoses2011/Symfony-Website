@@ -1,0 +1,65 @@
+Admin: Admin   # FIXME
+
+'By Clicking "Information is Correct" I confirm that the information displayed above is accurate':
+    ' I further understand that if this information is found to be inaccurate, an offer of acceptance may be deemed void':
+        '': 'By Clicking "Information is Correct" I confirm that the information displayed above is accurate. I further understand that if this information is found to be inaccurate, an offer of acceptance may be deemed void.'   # FIXME
+
+'By Clicking "Proceed with Selected Options" I confirm that my choices are listed correctly':
+    ' I further understand that I will not be allowed to edit my submission after this step':
+        '': 'By Clicking "Proceed with Selected Options" I confirm that my choices are listed correctly. I further understand that I will not be allowed to edit my submission after this step.'   # FIXME
+
+'Choose an option': 'Choose an option'   # FIXME
+City: City   # FIXME
+'Confirm Email': 'Confirm Email'   # FIXME
+'Confirm Email Address': 'Confirm Email Address'   # FIXME
+'Current School': 'Current School'   # FIXME
+'Current Year Grade': 'Current Year Grade'   # FIXME
+'Date of Birth': 'Date of Birth'   # FIXME
+'Enrolled MPS Student (PreK - 11th grade)': 'Enrolled MPS Student (PreK - 11th grade)'   # FIXME
+'Exit without Savings': 'Exit without Savings'   # FIXME
+'First Name': 'First Name'   # FIXME
+'First Program Choice': 'First Program Choice'   # FIXME
+Grade: Grade   # FIXME
+'Home Address': 'Home Address'   # FIXME
+'Information is Correct': 'Information is Correct'   # FIXME
+'Information is Incorrect': 'Information is Incorrect'   # FIXME
+'Last Name': 'Last Name'   # FIXME
+'New MPS Student': 'New MPS Student'   # FIXME
+'Next Year Grade': 'Next Year Grade'   # FIXME
+No: No   # FIXME
+'Normal User': 'Normal User'   # FIXME
+'Parent Email Address': 'Parent Email Address'   # FIXME
+'Proceed with Selected Options': 'Proceed with Selected Options'   # FIXME
+Role: Role   # FIXME
+Roles: Roles   # FIXME
+'Second Program Choice': 'Second Program Choice'   # FIXME
+'Sibling State ID#': 'Sibling State ID#'   # FIXME
+'Sonata Admin': 'Sonata Admin'   # FIXME
+'State ID': 'State ID'   # FIXME
+'State ID Number (10 digit)': 'State ID Number (10 digit)'   # FIXME
+Status: Status   # FIXME
+'Student Status': 'Student Status'   # FIXME
+'Submission ID': 'Submission ID'   # FIXME
+'Submit & Next': 'Submit & Next'   # FIXME
+'Third Program Choice': 'Third Program Choice'   # FIXME
+'Will a sibling of applicant attend this school for the upcoming school year?': 'Will a sibling of applicant attend this school for the upcoming school year?'   # FIXME
+Yes: Yes   # FIXME
+Zip: Zip   # FIXME
+
+stateID: State ID Number (10 digit)
+first_name: Student's Legal First Name
+last_name: Student's Legal Last Name
+dob: Date of Birth
+race: Race
+phoneNumber: Phone Number
+alternateNumber: Alternate Number
+current_school: Current School
+current_grade: Current Grade
+next_grade: Next Grade
+address: Address
+city: City
+state: State
+zip: Zip
+parentEmail: Email Address
+confirm_parent: Confirmed Parent
+zonedSchool: Zoned School

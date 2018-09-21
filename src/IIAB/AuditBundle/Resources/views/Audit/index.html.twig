@@ -1,0 +1,129 @@
+{% extends "@IIABMagnet/Admin/standard_layout.html.twig" %}
+
+{% block sonata_admin_content %}
+    {{ parent() }}
+
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Audit Trail</h3>
+        </div>
+    </div>
+    <div class="box-primary box">
+        <div class="box-body">
+            {% set type = app.request.get('filter')['id']['type']|default('') %}
+            {% set value = app.request.get('filter')['id']['value']|default('') %}
+            <form class="sonata-filter-form form-horizontal " action="{{ url('audit_index') }}" method="GET" role="form">
+                <div class="clearfix">
+                    <div class="col-md-9">
+                        <div class="filter_container">
+                            <div class="form-group" id="filter-s55e087c673f10-id" sonata-filter="true" style="">
+                                <label for="filter_id_value" class="col-sm-3 control-label">Submission ID</label>
+
+                                <div class="col-sm-2">
+                                    <select title="" tabindex="-1" id="filter_id_type" name="filter[id][type]" class="form-control select2">
+                                        <option value=""></option>
+                                        <option {% if type == 3 %} selected="selected"{% endif %} value="3">=</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <input id="filter_id_value" name="filter[id][value]" class=" form-control" type="text" value="{{ value }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
+                        <a class="btn btn-default" href="{{ url('audit_index') }}">Reset</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="box">
+        <div class="box-body">
+            {% if revisions is defined and revisions is not empty %}
+                <table class="table table-striped table-fixed">
+                    <thead>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Submission #</th>
+                        <th>User</th>
+                        <th>State ID</th>
+                        <th>Item Type</th>
+                        <th width="50%">Audit Message</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Date / Time</th>
+                        <th>Submission #</th>
+                        <th>User</th>
+                        <th>State ID</th>
+                        <th>Item Type</th>
+                        <th width="50%">Audit Message</th>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="text-center">
+                                <ul class="pagination">
+                                    {% if data_pool.pages > 2 and data_pool.page > 1 %}
+                                        <li><a href="{{ url('audit_index') }}">&laquo;</a></li>
+                                    {% endif %}
+
+                                    {% if data_pool.page != data_pool.previouspage and data_pool.previouspage > 0 %}
+                                        <li>
+                                            <a href="{{ url('audit_index_paged', { page: data_pool.previouspage }) }}">&lsaquo;</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {# Set the number of pages to display in the pager #}
+                                    {% for index in data_pool.pagingStart..data_pool.pagingEnd %}
+                                        {% if data_pool.page == index %}
+                                            <li class="active">
+                                                <a href="{{ url('audit_index_paged', { page: index }) }}">{{ index }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li>
+                                                <a href="{{ url('audit_index_paged', { page: index }) }}">{{ index }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if data_pool.page != data_pool.nextpage %}
+                                        <li>
+                                            <a href="{{ url('audit_index_paged', { page: data_pool.nextpage }) }}">&rsaquo;</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if data_pool.page != data_pool.lastpage and data_pool.lastpage != data_pool.nextpage %}
+                                        <li>
+                                            <a href="{{ url('audit_index_paged', { page: data_pool.lastpage }) }}">&raquo;</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for revision in revisions %}
+                        <tr data-id="{{ revision['id'] }}">
+                            <td>{{ revision['timestamp']|date('m/d/y H:i') }}</td>
+                            <td style="text-align: center;">{{ revision['submissionID']|default('&nbsp;')|raw }}</td>
+                            <td>{{ revision['user']|default('System') }}</td>
+                            <td>{{ revision['stateID']|default('&nbsp;')|raw }}</td>
+                            <td>{{ revision['type']|default('&nbsp;')|raw }}</td>
+                            <td width="50%">{{ revision['audit']|default('&nbsp;')|raw }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No audit trail records have been recorded.</p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock sonata_admin_content %}

@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    {{ render(controller('IIABMagnetBundle:Application:helpDocuments')) }}
+    
+    <div class="small-12 columns">
+        <div class="panel radius">
+            <h3 class="text-center">{{ 'welcomeText'|trans }}</h3>
+
+            {{ 'openenrollment.closed'|trans|raw }}
+
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+        <p class="text-center">Current Date and Time: {{ "now"|date("F j, Y g:ia") }}</p>
+    </div>
+{% endblock %}

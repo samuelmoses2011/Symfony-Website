@@ -1,0 +1,19 @@
+{% extends '@IIABMagnet/Application/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ 'duplication.submission.error'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h2 class="text-center">{{ 'duplication.submission.error'|trans }}</h2>
+
+        <div class="panel">
+            {{ 'duplication.submission.body'|trans|raw }}
+
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+
+        <p><a href="{{ url('magnet_exit_application') }}" class="button alert left">{{ 'exit.application'|trans }}</a> <a href="{{ url('magnet_index') }}" class="button right">{{ 'start.over'|trans }}</a></p>
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{{ header | raw }}
+
+<p>
+    Dear Parent:
+</p>
+
+<p>
+    Please make three (3) copies of this document and take one to your student’s current Math teacher, one to your student’s current English Teacher, and one to your student’s current Counselor so that they may submit the electronic recommendations required for your student’s application.
+</p>
+
+<hr/>
+
+<p>
+    <strong>Math Teacher:</strong>
+</p>
+
+<p>
+    Please use the following link to complete the electronic recommendation form for {{submission.firstName}} {{submission.lastName}} {{submission}}.
+</p>
+
+<p>
+    {{ recommendation_urls.recommendation_math_url }}
+</p>
+
+<hr/>
+
+<p>
+    <strong>English Teacher:</strong>
+</p>
+
+<p>
+    Please use the following link to complete the electronic recommendation form for {{submission.firstName}} {{submission.lastName}} {{submission}}.
+</p>
+
+<p>
+    {{ recommendation_urls.recommendation_english_url }}
+</p>
+
+<hr/>
+
+<p>
+    <strong>Counselor:</strong>
+</p>
+
+<p>
+    Please use the following link to complete the electronic recommendation form for {{submission.firstName}} {{submission.lastName}} {{submission}}.
+</p>
+
+<p>
+    {{ recommendation_urls.recommendation_counselor_url }}
+</p>
+
+<p><strong>
+    This electronic form must be completed by Friday, February 16, 2018.
+</strong></p>
+
+{{ footer |raw }}

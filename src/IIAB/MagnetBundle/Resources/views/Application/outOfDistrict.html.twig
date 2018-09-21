@@ -1,0 +1,19 @@
+{% extends '@IIABMagnet/Application/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ 'out.of.district.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h2 class="text-center">{{ 'out.of.district.header'|trans }}</h2>
+
+        <div class="panel">
+            {{ 'out.of.district.body'|trans|raw }}
+
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+
+        <p><a href="{{ url('magnet_exit_application') }}" class="button alert left">{{ 'exit.application'|trans }}</a> <a href="{{ url('magnet_index') }}" class="button right">{{ 'start.over'|trans }}</a></p>
+    </div>
+{% endblock %}

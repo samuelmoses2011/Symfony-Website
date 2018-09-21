@@ -1,0 +1,209 @@
+parameters:
+  student_profiles:
+    0 :
+      next_grade_levels: [1]
+      learner_screening_device:
+        top_scores_used: 4
+        minium_score: 16
+        score_conversion: -3
+      standardized_testing:
+        reading:
+          50: 12.5
+          25: 6.25
+        math:
+          76: 12.5
+          51: 6.25
+      grades:
+        0:
+          year_offset: 0
+          subjects: [ 'english' ]
+          label: Reading
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: [ 'LAK.171','LAK.172','LAK.173' ]
+          score_by_lowest_grade: true
+          scores:
+            3: 12.5
+            2: 6.25
+            1: 0
+        1:
+          year_offset: 0
+          subjects: [ 'math' ]
+          label: Math
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: [ 'MAK.151', 'MAK.152', 'MAK.153', 'MAK.154', 'MAK.155', 'MAK.156', 'MAK.157', 'MAK.158', 'MAK.159' ]
+          score_by_lowest_grade: true
+          scores:
+            3: 12.5
+            2: 6.25
+            1: 0
+      conduct: false
+    1 :
+      next_grade_levels: [2]
+      learner_screening_device:
+        top_scores_used: 4
+        minium_score: 16
+        score_conversion: -3
+      standardized_testing:
+        reading:
+          50: 12.5
+          25: 6.25
+        math:
+          76: 12.5
+          51: 6.25
+      grades:
+        0:
+          year_offset: 0
+          subjects: [ 'reading' ]
+          label: Reading
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: [ 'RE1.181','RE1.182','RE1.183' ]
+          score_by_lowest_grade: true
+          scores:
+            3: 12.5
+            2: 6.25
+            1: 0
+        1:
+          year_offset: 0
+          subjects: [ 'math' ]
+          label: Math
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: [ 'MA1.151', 'MA1.152', 'MA1.153', 'MA1.154', 'MA1.155', 'MA1.156', 'MA1.157', 'MA1.158', 'MA1.159', 'MA1.160', 'MA1.161' ]
+          score_by_lowest_grade: true
+          scores:
+            3: 12.5
+            2: 6.25
+            1: 0
+      conduct: false
+    2 :
+      next_grade_levels: [3]
+      learner_screening_device:
+        top_scores_used: 4
+        minium_score: 16
+        score_conversion: -3
+      standardized_testing:
+        reading:
+          76: 12.5
+          51: 6.25
+        math:
+          76: 12.5
+          51: 6.25
+      grades:
+        0:
+          year_offset: 0
+          subjects: [ 'reading' ]
+          label: Reading
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: [ 'RE2.101','RE2.102','RE2.103' ]
+          score_by_lowest_grade: true
+          scores:
+            3: 12.5
+            2: 6.25
+            1: 0
+        1:
+          year_offset: 0
+          subjects: [ 'math' ]
+          label: Math
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: [ 'MA2.101', 'MA2.102', 'MA2.103', 'MA2.104', 'MA2.105', 'MA2.106', 'MA2.107', 'MA2.108', 'MA2.109', 'MA2.110' ]
+          score_by_lowest_grade: true
+          scores:
+            3: 12.5
+            2: 6.25
+            1: 0
+      conduct: false
+    3 :
+      next_grade_levels: [4,5,6]
+      learner_screening_device:
+        top_scores_used: 4
+        minium_score: 16
+        score_conversion: -3
+      standardized_testing:
+        reading:
+          76: 12.5
+          51: 6.25
+        math:
+          76: 12.5
+          51: 6.25
+      grades:
+        0:
+          year_offset: 0
+          subjects: [ 'reading', 'english' ]
+          label: Reading and English
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: false
+          score_by_lowest_grade: false
+          scores:
+            A: 3.125
+            B: 1.5625
+            C: 0.78125
+        1:
+          year_offset: 0
+          subjects: [ 'math' ]
+          label: Math
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          sections: false
+          score_by_lowest_grade: false
+          scores:
+            A: 6.25
+            B: 3.125
+            C: 1.5625
+      conduct: false
+    4 :
+      next_grade_levels: [7,8]
+      learner_screening_device:
+        top_scores_used: 4
+        minium_score: 16
+        score_conversion: -3
+      standardized_testing:
+        reading:
+          76: 12.5
+          51: 6.25
+        math:
+          76: 12.5
+          51: 6.25
+      grades:
+        0:
+          year_offset: 0
+          subjects: [ 'english' ]
+          label: Reading and English
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          score_by_lowest_grade: false
+          scores:
+            A: 6.25
+            B: 3.125
+            C: 1.5625
+        1:
+          year_offset: 0
+          subjects: [ 'math' ]
+          label: Math
+          terms: [ '1st 9 weeks', '2nd 9 weeks' ]
+          score_by_lowest_grade: false
+          scores:
+            A: 6.25
+            B: 3.125
+            C: 1.5625
+      conduct: false
+    5 :
+      calculate_score: false
+      next_grade_levels: [9,10,11]
+      learner_screening_device: false
+      standardized_testing: ['reading','math']
+      grades:
+        0:
+          year_offset: 0
+          subjects: [ 'social', 'english', 'math', 'science' ]
+          label: false
+          terms: [ 'semester 1' ]
+          sections: false
+          score_by_lowest_grade: false
+          scores: false
+        1:
+          year_offset: -1
+          subjects: [ 'social', 'english', 'math', 'science' ]
+          label: false
+          terms: [ 'semester 2' ]
+          sections: false
+          score_by_lowest_grade: false
+          scores: false
+      conduct:
+        odr: 3

@@ -1,0 +1,660 @@
+{% block form_row %}
+
+    {% if attr is defined and attr['row_style'] is defined and attr['row_style'] is not empty %}
+        <div class="row" style="{{ attr['row_style'] }}" id="{{ id }}_row">
+    {% else %}
+        <div class="row" id="{{ id }}_row">
+    {% endif %}
+
+        <div class="small-12 columns">
+            <div class="row">
+                {% set show_label = true %}
+                {% set column_width = 'small-12 medium-9' %}
+                {% if form.vars.label is not null and not form.vars.label %}
+
+                    {% if 'collection' in form.parent.vars.block_prefixes %}
+                        {% set show_label = false %}
+                        {% set column_width = 'small-12' %}
+                    {% endif %}
+
+                {% endif %}
+
+                {% if show_label %}
+                    <div class="small-12 medium-3 columns">
+                        {{ form_label(form) }}
+                    </div>
+                {% endif %}
+
+                {% if help is defined and help is not empty %}
+                    <div class="{{column_width}} columns">
+                        <div class="row">
+                            <div class="small-11 columns">
+                                {{ form_widget(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            <div class="small-1 columns">
+                                <span data-tooltip aria-haspopup="true" class="has-tip tip-top" title="{{ help|trans|e('html_attr') }}">?</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="{{column_width}} columns">
+                        {{ form_widget(form) }}
+
+                        {% if sonata_help is defined and sonata_help is not empty %}
+                            <label>
+                                {{ sonata_help }}
+                            </label>
+                        {% endif %}
+
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock form_row %}
+
+{% block _application_special_accommodations_row %}
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel">
+                <div class="small-12 medium-6 columns">
+                    {{ form_label(form) }}
+                </div>
+                <div class="small-12 medium-6 columns">
+                    {{ form_widget(form) }}
+                    {{ form_errors(form) }}
+                </div>
+                <div class="clear clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_special_accommodations_row %}
+
+{% block _application_first_choice_row %}
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel">
+                <div class="small-12 columns">
+                    {{ form_label(form) }}
+                </div>
+                <div class="small-12 columns">
+                    {{ form_widget(form) }}
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_first_choice_row %}
+
+{% block _application_first_choice_label %}
+    {% spaceless %}
+        <h4>{{ label|trans({}, translation_domain) }}</h4>
+    {% endspaceless %}
+{% endblock _application_first_choice_label %}
+
+{% block _application_second_choice_row %}
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel">
+                <div class="small-12 columns">
+                    {{ form_label(form) }}
+                </div>
+                <div class="small-12 columns">
+                    {{ form_widget(form) }}
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_second_choice_row %}
+
+{% block _application_second_choice_label %}
+    {% spaceless %}
+        <h4>{{ label|trans({}, translation_domain) }}</h4>
+    {% endspaceless %}
+{% endblock _application_second_choice_label %}
+
+{% block _application_third_choice_row %}
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel">
+                <div class="small-12 columns">
+                    {{ form_label(form) }}
+                </div>
+                <div class="small-12 columns">
+                    {{ form_widget(form) }}
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_third_choice_row %}
+
+{% block _application_third_choice_label %}
+    {% spaceless %}
+        <h4>{{ label|trans({}, translation_domain) }}</h4>
+    {% endspaceless %}
+{% endblock _application_third_choice_label %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% for error in errors %}
+                <small class="error">{{ error.message|raw }}</small>
+            {% endfor %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_label %}
+    {% spaceless %}
+    {% if not compound %}
+        {% set label_attr = label_attr|merge({'for': id}) %}
+    {% endif %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' medium-text-right inline')|trim}) %}
+    {% if required %}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+    {% endif %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+
+    {% if label %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {{ label|trans({}, translation_domain) }}
+            {% if required %}
+                <span class="required" title="This field is required">*</span>
+            {% endif %}
+        </label>
+    {% endif %}
+    {% endspaceless %}
+
+{% endblock %}
+
+{% block widget_attributes -%}
+    {% if errors|length > 0 %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' error')|trim}) %}
+    {% endif %}
+    id="{{ id }}" name="{{ full_name }}"
+    {%- if read_only is defined and read_only %} readonly="readonly"{% endif -%}
+    {%- if disabled is defined and disabled %} disabled="disabled"{% endif -%}
+    {%- if required is defined and required %} required="required"{% endif -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock widget_attributes %}
+
+{% block form -%}
+    {{ form_start(form) }}
+    <fieldset>
+        {% if step is defined %}
+            {% if step == 1 %}
+                <legend>Please enter your student’s requested information</legend>
+            {% elseif step == 2 %}
+                <legend>Please confirm your information</legend>
+            {% elseif step == 3 %}
+                <legend>Please indicate your Specialty School Choices Below</legend>
+            {% endif %}
+        {% endif %}
+
+        {{- form_widget(form) -}}
+    </fieldset>
+    {{ form_end(form) }}
+{%- endblock form %}
+
+{% block date_widget -%}
+    {% if widget == 'single_text' %}
+        {{- block('form_widget_simple') -}}
+    {% else -%}
+        <div class="row">
+            <div {{ block('widget_container_attributes') }}>
+                {{- date_pattern|replace({
+                    '{{ year }}': '<div class="columns small-4">' ~ form_widget(form.year, { 'attr': { 'tabindex': 5 } }) ~ '</div>',
+                    '{{ month }}': '<div class="columns small-4">' ~ form_widget(form.month, { 'attr': { 'tabindex': 3 } }) ~ '</div>',
+                    '{{ day }}':   '<div class="columns small-4">' ~ form_widget(form.day, { 'attr': { 'tabindex': 4 } }) ~ '</div>',
+                })|raw -}}
+            </div>
+        </div>
+    {%- endif %}
+{%- endblock date_widget %}
+
+{% block _application_confirm_parent_row %}
+
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel callout">
+                <div class="small-12 columns">
+                    <div class="row">
+                        <div class="small-1 columns text-center">{{ form_widget(form) }}</div>
+                        <div class="small-11 columns">{{ form_label(form) }}</div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+
+{% endblock _application_confirm_parent_row %}
+
+{% block _application_confirm_parent_label %}
+{% spaceless %}
+    {% if not compound %}
+    {% set label_attr = label_attr|merge({'for': id}) %}
+{% endif %}
+{% if required %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+{% endif %}
+    {% if label is empty %}
+    {% set label = name|humanize %}
+{% endif %}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {% if required %}
+    <span class="required" title="This field is required">*</span>
+{% endif %}
+    {{ label|trans({}, translation_domain) }}
+    </label>
+    {% endspaceless %}
+{% endblock _application_confirm_parent_label %}
+
+{% block _application_confirm_correct_row %}
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel callout">
+                <div class="small-12 columns">
+                    <div class="row">
+                        <div class="small-1 columns text-center">{{ form_widget(form) }}</div>
+                        <div class="small-11 columns">{{ form_label(form) }}</div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_confirm_correct_row %}
+
+
+{% block _application_confirm_correct_label %}
+    {% spaceless %}
+    {% if not compound %}
+    {% set label_attr = label_attr|merge({'for': id}) %}
+{% endif %}
+{% if required %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+{% endif %}
+    {% if label is empty %}
+    {% set label = name|humanize %}
+{% endif %}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {% if required %}
+    <span class="required" title="This field is required">*</span>
+{% endif %}
+    {{ label|trans({}, translation_domain) }}
+    </label>
+    {% endspaceless %}
+{% endblock _application_confirm_correct_label %}
+
+
+{% block _application_confirm_selections_row %}
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel callout">
+                <div class="small-12 columns">
+                    <div class="row">
+                        <div class="small-1 columns text-center">{{ form_widget(form) }}</div>
+                        <div class="small-11 columns">{{ form_label(form) }}</div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_confirm_selections_row %}
+
+
+{% block _application_confirm_selections_label %}
+    {% spaceless %}
+    {% if not compound %}
+    {% set label_attr = label_attr|merge({'for': id}) %}
+{% endif %}
+{% if required %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+{% endif %}
+    {% if label is empty %}
+    {% set label = name|humanize %}
+{% endif %}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {% if required %}
+    <span class="required" title="This field is required">*</span>
+{% endif %}
+        {{ label|trans({}, translation_domain) }}
+    </label>
+    {% endspaceless %}
+{% endblock _application_confirm_selections_label %}
+
+{% block _application_confirm_status_row %}
+    <div class="row">
+        <div class="small-12 columns marginBottom">
+            <div class="row panel callout">
+                <div class="small-12 columns">
+                    <div class="row">
+                        <div class="small-1 columns text-center">{{ form_widget(form) }}</div>
+                        <div class="small-11 columns">{{ form_label(form) }}</div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_confirm_status_row %}
+
+
+{% block _application_confirm_status_label %}
+    {% spaceless %}
+    {% if not compound %}
+    {% set label_attr = label_attr|merge({'for': id}) %}
+{% endif %}
+{% if required %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+{% endif %}
+    {% if label is empty %}
+    {% set label = name|humanize %}
+{% endif %}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {% if required %}
+    <span class="required" title="This field is required">*</span>
+{% endif %}
+        {{ label|trans({}, translation_domain) }}
+    </label>
+    {% endspaceless %}
+{% endblock _application_confirm_status_label %}
+
+{% block button_row -%}
+    {{- form_widget(form) -}}
+{%- endblock button_row %}
+
+{% block _application_first_choice_siblingID_row %}
+    <div class="row hide">
+        <div class="small-12 columns">
+            <div class="row">
+                <div class="small-12 medium-3 columns">
+                    {{ form_label(form) }}
+                </div>
+                {% if help is defined and help is not empty %}
+                    <div class="small-12 medium-3 end columns">
+                        <div class="row">
+                            <div class="small-11 columns">
+                                {{ form_widget(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            <div class="small-1 columns">
+                                <span data-tooltip aria-haspopup="true" class="has-tip tip-top" title="{{ help|trans|e('html_attr') }}">?</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="small-12 medium-9 columns">
+                        {{ form_widget(form) }}
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_first_choice_siblingID_row %}
+
+{% block _application_second_choice_siblingID_row %}
+    <div class="row hide">
+        <div class="small-12 columns">
+            <div class="row">
+                <div class="small-12 medium-3 columns">
+                    {{ form_label(form) }}
+                </div>
+                {% if help is defined and help is not empty %}
+                    <div class="small-12 medium-3 end columns">
+                        <div class="row">
+                            <div class="small-11 columns">
+                                {{ form_widget(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            <div class="small-1 columns">
+                                <span data-tooltip aria-haspopup="true" class="has-tip tip-top" title="{{ help|trans|e('html_attr') }}">?</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="small-12 medium-9 columns">
+                        {{ form_widget(form) }}
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_second_choice_siblingID_row %}
+
+{% block _application_third_choice_siblingID_row %}
+    <div class="row hide">
+        <div class="small-12 columns">
+            <div class="row">
+                <div class="small-12 medium-3 columns">
+                    {{ form_label(form) }}
+                </div>
+                {% if help is defined and help is not empty %}
+                    <div class="small-12 medium-3 end columns">
+                        <div class="row">
+                            <div class="small-11 columns">
+                                {{ form_widget(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            <div class="small-1 columns">
+                                <span data-tooltip aria-haspopup="true" class="has-tip tip-top" title="{{ help|trans|e('html_attr') }}">?</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="small-12 medium-9 columns">
+                        {{ form_widget(form) }}
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_third_choice_siblingID_row %}
+
+{% block _application_first_choice_sibling_row %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="row">
+                <div class="small-12 medium-3 columns">
+                    {{ form_label(form) }}
+                </div>
+                {% if help is defined and help is not empty %}
+                    <div class="small-12 medium-9 columns">
+                        <div class="row">
+                            <div class="medium-3 small-11 columns">
+                                {{ form_widget(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            <div class="small-1 end columns">
+                                <span data-tooltip aria-haspopup="true" class="has-tip tip-top" title="{{ help|trans|e('html_attr') }}">?</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="small-12 medium-9 columns">
+                        {{ form_widget(form) }}
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_first_choice_sibling_row %}
+
+{% block _application_second_choice_sibling_row %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="row">
+                <div class="small-12 medium-3 columns">
+                    {{ form_label(form) }}
+                </div>
+                {% if help is defined and help is not empty %}
+                    <div class="small-12 medium-9 columns">
+                        <div class="row">
+                            <div class="medium-3 small-11 columns">
+                                {{ form_widget(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            <div class="small-1 end columns">
+                                <span data-tooltip aria-haspopup="true" class="has-tip tip-top" title="{{ help|trans|e('html_attr') }}">?</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="small-12 medium-9 columns">
+                        {{ form_widget(form) }}
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_second_choice_sibling_row %}
+
+{% block _application_third_choice_sibling_row %}
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="row">
+                <div class="small-12 medium-3 columns">
+                    {{ form_label(form) }}
+                </div>
+                {% if help is defined and help is not empty %}
+                    <div class="small-12 medium-9 columns">
+                        <div class="row">
+                            <div class="medium-3 small-11 columns">
+                                {{ form_widget(form) }}
+                                {{ form_errors(form) }}
+                            </div>
+                            <div class="small-1 end columns">
+                                <span data-tooltip aria-haspopup="true" class="has-tip tip-top" title="{{ help|trans|e('html_attr') }}">?</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="small-12 medium-9 columns">
+                        {{ form_widget(form) }}
+                        {{ form_errors(form) }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+{% endblock _application_third_choice_sibling_row %}
+
+
+{% block button_widget -%}
+    {% if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+            '%name%': name,
+            '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain)|raw }}</button>
+{%- endblock button_widget %}
+
+{% block phone_number_widget -%}
+    <div class="row">
+        <div {{ block('widget_container_attributes') }}>
+            {{- phone_number_pattern|replace({
+                '{{ part_1 }}': '<div class="columns medium-2 small-4"><div class="row collapse"><div class="medium-3 small-4 columns"><span class="prefix">(</span></div><div class="medium-6 small-4 columns">' ~ form_widget(form.part_1, { 'attr': { 'maxlength': 3 , 'class' : 'text-center' } }) ~ '</div><div class="medium-3 small-4 columns"><span class="postfix">)</span></div></div></div>',
+                '{{ part_2 }}': '<div class="columns medium-2 small-4">' ~ form_widget(form.part_2, { 'attr': { 'maxlength': 3 , 'class' : 'text-center' , } }) ~ '</div>',
+                '{{ part_3 }}':   '<div class="columns medium-2 small-4 end">' ~ form_widget(form.part_3, { 'attr': { 'maxlength': 4 , 'class' : 'text-center' } }) ~ '</div>',
+            })|raw -}}
+        </div>
+    </div>
+{%- endblock phone_number_widget %}
+
+{% block collection_widget %}
+{% spaceless %}
+    <div class="row panel" {{ block('widget_container_attributes') }}>
+
+        {% if form.vars.allow_add is defined and form.vars.allow_add %}
+            {% set column_width = 'small-10' %}
+        {% else %}
+            {% set column_width = 'small-12' %}
+        {% endif %}
+
+        <div class="columns {{column_width}}" id="{{ form.vars.id }}_block">
+
+            {{form_widget(form)}}
+
+            {% if prototype is defined %}
+                {% set prototype_row = form_widget(prototype) %}
+
+                {% if form.children|length == 0 %}
+                    {% set empty_row = prototype_row|replace({ '__name__' : '0' }) %}
+                    {{ empty_row|raw }}
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+        {% if form.vars.allow_add is defined and form.vars.allow_add %}
+            <div class="columns small-2">
+                <button type="button" class="small success" onclick="var row = document.getElementById('{{ form.vars.id }}_block'); var node = document.createElement('div'); node.innerHTML = this.getAttribute('data-prototype').replace(/__name__/g, row.children.length -1 ); row.appendChild( node.firstChild );" data-prototype="{{prototype_row|e('html_attr')}}">Add</button>
+            </div>
+        {% endif %}
+
+    </div>
+    {% endspaceless %}
+{%- endblock collection_widget %}
+
+{% block file_pdf_widget -%}
+    {% spaceless %}
+    <div class="row">
+        <div class="small-12 medium-6 columns">
+            <div {{ block('widget_container_attributes') }}>
+                {{ form_widget(form.pdfFile) }}
+            </div>
+        </div>
+        <div class="small-12 medium-6 columns">
+            <div {{ block('widget_container_attributes') }}>
+                {{ form_widget(form.usage) }}
+            </div>
+        </div>
+    </div>
+    {% endspaceless %}
+{%- endblock file_pdf_widget %}

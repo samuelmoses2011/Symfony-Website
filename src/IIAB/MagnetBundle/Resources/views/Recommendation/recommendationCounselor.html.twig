@@ -1,0 +1,27 @@
+
+        {#
+        <h3>Pleases select all that apply, and include copies of all documents:</h3>
+            {{ form_row(form.plan504) }}
+            {{ form_row(form.planGEP) }}
+            {{ form_row(form.planIEP) }}
+            {{ form_row(form.disciplineInfractions) }}
+            {{ form_row(form.supportFiles) }}
+        #}
+        <h3>Please indicate the student’s achievement in the following areas:</h3>
+            {{ form_row(form.attendance) }}
+            {{ form_row(form.workEthic) }}
+            {{ form_row(form.maturity) }}
+            {{ form_row(form.peerInteraction) }}
+
+        <h3>Overall:</h3>
+            {{ form_row(form.overall_recommendation) }}
+
+        <p>{{ 'recommendation.counselor.message2'|trans }}</p>
+
+            {{ form_row(form.comments) }}
+
+        <h4 class="text-center" style="text-transform: uppercase;">This Recommendation is Confidential</h4>
+            <div class="text-center">{{form_row(form.submit)}}</div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}

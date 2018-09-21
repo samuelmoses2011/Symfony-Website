@@ -1,0 +1,17 @@
+{#{{ include('@IIABMagnet/Report/header.html.twig') }}#}
+{{ header | raw }}
+
+<div class="push">
+    <p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+        {{ submission.address }}<br />
+        {{ submission.city }}, {{ submission.state|upper }} {{ submission.zip }}</p>
+
+    <p>RE: Magnet Application Status for Confirmation Number: {{ submission }}</p>
+
+    <p>Based on our Committee Review, your student {{ submission.firstName }} {{ submission.lastName }} will not be awarded a Tuscaloosa Public Schools Magnet Program slot for the {{ submission.openEnrollment }} school year and must remain at his/her zoned school.</p>
+
+    <p>Please note, the Office of Magnet Programs will accept applications for the {{ nextSchoolsYear }} school year in {{ nextYear }}. The open enrollment period for those applications will be announced widely in advance.</p>
+
+</div>
+{#{{ include('@IIABMagnet/Report/footer.html.twig') }}#}
+{{ footer | raw }}

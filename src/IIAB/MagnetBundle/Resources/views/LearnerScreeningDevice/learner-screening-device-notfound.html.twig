@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    {{ 'learner.profile.notfound.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h2 class="text-center">{{ 'learner.profile.notfound.header'|trans }}</h2>
+
+        <div class="panel callout">
+            {{ 'learner.profile.notfound.body'|trans|raw }}
+
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+    </div>
+{% endblock %}

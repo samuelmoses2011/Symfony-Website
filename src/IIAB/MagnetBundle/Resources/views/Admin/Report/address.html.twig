@@ -1,0 +1,70 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">{{ title }}</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+
+                            <div class="box box-success">
+                                <div class="box-header">
+                                    <h4 class="box-title">{{ subtitle }}</h4>
+                                </div>
+                                <div class="box-body">
+                                    {{ form_start(form) }}
+
+                                    {% if form.schools is defined and form.schools is not empty %}
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table widefat table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="text-align: center;" scope="col">Name</th>
+                                                <th style="text-align: center;" scope="col">Starting Grade</th>
+                                                <th style="text-align: center;" scope="col">Ending Grade</th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th style="text-align: center;" scope="col">Name</th>
+                                                <th style="text-align: center;" scope="col">Starting Grade</th>
+                                                <th style="text-align: center;" scope="col">Ending Grade</th>
+                                            </tr>
+                                            </tfoot>
+
+                                            <tbody>
+                                            {% for school in form.schools %}
+
+                                                <tr>
+                                                    <td>{{ school.vars.value.name }}</td>
+                                                    <td>{{ form_widget(school.startGrade) }}</td>
+                                                    <td>{{ form_widget(school.endGrade) }}</td>
+                                                </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% else %}
+                                        {{ form_rest(form) }}
+                                    {% endif %}
+
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                            {% if hideWarning is defined and hideWarning %}
+
+                            {% else %}
+                                <div class="alert alert-warning" role="alert">Large number of Submission will take a minute or two to build. Please be patient and wait for the download box to popup.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

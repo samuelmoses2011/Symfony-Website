@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    {{ 'recommendation.notfound.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h2 class="text-center">{{ 'recommendation.notfound.header'|trans }}</h2>
+
+        <div class="panel callout">
+            {{ 'recommendation.notfound.body'|trans|raw }}
+
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+    </div>
+{% endblock %}

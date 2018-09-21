@@ -1,0 +1,40 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+{% endblock%}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Create a New Submission</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="box box-alert">
+                                <div class="box-body">
+                                    <h2>Incorrect Student Information</h2>
+
+                                    <p>You indicated that the student information in our system was incorrect. To update this information, please visit your home school to have your student’s information updated in I-Now. Please note, this may take up to 72 hours to be updated. You may then begin this process again and submit your student’s application. Please note, it can take up to 72 hours for your student information to be update in the system after you initiate the update.</p>
+
+                                    {{ 'magnet.contact'|trans|raw }}
+
+                                    <p><a href="{{ url('admin_submission_create') }}" class="button">Start Over</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

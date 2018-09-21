@@ -1,0 +1,90 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    <div class="row">
+        <div class="col-md-12 form-group">
+            {{ form_start(form) }}
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Eligibility Settings</h3>
+                </div>
+                <div class="pane-body">
+                    {% if form.eligibility_settings is defined and form.eligibility_settings is not empty %}
+                        <div style="overflow: auto;">
+                        <table class="table not-fixed table-striped table-bordered table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Program</th>
+                                {% for field in eligibility_fields %}
+                                <th>{{ field.label }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+
+                            <tfoot>
+                            <tr>
+                                <th>Program</th>
+                                {% for field in eligibility_fields %}
+                                    <th>Required {{ field.label }}</th>
+                                {% endfor %}
+                            </tr>
+                            </tfoot>
+
+                            <tbody>
+
+                            {% for eligibility_setting in form.eligibility_settings %}
+                                <tr>
+                                    <th>{{ eligibility_setting.vars.value.name }}</th>
+
+                                    {% for key,field in eligibility_fields %}
+                                        {% if eligibility_setting['program_' ~ eligibility_setting.vars.value.id ~ '_' ~ key] is defined %}
+                                            <td>{{ form_widget(eligibility_setting[ 'program_' ~ eligibility_setting.vars.value.id ~ '_' ~ key ] , { 'attr': {'class':'form-control'} } ) }}</td>
+                                        {% else %}
+                                            <td></td>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tr>
+                                    {% for school in eligibility_setting.vars.value.MagnetSchools %}
+
+                                    {% set show_schools = false %}
+                                    {% for key,field in eligibility_fields %}
+                                        {% if eligibility_setting['school_' ~ school.id ~ '_' ~ key] is defined %}
+                                            {% set show_schools = true %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if show_schools == true %}
+                                        <tr>
+                                            <th>&nbsp;&nbsp;&nbsp;Grade {{ school.gradeString }}</th>
+
+                                                {% for key,field in eligibility_fields %}
+
+                                                    {% if eligibility_setting['school_' ~ school.id ~ '_' ~ key] is defined %}
+                                                        <td>{{ form_widget(eligibility_setting[ 'school_' ~ school.id ~ '_' ~ key ] , { 'attr': {'class':'form-control'} } ) }}</td>
+                                                    {% else %}
+                                                        <td></td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

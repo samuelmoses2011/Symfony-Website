@@ -1,0 +1,15 @@
+{% extends '@IIABMagnet/Application/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ 'successful.submission.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h3 class="text-center">{{ 'successful.submission.header'|trans }}</h3>
+
+        <div class="alert-box success text-center radius">
+            <p>{{ submission }}: {{ 'writing.sample.submitted.message'|trans }}</p>
+        </div>
+    </div>
+{% endblock %}

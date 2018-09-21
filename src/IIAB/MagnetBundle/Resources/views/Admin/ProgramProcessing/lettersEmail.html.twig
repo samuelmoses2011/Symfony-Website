@@ -1,0 +1,90 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            <div class="nav-tabs-custom">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#letter" aria-controls="letter" role="tab" data-toggle="tab">Letters</a></li>
+                    <li role="presentation">
+                        <a href="#email" aria-controls="email" role="tab" data-toggle="tab">Emails</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="letter">
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                {{ form_label(form.mailDateSetting) }}
+                                {{ form_widget(form.mailDateSetting) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <p>Edits can be made to any text below that is not highlighted in purple or yellow.</p>
+                                <strong>Letter Body</strong>
+                                {{ form_widget(form.letterTemplate) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.saveChanges) }}
+                                {{ form_widget(form.generateLettersNow) }}
+                            </div>
+                        </div>
+                        <p>Please note, that new PDFs are generated when the Mail Date is changed and saved.</p>
+
+                        <h3>Last generated PDFs</h3>
+                        {% if files is defined and files is not empty %}
+                            <ul>
+                                {% for location in files %}
+                                    <li><a target="_blank" href="{{ asset( "reports/" ~ page ~ "/" ~ openEnrollment.id ~ "/" ~ location ) }}">{{ location }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No files have been generated yet.</p>
+                        {% endif %}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="email">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <p>Edits can be made to any text below that is not highlighted in purple or yellow.</p>
+                                <strong>Email Subject Line</strong>
+                                {{ form_widget(form.emailSubject) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <strong>Email Body HTML</strong>
+                                {{ form_widget(form.emailBodyHtml) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.saveEmailChanges) }}
+                                {{ form_widget(form.sendEmailsNow) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+            {% if page is defined and page == 'awarded' %}
+                <p><strong>Note: </strong> The online and offline acceptance date and times are located on the
+                    <a href="{{ url('iiab_magnet_program_processing_process') }}" title="Process Submissions">Process Submissions Page</a>. Please go there to change those dates.
+                </p>
+            {% endif %}
+
+            {% if page is defined and page == 'denied' %}
+                <p><strong>Note: </strong> The next school year and next year settings are located on the
+                    <a href="{{ url('iiab_magnet_program_processing_process') }}" title="Process Submissions">Process Submissions Page</a>. Please go there to change those settings.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

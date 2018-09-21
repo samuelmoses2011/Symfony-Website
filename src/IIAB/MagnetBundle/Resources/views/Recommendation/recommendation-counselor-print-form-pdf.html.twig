@@ -1,0 +1,86 @@
+{{ header | raw }}<br/>
+<div style="text-align: center;">
+    <h2>{{ 'recommendation.header'|trans }}</h2>
+</div>
+Student Name: {{ submission.firstName }} {{ submission.lastName }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Student ID #: {{ submission.stateID }}<br/><br/>
+
+School: {{ submission.currentSchool }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Counselor: {{ data.counselor_name }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Grade: {{ submission.currentGrade }}
+<br/><br/>
+
+<p>{{ 'recommendation.counselor.message'|trans }}</p>
+
+<p>Please check the box that best fits the student’s achievement in the area indicated:</p>
+
+<table>
+    <tr>
+        <td></td>
+        <td><strong>Below Average</strong></td>
+        <td><strong>Barely Average</strong></td>
+        <td><strong>Average</strong></td>
+        <td><strong>Above Average</strong></td>
+        <td><strong>Steller</strong></td>
+    <tr>
+
+    <tr>
+        <td>Attendance</td>
+        <td>{% if data.attendance == 0 %}X{% endif %}</td>
+        <td>{% if data.attendance == 1 %}X{% endif %}</td>
+        <td>{% if data.attendance == 2 %}X{% endif %}</td>
+        <td>{% if data.attendance == 3 %}X{% endif %}</td>
+        <td>{% if data.attendance == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>Work Ethic</td>
+        <td>{% if data.workEthic == 0 %}X{% endif %}</td>
+        <td>{% if data.workEthic == 1 %}X{% endif %}</td>
+        <td>{% if data.workEthic == 2 %}X{% endif %}</td>
+        <td>{% if data.workEthic == 3 %}X{% endif %}</td>
+        <td>{% if data.workEthic == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>Maturity to handle difficult tasks</td>
+        <td>{% if data.maturity == 0 %}X{% endif %}</td>
+        <td>{% if data.maturity == 1 %}X{% endif %}</td>
+        <td>{% if data.maturity == 2 %}X{% endif %}</td>
+        <td>{% if data.maturity == 3 %}X{% endif %}</td>
+        <td>{% if data.maturity == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+        <td>Peer interaction</td>
+        <td>{% if data.peerInteraction == 0 %}X{% endif %}</td>
+        <td>{% if data.peerInteraction == 1 %}X{% endif %}</td>
+        <td>{% if data.peerInteraction == 2 %}X{% endif %}</td>
+        <td>{% if data.peerInteraction == 3 %}X{% endif %}</td>
+        <td>{% if data.peerInteraction == 4 %}X{% endif %}</td>
+    </tr>
+    <tr>
+</table>
+
+<p>
+<strong>Overall Recommendation:</strong><br/>
+{% if data.overall_recommendation == 1 %}<strong>&nbsp;X&nbsp;Recommend</strong>
+{% else %}
+Recommend
+{% endif %}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{% if data.overall_recommendation == 0 %}<strong>&nbsp;X&nbsp;Do Not Recommend</strong>
+{% else %}
+Do Not Recommend
+{% endif %}
+</p>
+
+<p>
+If you would like to add any further comments about the student, please do so in the space provided below. You may want to comment briefly on the suitability of the student’s participation in the IB Program’s advanced studies. We would appreciate your honesty in expressing any reservations you may have, and in helping put test scores and/or the student’s academic record in context. ALL RECOMMENDATIONS ARE CONFIDENTIAL.
+</p>
+<p>
+Comments:<br/>
+{{ data.comments }}
+</p>
+<hr/>
+<div style="text-align: center;"><strong>THIS RECOMMENDATION IS CONFIDENTIAL</strong></div>

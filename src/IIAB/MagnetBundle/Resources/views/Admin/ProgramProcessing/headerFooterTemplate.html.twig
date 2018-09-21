@@ -1,0 +1,64 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            <div class="nav-tabs-custom">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#letter" aria-controls="letter" role="tab" data-toggle="tab">Letters</a></li>
+                    <li role="presentation">
+                        <a href="#email" aria-controls="email" role="tab" data-toggle="tab">Emails</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="letter">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <strong>Header</strong>
+                                {{ form_widget(form.letterHeaderTemplate) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <strong>Footer</strong>
+                                {{ form_widget(form.letterFooterTemplate) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.saveChanges) }}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="email">
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                <strong>Header</strong>
+                                {{ form_widget(form.emailHeaderTemplate) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <strong>Footer</strong>
+                                {{ form_widget(form.emailFooterTemplate) }}
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                {{ form_widget(form.saveChanges2) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

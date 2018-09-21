@@ -1,0 +1,81 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    {% if updated is defined and updated == 1 %}
+        <div class="alert alert-success" role="alert">
+            Settings have been saved.
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-12">
+
+            {{ form_start(form) }}
+
+                        {% for addressBoundSchool, enrollments in enrollment_list %}
+                            {% if school_hash[addressBoundSchool] is defined %}
+
+                            <table class="table not-fixed table-bordered table-condensed addressBoundSchool">
+                                <thead>
+                                    <tr>
+                                        <th colspan="{{max_columns+1}}" class="warning">{{ school_hash[addressBoundSchool].Name }} Enrollment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% set row_name = '' %}
+                                    {% for key,column in form['ab'~addressBoundSchool] %}
+                                        {% if key != 'maxCapacity' %}
+                                            {% set old_row_name = row_name %}
+                                            {% set split_name = key|split('_') %}
+                                            {% set row_name = split_name[0] %}
+                                            {% set column_name = split_name[1] %}
+
+                                            {% if row_name != old_row_name %}
+                                                </tr>
+                                                <tr>
+                                                    <th class="firstColumn"><br/>&nbsp;</th>
+                                            {% endif %}
+
+                                                    <th style="vertical-align: bottom;">
+                                                        Rising Grade {{ column_labels[column_name] }}
+                                                        {{ form_widget( form['ab'~addressBoundSchool][key], {'attr': {'class':'form-control', 'style':'position:relative; bottom:0;'} } ) }}
+                                                    </th>
+                                        {% endif %}
+                                    {% endfor %}
+
+
+
+
+                                {% if population_list[addressBoundSchool] is defined %}
+                                {% for date_updated, history in population_list[addressBoundSchool].history %}
+                                    <tr class="history_{{addressBoundSchool}}">
+                                        <th></th>
+                                        {% for trackingColumn, trackingValues in history %}
+
+                                            {% for trackingValue, population in trackingValues %}
+                                                <th style="vertical-align: bottom;">
+                                                    {{ column_labels[trackingColumn][trackingValue] }}
+                                                    {{ population.count }}
+                                                </th>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                {% endif %}
+                                </tbody>
+                            </table>
+                            {% endif %}
+                        {% endfor %}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

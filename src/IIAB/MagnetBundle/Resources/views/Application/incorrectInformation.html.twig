@@ -1,0 +1,20 @@
+{% extends '@IIABMagnet/Application/standard_layout.html.twig' %}
+
+{% block title %}
+    {{ 'incorrect.header'|trans }}
+{% endblock title %}
+
+{% block body %}
+    <div class="small-12 columns">
+        <h2 class="text-center">{{ 'incorrect.header'|trans }}</h2>
+
+        <div class="panel">
+            {{ 'incorrect.body'|trans|raw }}
+
+            {{ 'magnet.content'|trans|raw }}
+        </div>
+
+
+        <p><a href="{{ url('magnet_index') }}" class="button">{{ 'start.over'|trans }}</a></p>
+    </div>
+{% endblock %}

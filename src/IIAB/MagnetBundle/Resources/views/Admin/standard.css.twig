@@ -1,0 +1,220 @@
+<style type="text/css">
+    body > .header .navbar .sidebar-toggle {
+      float: left;
+      padding: 9px 5px;
+      margin-top: 8px;
+      margin-right: 0;
+      margin-bottom: 8px;
+      margin-left: 5px;
+      background-color: transparent;
+      background-image: none;
+      border: 1px solid transparent;
+      -webkit-border-radius: 0 !important;
+      -moz-border-radius: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    body > .header .navbar .sidebar-toggle:hover .icon-bar {
+      background: #f6f6f6;
+    }
+    body > .header .navbar .sidebar-toggle .icon-bar {
+      display: block;
+      width: 22px;
+      height: 2px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      background: #333333;
+    }
+    body > .header .navbar .sidebar-toggle .icon-bar + .icon-bar {
+      margin-top: 4px;
+    }
+
+    aside.left-side{
+        margin-top: 50px;
+    }
+    a.logo{
+        width: 220px;
+        float: left;
+    }
+    a.logo img{
+        max-width: 100%;
+    }
+    body.fixed .navbar{
+        left: 0;
+        right: 0;
+        margin-left: 220px;
+    }
+    .cke_combo__dynamic .cke_combo_text , .dynamic.cke_combopanel{
+        width: auto;
+    }
+    .table {
+        table-layout: fixed;
+    }
+    .table.not-fixed {
+        table-layout: auto;
+    }
+    .vertical-middle {
+        vertical-align: middle !important;
+    }
+    .widefat tbody tr td {
+        text-align: right;
+    }
+    .table td {
+        word-wrap:break-word
+    }
+    .firstColumn {
+        width: 50px;
+    }
+    .widefat thead th, .widefat tfoot th {
+        text-align: right;
+    }
+    ul.inline-list {
+        margin-bottom: 0;
+    }
+    ul.inline-list li {
+        display: inline-block;
+        text-align: center;
+        border-radius: 0 !important;
+        background: none;
+        border: none;
+    }
+    ul.inline-list.block-list-3 li {
+        width: 33%;
+    }
+    #form_grades .icheckbox_minimal {
+        margin-left: 25px;
+        margin-right: 4px;
+    }
+    .placement #form > div {
+        float: left;
+        width: 100%;
+        padding-bottom: 20px;
+    }
+    .error {
+        border: 3px solid #FF4D4D;
+    }
+    #next-step textarea.form-control {
+        height: 100%;
+    }
+    #form_onlineEndTime, #form_offlineEndTime, #form_reportDate, #form_mailDateSetting, #form_registrationNewStartDate, #form_registrationCurrentStartDate,
+    #form_populationOnlineEndTime, #form_populationOfflineEndTime, #form_waitListExpireTime, #form_individualOnlineEndTime, #form_individualOfflineEndTime,
+    #form_mailDateSettingIndividual, #form_mailDateSettingAll{% if admin is defined %}, #{{ admin.uniqId }}_offeredCreationEndOnlineTime, #{{ admin.uniqId }}_offeredCreationEndOfflineTime{% endif %},
+    #placement_onlineEndTime, #placement_offlineEndTime, #placement_waitListOnlineEndTime, #placement_waitListOfflineEndTime, #placement_waitListExpireTime {
+        clear: both;
+        width: 100%;
+        float: left;
+    }
+    #placement_openEnrollment_beginningDate_date, #placement_openEnrollment_beginningDate_time, #placement_openEnrollment_endingDate_date, #placement_openEnrollment_endingDate_time, #form_onlineEndTime_date, #form_onlineEndTime_time, #form_offlineEndTime_date, #form_offlineEndTime_time, #form_mailDateSetting_date,
+    #form_populationOnlineEndTime_date, #form_populationOnlineEndTime_time, #form_populationOfflineEndTime_date, #form_populationOfflineEndTime_time,
+    #form_waitListExpireTime_date, #form_waitListExpireTime_time, #form_individualOnlineEndTime_date, #form_individualOnlineEndTime_time,
+    #form_individualOfflineEndTime_date, #form_individualOfflineEndTime_time,
+    #placement_onlineEndTime_date, #placement_onlineEndTime_time, #placement_offlineEndTime_date, #placement_offlineEndTime_time,
+    #placement_waitListOnlineEndTime_date, #placement_waitListOnlineEndTime_time, #placement_waitListOfflineEndTime_date, #placement_waitListOfflineEndTime_time, #placement_waitListExpireTime_date, #placement_waitListExpireTime_time {
+        width: 49%;
+        float: left;
+    }
+    div.sonata-medium-date div {
+        width: 49%;
+        float: left;
+    }
+    div.sonata-medium-date div.col-sm-2 {
+        width: 33%;
+    }
+    div.form-group .one-third div.select2-container, .selector.one-third {
+        width: 33% !important;
+    }
+    div.sonata-ba-field-error-messages li a {
+        font-weight: bold;
+        text-decoration: underline;
+        color: #f56954;
+    }
+    #s2id_placement_openEnrollment_beginningDate_date_year,
+    #s2id_placement_openEnrollment_beginningDate_date_month,
+    #s2id_placement_openEnrollment_beginningDate_date_day,
+    #s2id_placement_openEnrollment_endingDate_date_year,
+    #s2id_placement_openEnrollment_endingDate_date_month,
+    #s2id_placement_openEnrollment_endingDate_date_day,
+    #s2id_form_onlineEndTime_date_month, #s2id_form_offlineEndTime_date_month,
+    #s2id_form_onlineEndTime_date_day, #s2id_form_offlineEndTime_date_day,
+    #s2id_form_onlineEndTime_date_year, #s2id_form_offlineEndTime_date_year,
+    #s2id_form_reportDate_day, #s2id_form_reportDate_month, #s2id_form_reportDate_year,
+    #s2id_form_mailDateSetting_month, #s2id_form_mailDateSetting_year, #s2id_form_mailDateSetting_day ,
+    #s2id_form_registrationNewStartDate_month, #s2id_form_registrationNewStartDate_day, #s2id_form_registrationNewStartDate_year ,
+    #s2id_form_registrationCurrentStartDate_month, #s2id_form_registrationCurrentStartDate_day, #s2id_form_registrationCurrentStartDate_year,
+    #s2id_form_populationOnlineEndTime_date_month, #s2id_form_populationOnlineEndTime_date_day, #s2id_form_populationOnlineEndTime_date_year,
+    #s2id_form_populationOfflineEndTime_date_month, #s2id_form_populationOfflineEndTime_date_day, #s2id_form_populationOfflineEndTime_date_year,
+    #s2id_form_waitListExpireTime_date_month, #s2id_form_waitListExpireTime_date_day, #s2id_form_waitListExpireTime_date_year,
+    #s2id_form_individualOnlineEndTime_date_month, #s2id_form_individualOnlineEndTime_date_day, #s2id_form_individualOnlineEndTime_date_year,
+    #s2id_form_individualOfflineEndTime_date_month, #s2id_form_individualOfflineEndTime_date_day, #s2id_form_individualOfflineEndTime_date_year ,
+    #s2id_form_mailDateSettingIndividual_month, #s2id_form_mailDateSettingIndividual_day, #s2id_form_mailDateSettingIndividual_year,
+    #s2id_form_mailDateSettingAll_month, #s2id_form_mailDateSettingAll_day, #s2id_form_mailDateSettingAll_year{% if admin is defined %},
+    #s2id_{{ admin.uniqId }}_offeredCreationEndOnlineTime_date_month, #s2id_{{ admin.uniqId }}_offeredCreationEndOnlineTime_date_day, #s2id_{{ admin.uniqId }}_offeredCreationEndOnlineTime_date_year,
+    #s2id_{{ admin.uniqId }}_offeredCreationEndOfflineTime_date_month, #s2id_{{ admin.uniqId }}_offeredCreationEndOfflineTime_date_day, #s2id_{{ admin.uniqId }}_offeredCreationEndOfflineTime_date_year{% endif %},
+    #s2id_placement_openEnrollment_beginningDate_day, #s2id_placement_openEnrollment_beginningDate_month, #s2id_placement_openEnrollment_beginningDate_year,
+    #s2id_placement_openEnrollment_endingDate_month, #s2id_placement_openEnrollment_endingDate_day, #s2id_placement_openEnrollment_endingDate_year,
+    #s2id_placement_registrationNewStartDate_month, #s2id_placement_registrationNewStartDate_day, #s2id_placement_registrationNewStartDate_year,
+    #s2id_placement_registrationCurrentStartDate_month, #s2id_placement_registrationCurrentStartDate_day, #s2id_placement_registrationCurrentStartDate_year,
+    #s2id_placement_onlineEndTime_date_month, #s2id_placement_onlineEndTime_date_day, #s2id_placement_onlineEndTime_date_year,
+    #s2id_placement_offlineEndTime_date_month, #s2id_placement_offlineEndTime_date_day, #s2id_placement_offlineEndTime_date_year,
+    #s2id_placement_waitListOnlineEndTime_date_month, #s2id_placement_waitListOnlineEndTime_date_day, #s2id_placement_waitListOnlineEndTime_date_year,
+    #s2id_placement_waitListOfflineEndTime_date_month, #s2id_placement_waitListOfflineEndTime_date_day, #s2id_placement_waitListOfflineEndTime_date_year,
+    #s2id_placement_preKDateCutOff_month, #s2id_placement_preKDateCutOff_day, #s2id_placement_preKDateCutOff_year, #s2id_placement_kindergartenDateCutOff_month ,
+    #s2id_placement_kindergartenDateCutOff_day, #s2id_placement_kindergartenDateCutOff_year, #s2id_placement_firstGradeDateCutOff_month, #s2id_placement_firstGradeDateCutOff_day,
+    #s2id_placement_firstGradeDateCutOff_year, #s2id_placement_transcriptDueDate_month, #s2id_placement_transcriptDueDate_day, #s2id_placement_transcriptDueDate_year,
+    #s2id_placement_waitListExpireTime_month, #s2id_placement_waitListExpireTime_day, #s2id_placement_waitListExpireTime_year,
+    #s2id_placement_waitListExpireTime_date_month, #s2id_placement_waitListExpireTime_date_day, #s2id_placement_waitListExpireTime_date_year,
+    #s2id_placement_openEnrollment_latePlacementBeginningDate_month, #s2id_placement_openEnrollment_latePlacementBeginningDate_day, #s2id_placement_openEnrollment_latePlacementBeginningDate_year,
+    #s2id_placement_openEnrollment_latePlacementEndingDate_month, #s2id_placement_openEnrollment_latePlacementEndingDate_day, #s2id_placement_openEnrollment_latePlacementEndingDate_year {
+        xwidth: 31% !important;
+        float: left;
+        margin-right: 2%;
+    }
+    #s2id_placement_openEnrollment_endingDate_time_hour,
+    #s2id_placement_openEnrollment_endingDate_time_minute,
+    #s2id_placement_openEnrollment_beginningDate_time_hour,
+    #s2id_placement_openEnrollment_beginningDate_time_minute,
+    #s2id_form_onlineEndTime_time_hour, #s2id_form_offlineEndTime_time_hour,
+    #s2id_form_onlineEndTime_time_minute, #s2id_form_offlineEndTime_time_minute,
+    #s2id_form_populationOnlineEndTime_time_hour, #s2id_form_populationOnlineEndTime_time_minute,
+    #s2id_form_populationOfflineEndTime_time_hour, #s2id_form_populationOfflineEndTime_time_minute,
+    #s2id_form_waitListExpireTime_time_hour, #s2id_form_waitListExpireTime_time_minute,
+    #s2id_form_individualOnlineEndTime_time_hour, #s2id_form_individualOnlineEndTime_time_minute,
+    #s2id_form_individualOfflineEndTime_time_hour, #s2id_form_individualOfflineEndTime_time_minute{% if admin is defined %},
+    #s2id_{{ admin.uniqId }}_offeredCreationEndOnlineTime_time_hour, #s2id_{{ admin.uniqId }}_offeredCreationEndOnlineTime_time_minute,
+    #s2id_{{ admin.uniqId }}_offeredCreationEndOfflineTime_time_hour, #s2id_{{ admin.uniqId }}_offeredCreationEndOfflineTime_time_minute{% endif %},
+    #s2id_placement_onlineEndTime_time_hour, #s2id_placement_onlineEndTime_time_minute, #s2id_placement_offlineEndTime_time_hour, #s2id_placement_offlineEndTime_time_minute,
+    #s2id_placement_waitListOnlineEndTime_time_hour, #s2id_placement_waitListOnlineEndTime_time_minute, #s2id_placement_waitListOfflineEndTime_time_hour, #s2id_placement_waitListOfflineEndTime_time_minute,
+    #s2id_placement_waitListExpireTime_time_hour, #s2id_placement_waitListExpireTime_time_minute{
+        xwidth: 36% !important;
+        margin-right: 2%;
+        padding-left: 2%;
+    }
+    .pushFirstColumn {
+        padding-left: 20px !important;
+        vertical-align: middle !important;
+    }
+    ol.priority {
+        list-style-position: inside;
+        margin-top: 10px;
+        padding-left: 0;
+    }
+    ol.priority li {
+        padding: 10px;
+        border: 1px solid #39cccc;
+        margin-bottom: 10px;
+    }
+    ol.priority li ul {
+        margin-top: 10px;
+        margin-left: 30px;
+        margin-bottom: 0;
+    }
+    ol.priority li ul li {
+        padding: 5px;
+    }
+
+    #select2-results-2 .concealable.select2-disabled{
+        display: none;
+    }
+
+</style>

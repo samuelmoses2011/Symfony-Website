@@ -1,0 +1,93 @@
+services:
+    magnet.listener.open_enrollment:
+        class: IIAB\MagnetBundle\Listener\OpenEnrollmentListener
+        arguments: ["@service_container"]
+        # container: "@service_container"
+        tags:
+             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    form.type_extension.phone_number:
+        class: IIAB\MagnetBundle\Form\Type\PhoneNumberType
+        tags:
+            - { name: form.type , alias: phone_number }
+
+    form.type_extension.help_message:
+        class: IIAB\MagnetBundle\Form\Extension\HelpMessageTypExtension
+        # tags:
+        #     - { name: "form.type_extension", alias: "form" }
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType  }
+
+
+    magnet.check.address:
+        class: IIAB\MagnetBundle\Service\CheckAddressService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    magnet.get.schools:
+        class: IIAB\MagnetBundle\Service\GetEligibleSchoolService
+        arguments: ["@doctrine.orm.default_entity_manager", "@translator"]
+
+    magnet.lottery:
+        class: IIAB\MagnetBundle\Service\LotteryService
+        arguments: ["@service_container", "@doctrine.orm.default_entity_manager"]
+
+    magnet.calculategpa:
+        class: IIAB\MagnetBundle\Service\CalculateGPAService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    magnet.validate.sibling:
+        class: IIAB\MagnetBundle\Service\ValidateSiblingService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    magnet.email:
+        class: IIAB\MagnetBundle\Service\EmailService
+        arguments: ['%mailer_sender%', "@doctrine.orm.default_entity_manager", "@twig", "@mailer", "@router"]
+
+    magnet.pdf:
+        class: IIAB\MagnetBundle\Service\GeneratePDFService
+        arguments: ["@service_container"]
+
+    magnet.statusChanges:
+        class: IIAB\MagnetBundle\Service\StatusChangesService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    magnet.validator.validateSibling:
+        class: IIAB\MagnetBundle\Form\Validators\ValidSiblingValidator
+        arguments: ["@doctrine.orm.default_entity_manager"]
+        tags:
+            - { name: validator.constraint_validator, alias: validate_sibling }
+
+    magnet.validator.validateAddress:
+            class: IIAB\MagnetBundle\Form\Validators\ValidAddressValidator
+            arguments: ["@doctrine.orm.default_entity_manager"]
+            tags:
+                - { name: validator.constraint_validator, alias: validate_address }
+
+    magnet.validator.validateAge:
+                class: IIAB\MagnetBundle\Form\Validators\ValidAgeValidator
+                arguments: ["@doctrine.orm.default_entity_manager"]
+                tags:
+                    - { name: validator.constraint_validator, alias: validate_age }
+
+    magnet.ordinal:
+            class: IIAB\MagnetBundle\Service\OrdinalService
+            arguments: ["@service_container"]
+
+    magnet.recommendation:
+        class: IIAB\MagnetBundle\Service\RecommendationService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    magnet.screeningDevice:
+        class: IIAB\MagnetBundle\Service\LearnerScreeningDeviceService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    magnet.population:
+        class: IIAB\MagnetBundle\Service\PopulationService
+        arguments: ["@doctrine"]
+
+    magnet.eligibility:
+        class: IIAB\MagnetBundle\Service\EligibilityRequirementsService
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    magnet.enrollment:
+        class: IIAB\MagnetBundle\Service\AddressBoundEnrollmentService
+        arguments: ["@doctrine"]

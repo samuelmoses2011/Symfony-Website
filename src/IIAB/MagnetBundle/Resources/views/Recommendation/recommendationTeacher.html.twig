@@ -1,0 +1,24 @@
+
+        {{ form_row(form.overall_recommendation) }}
+
+        <h3>Academic Abilities</h3>
+            {{ form_row(form.class_assignments) }}
+            {{ form_row(form.homework) }}
+            {{ form_row(form.new_concepts) }}
+            {{ form_row(form.unique_conclusions) }}
+            {{ form_row(form.initiative) }}
+            {{ form_row(form.communication) }}
+            {{ form_row(form.recall) }}
+
+        <h3>Motivational Characteristics</h3>
+            {{ form_row(form.loves_learning) }}
+            {{ form_row(form.self_correcting) }}
+            {{ form_row(form.responsibility) }}
+            {{ form_row(form.curiosity) }}
+            {{ form_row(form.confidence) }}
+
+        <h4 class="text-center" style="text-transform: uppercase;">This Recommendation is Confidential</h4>
+            <div class="text-center">{{form_row(form.submit)}}</div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}

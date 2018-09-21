@@ -1,0 +1,25 @@
+parameters:
+  customer_configuration:
+    enforce_address_bounds: true
+    use_zoning_api: true
+    use_learner_profile_screening_device: true
+    inow_api:
+      url: 'https://inow.tusc.k12.al.us/API/'
+      username: 'LeanFrog_API'
+      password: 'qs4p2CNu4H4N9g7ETKzF'
+    student_email_file: '/var/www/html/tcs/Students.csv'
+    student_standards_scores_file: '/var/www/html/tcs/LeanFrogStandardsScores.csv'
+    student_standard_testing_file_directory: '/var/www/html/tcs/'
+    student_standard_testing_file_names:
+      math: 'GsMath'
+      reading: 'GsReading'
+    eligibility_fields: '%eligibility_fields%'
+    student_profiles: '%student_profiles%'
+    state_provinces: '%state_provinces%'
+    gpa_calculations: '%gpa_calculations%'
+    submission_data_reserved_keys: '%submission_data_reserved_keys%'
+    lottery: '%lottery%'
+    population_tracking: [Race]
+    grade_progression_order: [ 99 , 0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 ]
+    grade_labels: { 99: 'PreK', 0: 'K', 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12 }
+    grade_titles: { 99: 'PreK', 0: 'Kindergarten', 1: '1st Grade', 2: '2nd Grade', 3: '3rd Grade', 4: '4th Grade', 5: '5th Grade', 6: '6th Grade', 7: '7th Grade', 8: '8th Grade', 9: '9th Grade', 10: '10th Grade', 11: '11th Grade', 12: '12th Grade' }

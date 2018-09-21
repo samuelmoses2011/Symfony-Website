@@ -1,0 +1,70 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block title %}
+    Accept/Decline Offer
+{% endblock %}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Accept or Decline the Offer</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="box box-alert">
+                                <div class="box-body">
+                                    <h2>Tuscaloosa City Schools Specialty Program for {{ offered.submission.firstName }} {{ offered.submission.lastName }} for {{ offered.submission.openEnrollment }}</h2>
+
+                                    <p>Approved for the following: <strong>{{ offered.awardedSchool }} {% if offered.awardedFocusArea != 0 %}{{ offered.awardedFocusArea }}{% endif %}</strong></p>
+
+                                    {% if offered.accepted == 0 and offered.declined == 0 %}
+                                        {{ form_start(form) }}
+
+                                        <div class="pull-left">
+                                            {{ form_row(form.decline_offer , {'attr': {'class':'btn btn-danger'} , 'label' : 'Decline Magnet Application Offer' }) }}
+                                        </div>
+
+                                        <div class="pull-right">
+                                            {{ form_row(form.accept_offer , {'attr': {'class':'btn btn-success' } , 'label' : 'Accept Magnet Application Offer' }) }}
+                                        </div>
+                                        {{ form_end(form) }}
+                                    {% else %}
+                                        {% if offered.declined == 1 %}
+                                            <p class="text-center">This is to confirm that you have updated {{ offered.submission.firstName }} {{ offered.submission.lastName }} Magnet application offer to
+                                            {% if offered.submission.submissionStatus.id == 9 %}
+                                                <strong>WaitListed</strong>.</p>
+                                            {% else %}
+                                                <strong>Declined</strong>.</p>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if offered.accepted == 1 %}
+                                            <p class="text-center">This is to confirm that you have updated {{ offered.submission.firstName }} {{ offered.submission.lastName }} Magnet application offer to
+                                                <strong>Accepted</strong>.</p>
+                                        {% endif %}
+
+                                    {% endif %}
+                                    <div class="clear clearfix"></div>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                                    <p>
+                                        <a href="{{ url('admin_submission_edit' , {'id': offered.submission.id } ) }}" class="btn btn-info">Go back to Submission</a>
+                                    </p>
+
+                                    <div class="clear clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

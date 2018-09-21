@@ -1,0 +1,309 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block title %}
+   {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+{% endblock%}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Create a New Submission</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="box box-success">
+                                <div class="box-header">
+                                    <h4 class="box-title">{% if step is defined and step > 0 %}Step {{ step }}{% else %}Start{% endif %}</h4>
+                                    {% if step is defined and step > 0 %}<h4 style="float: right; margin-right:5px;"><a href="{{ url( 'admin_submission_create' , { 'step': 0 } ) }}">Start Over</a></h4>{% endif %}
+                                </div>
+                                <div class="box-body">
+                                    {% set duplicate = app.request.get('duplicate',0)|abs %}
+
+                                    {% if duplicate %}
+                                        {# Duplicate Choice Submission Error #}
+                                        <div class="row">
+                                            <div class="small-12 columns">
+                                                <div class="alert alert-danger text-center">
+                                                    <p class="noMarginBottom">{{ 'form.error.duplicate.message'|trans|raw }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if step is defined and step > 0 %}
+                                        {{ render(controller('IIABMagnetBundle:Application:displaySessionData' , { 'step' : step } )) }}
+                                    {% endif %}
+                                    {{ form(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+
+        function update_foci( choice_field ) {
+
+            if( choice_field ) {
+
+                var focus_choices = [
+                    'first_choice_focus',
+                    'second_choice_focus',
+                    'third_choice_focus'
+                ];
+
+                var choice_labels = [
+                    '{{ 'First Choice focus'|trans|raw }} ',
+                    '{{ 'Second Choice focus'|trans|raw }} ',
+                    '{{ 'Third Choice focus'|trans|raw }} ',
+                ];
+
+                var data_source = document.getElementById('application_first_choice_school');
+                var foci_by_school = JSON.parse(data_source.getAttribute('data-foci'));
+                var focus_labels_by_school  = JSON.parse(data_source.getAttribute('data-focus-labels'));
+                var labels = document.getElementsByTagName('LABEL');
+
+                var focus_selection_count = 0;
+                var choice_field_id = choice_field.id;
+                choice_field_id = choice_field_id.replace('_school','');
+
+                for( var focus_choice_field_index=0; focus_choice_field_index < focus_choices.length; focus_choice_field_index++ ){
+
+                    var focus_select = document.getElementById(  choice_field_id + '_' + focus_choices[ focus_choice_field_index ] );
+
+                    if( focus_select ) {
+                        check_focus_conflicts(focus_select);
+                    }
+
+                    if( focus_select && focus_select.options.length ) {
+                        for (var i = focus_select.options.length - 1; i > 0; i--) {
+                            focus_select.remove(i);
+                        }
+
+                        var label = '';
+                        for (var i = 0; i < labels.length; i++) {
+                            if (labels[i].htmlFor == focus_select.id) {
+                                label = labels[i];
+                                i = labels.length;
+                            }
+                        }
+
+                        label.innerHTML = choice_labels[focus_choice_field_index].replace("focus", focus_labels_by_school[ choice_field.value ]);
+                    }
+
+                    if ((typeof foci_by_school[choice_field.value] === "object") && ( foci_by_school[choice_field.value] !== null )) {
+
+                        Object.keys(foci_by_school[choice_field.value]).map(function (key) {
+                            var option = document.createElement('option');
+                            option.value = foci_by_school[choice_field.value][key];
+                            option.innerHTML = foci_by_school[choice_field.value][key];
+                            if(focus_select) {
+                                focus_select.appendChild(option);
+                            }
+                        });
+                    }
+
+                    if( focus_select ) {
+                        i = 0;
+                        var parent_row = document.getElementById( focus_select.id+'_row' );
+                        var choice_field_row = document.getElementById( choice_field.id+'_row' );
+                        var minimum_choices = ( focus_choice_field_index * 1) + 1;
+                        focus_selection_count = focus_select.childNodes.length;
+                        if (parent_row) {
+                            if (focus_select.childNodes.length > minimum_choices) {
+                                parent_row.style.display = '';
+                                focus_select.required = ( focus_choice_field_index == 0 );
+                            } else {
+                                parent_row.style.display = 'none';
+                                focus_select.required = false;
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+
+        function check_exclusions( input ) {
+
+            var description = input.options[input.selectedIndex].innerHTML;
+            input.options[input.selectedIndex].innerHTML = description.replace(" (not available with other selection)", "");
+
+            var choices = [
+                'application_first_choice_school',
+                'application_second_choice_school',
+                'application_third_choice_school'
+            ];
+
+            var data_source = document.getElementById('application_first_choice_school');
+            var exclusions_by_school = JSON.parse( data_source.getAttribute( 'data-exclusions') );
+
+            if(
+                (typeof exclusions_by_school[ input.value ] === "object") &&
+                ( exclusions_by_school[ input.value ] !== null )
+            ){
+
+                var exclude = exclusions_by_school[input.value];
+
+                for( var choice_field_index = 0; choice_field_index < choices.length; choice_field_index++ ){
+                    var choice_field_id = choices[ choice_field_index ];
+
+                    if( choice_field_id != input.getAttribute('id') ){
+
+                        var choice_field = document.getElementById( choice_field_id );
+
+                        if( choice_field ) {
+
+                            if (exclude.indexOf(choice_field.value * 1) > -1) {
+                                choice_field.selectedIndex = 0;
+                            }
+
+                            for( var child_index =0; child_index < choice_field.childNodes.length; child_index++ ){
+                                var option = choice_field.childNodes[ child_index ];
+                                if (option.value > 0) {
+                                    var description = option.innerHTML;
+                                    option.innerHTML = description.replace(" (not available with other selection)", "");
+
+                                    if (exclude.indexOf(option.value * 1) > -1) {
+                                        option.innerHTML += " (not available with other selection)";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function double_check_exclusions( input ) {
+
+            for( var child_index = 0; child_index < input.childNodes.length; child_index++){
+                var option = input.childNodes[child_index];
+                var option_label = option.innerHTML;
+
+                if (option.value > 0 && option_label.includes("(not available with other selection)")) {
+                    option.disabled = true;
+                }
+            }
+        }
+
+        function check_focus_conflicts( input ){
+
+            var extras_by_school_and_focus = JSON.parse( data_source.getAttribute('data-focus-extras')  );
+            var choice_ids =[
+                'first',
+                'second',
+                'third'
+            ];
+
+            var field_name = input.id;
+            field_name = field_name.split('_');
+
+            var extra_ids = new Array(
+                'extra_1',
+                'extra_2',
+                'extra_3'
+            );
+
+            var school_field_name = field_name[0] +'_'+ field_name[1] + '_choice_school';
+            var school_field = document.getElementById( school_field_name );
+
+            for( var extra_id_index = 0; extra_id_index < extra_ids.length; extra_id_index++ ){
+                var extra_id =  extra_ids[extra_id_index];
+
+                var extra_field = document.getElementById( field_name.join('_')+'_'+ extra_id );
+
+                if( extra_field ) {
+
+                    var parent_row = extra_field.parentNode;
+                }
+
+                if (parent_row) {
+
+                    var label = '';
+                    var labels = document.getElementsByTagName('LABEL');
+                    for (var i = 0; i < labels.length; i++) {
+                        if (labels[i].htmlFor == extra_field.id ) {
+
+                            label = labels[i];
+                            i = labels.length;
+                        }
+                    }
+                    var extra_message = parent_row.getElementsByClassName("extra_message");
+
+                    if( typeof extras_by_school_and_focus[school_field.value] === 'object'
+                        && typeof extras_by_school_and_focus[school_field.value][input.value] === 'object'
+                        &&  typeof extras_by_school_and_focus[school_field.value][input.value][extra_id] === 'string' ){
+                        parent_row.style.display = '';
+
+                        extra_field.required = 'required';
+
+                        label.innerHTML = extras_by_school_and_focus[school_field.value][input.value][extra_id];
+
+                        if( extras_by_school_and_focus[school_field.value][input.value][extra_id].toLowerCase().indexOf('exper') !== -1 ){
+
+                            if( !extra_message.length ) {
+                                var message = document.createElement('div');
+                                message.classList.add("extra_message");
+                                parent_row.appendChild(message);
+                                extra_message = parent_row.getElementsByClassName("extra_message");
+                            }
+
+                            extra_message[0].innerHTML ='<p>{{ 'form.application.extra.message'|trans|raw|replace({"'": "\'"}) }}</p>';
+                        } else {
+                            if(extra_message.length){
+                                extra_message.remove();
+                            }
+                        }
+                    } else {
+                        parent_row.style.display = 'none';
+                        extra_field.required = '';
+                        label.innerHTML = '';
+
+                        if(extra_message.length){
+                            parent_row.removeChild( extra_message[0] );
+                        }
+
+                    }
+                }
+
+            }
+
+            for( var choice_index = 0; choice_index < choice_ids.length; choice_index++){
+                var choice = choice_ids[choice_index];
+                field_name[3] = choice;
+
+                var compare_field = document.getElementById( field_name.join('_') );
+                if( compare_field
+                    && compare_field.id != input.id
+                ){
+                    for( var child_index = 0; child_index < compare_field.childNodes.length; child_index++){
+                        var option = compare_field.childNodes[ child_index ];
+                        option.disabled = (option.value == input.value );
+                    }
+                }
+            }
+        }
+
+        var data_source = document.getElementById('application_first_choice_school');
+        if( data_source ){
+            update_foci( data_source );
+            update_foci( document.getElementById('application_second_choice_school') );
+            update_foci( document.getElementById('application_third_choice_school') );
+        }
+
+    </script>
+{% endblock sonata_admin_content %}

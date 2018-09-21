@@ -1,0 +1,20 @@
+parameters:
+  gpa_calculations:
+    precision: 2
+    methods:
+      0:
+        quality_convert_before_average: true
+        current_grade_levels: [8,9,10,11]
+        years:
+          0:
+            year_offset: -1
+            subjects: [ 'english', 'math', 'social', 'science' ]
+            terms: [ 'semester 2' ]
+            precision: null
+            average_subject_before_year: true
+          1:
+            year_offset: 0
+            subjects: [ 'english', 'math', 'social', 'science' ]
+            terms: [ 'semester 1' ]
+            precision: null
+            average_subject_before_year: true

@@ -1,0 +1,32 @@
+{% extends '@IIABMagnet/Application/standard_layout.html.twig' %}
+
+{% block body %}
+
+    {{ render(controller('IIABMagnetBundle:Application:helpDocuments')) }}
+
+    <div class="small-12 columns">
+
+        <div class="alert-box warning text-center radius">
+            <p>{{ submission }}: {{ submission.firstName }} {{ submission.lastName }}</p>
+        </div>
+
+        <p>{{ 'writing.sample.welcome.message'|trans }}</p>
+
+    </div>
+    
+    <div class="small-12 columns">    
+
+        {{ form_start(form) }}
+
+            {{ form_label(form.writing_sample) }}
+            {{ form_widget( form.writing_sample ) }}
+
+            {{ form_widget( form.writing_sample ) }}
+                
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        
+
+    </div>
+{% endblock %}
+

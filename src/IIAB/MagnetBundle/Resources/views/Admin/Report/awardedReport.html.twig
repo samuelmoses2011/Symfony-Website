@@ -1,0 +1,31 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+    <div class="sonata-ba-form">
+        <section class="content-header">
+            <nav role="navigation" class="navbar navbar-default">
+                <div class="navbar-header"><span class="navbar-brand">Report - Download Awarded Report for a Specific Enrollment</span></div>
+            </nav>
+        </section>
+        <section class="content">
+            <div class="sonata-ba-form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+
+                            <div class="box box-success">
+                                <div class="box-header">
+                                    <h4 class="box-title">Awarded Report</h4>
+                                </div>
+                                <div class="box-body">
+                                    {{ form(form) }}
+                                </div>
+                            </div>
+                            <div class="alert alert-warning" role="alert">Large number of Submission will take a minute or two to build. Please be patient and wait for the download box to popup.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock sonata_admin_content %}

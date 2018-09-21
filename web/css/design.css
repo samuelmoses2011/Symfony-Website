@@ -1,0 +1,89 @@
+body {
+    background: url("../img/BodyBackground.jpg") repeat-x scroll center top transparent;
+}
+
+header {
+    background: url("../img/HeaderLogo.png") no-repeat scroll center top transparent;
+    display: block;
+    height: 200px;
+    margin: 0 auto;
+    width: 800px;
+}
+header h1, header h3 {
+    text-indent: -9999px;
+    margin: 0;
+}
+.marginBottom {
+    margin-bottom: 20px;
+}
+.noMarginBottom {
+    margin-bottom: 0;
+}
+
+.column.small-centered:last-child, .columns.small-centered:last-child {
+    float: none;
+}
+
+small.error ul {
+    list-style: none;
+}
+
+small.error a {
+    color: black;
+    text-decoration: underline;
+}
+
+div.translations {
+    margin-top: -60px;
+}
+div.translations ul li {
+    display: inline-block;
+    font-size: 10px;
+}
+div.translations ul li a {
+    color: black;
+    text-decoration: underline;
+}
+div.translations ul li a:hover, div.translations ul li a:active, div.translations ul li a:focus {
+    text-decoration: none;
+    color: #3C8DBC;
+}
+
+@media only screen and (max-width: 799px ) {
+    header {
+        background: none;
+        width: auto;
+    }
+    header h1, header h3 {
+        padding-top: 10px;
+        font-size: 40px;
+        text-indent: 0;
+        color: #fff;
+        text-align: center;
+        text-shadow: 0 0 2px #000;
+    }
+    header h3 {
+        padding-top: 0;
+        font-size: 18px;
+    }
+}
+@media only screen and (max-width: 640px ) {
+
+    header h1, header h3 {
+        text-indent: 0;
+        color: #fff;
+        font-size: 26px;
+        text-align: center;
+        text-shadow: 0 0 2px #000;
+    }
+    header h3 {
+        font-size: 14px;
+    }
+    .noMarginBottom {
+        margin-bottom: 20px;
+    }
+}
+.has-tip {
+    display: inline-block;
+    margin-top: 4px;
+}

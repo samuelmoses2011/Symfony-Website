@@ -1,0 +1,36 @@
+services:
+  lf_shared_data.admin.academicYear:
+      class: LeanFrog\SharedDataBundle\Admin\AcademicYearAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "leanfrog.admin.shared", label: "Academic Years" }
+      arguments:
+          - ~
+          - LeanFrog\SharedDataBundle\Entity\AcademicYear
+          - ~
+  lf_shared_data.admin.programschool:
+      class: LeanFrog\SharedDataBundle\Admin\ProgramSchoolAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "leanfrog.admin.shared", label: "Program/Schools" }
+      arguments:
+          - ~
+          - LeanFrog\SharedDataBundle\Entity\ProgramSchool
+          - ~
+  lf_shared_data.admin.population:
+      class: LeanFrog\SharedDataBundle\Admin\PopulationAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "leanfrog.admin.shared", label: "Population Changes" }
+      arguments:
+          - ~
+          - LeanFrog\SharedDataBundle\Entity\Population
+          - ~
+  lf_shared_data.admin.starting_population:
+      class: LeanFrog\SharedDataBundle\Admin\StartingPopulationAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "leanfrog.admin.shared", label: "Starting Populations" }
+      arguments:
+          - ~
+          - LeanFrog\SharedDataBundle\Entity\ProgramSchool
+          - ~
+#    lf_shared_data.example:
+#        class: LeanFrog\SharedDataBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -1,0 +1,152 @@
+{% extends '@IIABMagnet/Admin/standard_layout.html.twig' %}
+
+{% block sonata_admin_content %}
+
+    <div class="panel panel-default">
+        {{ include('@IIABMagnet/Admin/ProgramProcessing/header.html.twig') }}
+    </div>
+
+    {{ render( controller('IIABMagnetBundle:ProgramProcessing:processingStatus') ) }}
+
+    {{ form_start( form ) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="nav-tabs-custom">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" {% if active_tab == 'population' %} class="active" {% endif %}>
+                        <a href="#populationChanges" aria-controls="populationChanges" role="tab" data-toggle="tab">Population Changes</a>
+                    </li>
+                    <li role="presentation" {% if active_tab == 'submission' %} class="active" {% endif %}>
+                        <a href="#submissions" aria-controls="submissions" role="tab" data-toggle="tab">Submission Results</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane {% if active_tab == 'population' %} active {% endif %}" id="populationChanges">
+                        <div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
+
+                            {#<div class="row">#}
+                                {#<div class="col-md-4">#}
+                                    {#{{ form_widget(form.orderPopulation) }}#}
+                                {#</div>#}
+                                {#<div class="col-md-8">#}
+                                    {#{{ form_widget(form.populationSort) }}#}
+                                {#</div>#}
+                                {#<br/><br/>#}
+                            {#</div>#}
+
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th style="width: 25%;">School</th>
+                                    <th>Max Capacity</th>
+                                    <th>Race/Home Zone</th>
+                                    <th>Added</th>
+                                </tr>
+
+                                {% for focus in schools %}
+                                    {% for tracking_value in focus %}
+                                        {% for population in tracking_value %}
+                                            <tr>
+                                                <td>{% if population.before is defined  %}
+                                                        {{ population.before.magnetSchool.name }}
+                                                        <br/>
+                                                        {% if population.before.focusArea %} {{ population.before.focusArea }} {% endif %}
+                                                        Grade: {{ population.before.magnetSchool.gradeString }}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="vertical-middle">{% if population.before is defined  %}{{ population.before.maxCapacity }} {% endif %}</td>
+                                                <td class="vertical-middle">{% if population.changed is defined  %}
+                                                    {{ population.changed.trackingColumn }}:
+                                                        {% if tracking_column_labels
+                                                            [population.changed.trackingColumn]
+                                                            [population.changed.trackingValue|lower] is defined %}
+                                                            {{ tracking_column_labels[population.changed.trackingColumn][population.changed.trackingValue|lower] }}{% endif %}</td>
+                                                        {% else %}
+                                                            none
+                                                        {% endif %}
+                                                <td class="vertical-middle">{% if population.changed is defined  %}{{ population.changed.count }} {% endif %}</td>
+
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endfor %}
+
+                            </table>
+                        </div>
+                        {{ form_widget(form.downloadPrograms) }}
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane {% if active_tab == 'submission' %} active {% endif %}" id="submissions">
+                        <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {{ form_widget(form.orderSubmission) }}
+                                </div>
+                                <div class="col-md-8">
+                                    {{ form_widget(form.submissionSort) }}
+                                </div>
+                                <br/><br/>
+                            </div>
+
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <th>Submission ID</th>
+                                    <th>Student Name</th>
+                                    <th>Grade</th>
+                                    <th>Race</th>
+                                    <th style="width: 25%;">School</th>
+                                    <th>Chosen</th>
+                                    {# <th>SubChoice</th> #}
+                                    <th>Outcome</th>
+                                </tr>
+
+                                {% for submission in submissions %}
+                                    <tr>
+                                        <td class="vertical-middle"><a href="{{ path( 'admin_submission_edit', {'id': submission.submission.id } ) }}" target="_blank">{{ submission.submission.id }}</a></td>
+                                        <td class="vertical-middle">{{ submission.submission.firstName }} {{ submission.submission.lastName }}</td>
+                                        <td class="vertical-middle">{{ submission.submission.nextGradeString }}</td>
+                                        <td class="vertical-middle">{{ submission.submission.race.ShortName }}</td>
+                                        <td>
+                                            {% if submission.magnetSchool %}
+                                                {{ submission.magnetSchool }}
+                                            {% else %}
+                                                First Choice: {{ submission.submission.firstChoice.name }}
+                                                {% if submission.submission.secondChoice %}
+                                                    <br/>Second Choice: {{ submission.submission.secondChoice.name }}
+                                                {% endif %}
+                                                {% if submission.submission.thirdChoice %}
+                                                    <br/>Third Choice: {{ submission.submission.thirdChoice.name }}
+                                                {% endif %}
+                                            {% endif %}</td>
+                                        <td class="vertical-middle">
+                                            {% if submission.magnetSchool %}
+                                                {%  if submission.choiceNumber == 1 %}
+                                                    first
+                                                {% elseif submission.choiceNumber == 2 %}
+                                                    second
+                                                {% elseif submission.choiceNumber == 3 %}
+                                                    third
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        {# <td class="vertical-middle">
+                                            {{ submission.focusArea }}
+                                        </td> #}
+                                        <td class="vertical-middle">{{ submission.type }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        {{ form_widget(form.downloadSubmissions) }}
+                    </div>
+                </div>
+            </div>
+
+            {{ form_widget(form.commitResults) }}
+
+        </div>
+    </div>
+    {{ form_end( form ) }}
+{% endblock %}
